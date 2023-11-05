@@ -1,4 +1,4 @@
-import {HeightSize} from './Size';
+import {HeightSize} from './size';
 
 export const TextStyle = {
   Title: {
