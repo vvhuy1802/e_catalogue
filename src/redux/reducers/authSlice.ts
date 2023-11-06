@@ -2,15 +2,15 @@ import {createSlice} from '@reduxjs/toolkit';
 import {RootState} from '../../app/store';
 
 interface AuthState {
-   isAuthorized : boolean;
-   isShowSplash : boolean;
-   isShowOnBoard : boolean;
+  isAuthorized: boolean;
+  isShowSplash: boolean;
+  isShowOnBoard: boolean;
 }
 
 const initialState = {
-    isAuthorized : false,
-    isShowSplash : true,
-    isShowOnBoard : true,
+  isAuthorized: false,
+  isShowSplash: true,
+  isShowOnBoard: true,
 } as AuthState;
 
 const authSlice = createSlice({
@@ -31,12 +31,9 @@ const authSlice = createSlice({
 });
 
 export default authSlice.reducer;
-export const {
-  SetIsAuthorized,
-  SetIsShowSplash,
-  SetIsShowOnBoard,
-} = authSlice.actions;
+export const {SetIsAuthorized, SetIsShowSplash, SetIsShowOnBoard} =
+  authSlice.actions;
 export const selectIsAuthorized = (state: RootState) => state.auth.isAuthorized;
 export const selectIsShowSplash = (state: RootState) => state.auth.isShowSplash;
-export const selectIsShowOnBoard = (state: RootState) => state.auth.isShowOnBoard;
-
+export const selectIsShowOnBoard = (state: RootState) =>
+  state.auth.isShowOnBoard;

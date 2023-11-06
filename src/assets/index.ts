@@ -10,6 +10,8 @@ export const images = {
   },
   login: {
     BackgroundLogin: require('~/assets/images/login/img_login_bg.jpg'),
+    LogoGoogle: require('~/assets/images/login/img_logo_gg.jpg'),
+    LogoFacebook: require('~/assets/images/login/img_logo_fb.jpg'),
   },
   home: {
     BackgroundHome: require('~/assets/images/home/img_home_bg.jpg'),

@@ -40,7 +40,7 @@ const CardOnBoard = ({onPress}: Props) => {
     },
     {
       id: '3',
-      title: 'Livai Ackerman',
+      title: 'Levi Ackerman',
       body: 'He is the current inheritor of the Attack Titan and a former member of the Survey Corps. He ranked 2nd in the 104th Training Corps and is the former captain of the Survey Corps',
       imgUrl: images.onBoard.Onboard3,
     },

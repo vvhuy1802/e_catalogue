@@ -38,22 +38,22 @@ const ContainerImage = ({
     },
   ];
   return (
-    <Animated.View
-      style={[
-        {
-          flex: 1,
-        },
-        isOpacity && {
-          opacity: opacityRef.current.interpolate({
-            inputRange: [0, 1],
-            outputRange: [0, 1],
-          }),
-        },
-      ]}>
-      <FastImage style={styleContainer} resizeMode={resizeMode} source={source}>
-        {children}
-      </FastImage>
-    </Animated.View>
+    // <Animated.View
+    //   style={[
+    //     {
+    //       flex: 1,
+    //     },
+    //     isOpacity && {
+    //       opacity: opacityRef.current.interpolate({
+    //         inputRange: [0, 1],
+    //         outputRange: [0, 1],
+    //       }),
+    //     },
+    //   ]}>
+    <FastImage style={styleContainer} resizeMode={resizeMode} source={source}>
+      {children}
+    </FastImage>
+    // </Animated.View>
   );
 };
 

@@ -28,6 +28,7 @@ const OnBoard = () => {
     <ContainerView
       style={{
         flex: 1,
+        backgroundColor:'white'
       }}>
       <SafeAreaView style={{flex: 1}}>
         <View

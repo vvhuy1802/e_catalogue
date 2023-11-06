@@ -75,7 +75,7 @@ const SplashScreen = () => {
             }),
             left: moveTopRef.current.interpolate({
               inputRange: [0, 1],
-              outputRange: [width / 2 - WidthSize(50), WidthSize(48)],
+              outputRange: [width / 2 - WidthSize(50), WidthSize(50)],
             }),
           }}>
           <Animated.View
