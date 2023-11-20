@@ -20,15 +20,16 @@ const ContainerImage = ({
   isOpacity = false,
 }: ContainerImageProps) => {
   const insets = useSafeAreaInsets();
-  const opacityRef = useRef(new Animated.Value(0));
-  useEffect(() => {
-    Animated.timing(opacityRef.current, {
-      toValue: 1,
-      duration: 400,
-      useNativeDriver: false,
-    }).start();
-  }, []);
+  // const opacityRef = useRef(new Animated.Value(0));
+  // useEffect(() => {
+  //   Animated.timing(opacityRef.current, {
+  //     toValue: 1,
+  //     duration: 400,
+  //     useNativeDriver: false,
+  //   }).start();
+  // }, []);
   const styleContainer = [
+    {flex: 1},
     style,
     !isIOS && {
       paddingTop: insets.top,

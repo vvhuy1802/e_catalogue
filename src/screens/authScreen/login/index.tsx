@@ -1,5 +1,13 @@
-import {Animated, Image, StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import {
+  Animated,
+  Image,
+  Keyboard,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import React, {useCallback} from 'react';
 import ContainerImage from '~/components/global/containerImage';
 import {images} from '~/assets';
 import {TextStyle} from '~/theme/textStyle';
@@ -7,40 +15,17 @@ import {HeightSize, WidthSize, height, width} from '~/theme/size';
 import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
 import PrimaryButton from '~/components/global/primaryButton';
 import ToggleSwitch from 'toggle-switch-react-native';
+import {useLogin} from './useLogin';
 const Login = () => {
-  const [toggle, setToggle] = React.useState(false);
-  const [currentLayout, setCurrentLayout] = React.useState<'signin' | 'signup'>(
-    'signin',
-  );
-  const changeLayoutRef = React.useRef(new Animated.Value(1)).current;
-  const [positionSignIn, setPositionSignIn] = React.useState([
-    width,
-    WidthSize(30),
-  ]);
-  const [positionSignUp, setPositionSignUp] = React.useState([
-    WidthSize(30),
-    -width,
-  ]);
-  const handleChangeLayout = () => {
-    setCurrentLayout(prev => (prev === 'signin' ? 'signup' : 'signin'));
-    Animated.timing(changeLayoutRef, {
-      toValue: currentLayout === 'signin' ? 0 : 1,
-      duration: 1000,
-      useNativeDriver: false,
-    }).start(async () => {
-      // setCurrentLayout(prev => (prev === 'signin' ? 'signup' : 'signin'));
-      setPositionSignIn(
-        currentLayout === 'signup'
-          ? [width, WidthSize(30)]
-          : [-width, WidthSize(30)],
-      );
-      setPositionSignUp(
-        currentLayout === 'signup'
-          ? [WidthSize(30), -width]
-          : [WidthSize(30), width],
-      );
-    });
-  };
+  const {
+    toggle,
+    setToggle,
+    isSignIn,
+    changeLayoutRef,
+    handleChangeLayout,
+    handleLogin,
+    handleRegister,
+  } = useLogin();
 
   return (
     <ContainerImage
@@ -48,7 +33,10 @@ const Login = () => {
       style={{flex: 1}}
       resizeMode="cover"
       source={images.login.BackgroundLogin}>
-      <View
+      <Pressable
+        onPress={() => {
+          Keyboard.dismiss();
+        }}
         style={{
           flex: 1,
           height: '100%',
@@ -56,10 +44,12 @@ const Login = () => {
         <Animated.View
           style={{
             position: 'absolute',
-            top: WidthSize(50),
+            top: WidthSize(70),
             left: changeLayoutRef.interpolate({
               inputRange: [0, 1],
-              outputRange: positionSignIn,
+              outputRange: isSignIn
+                ? [width, WidthSize(30)]
+                : [-width, WidthSize(30)],
             }),
           }}>
           <Text
@@ -72,9 +62,10 @@ const Login = () => {
           </Text>
           <Text
             style={{
-              ...TextStyle.SM,
+              ...TextStyle.XS,
               fontWeight: '500',
               color: 'white',
+              marginTop: HeightSize(17),
             }}>
             Log back your account!
           </Text>
@@ -86,7 +77,9 @@ const Login = () => {
             top: WidthSize(50),
             left: changeLayoutRef.interpolate({
               inputRange: [0, 1],
-              outputRange: positionSignUp,
+              outputRange: isSignIn
+                ? [WidthSize(30), -width]
+                : [WidthSize(30), width],
             }),
           }}>
           <Text
@@ -99,14 +92,14 @@ const Login = () => {
           </Text>
           <Text
             style={{
-              ...TextStyle.SM,
+              ...TextStyle.XS,
               fontWeight: '500',
               color: 'white',
+              marginTop: HeightSize(17),
             }}>
             Sign up to get started!
           </Text>
         </Animated.View>
-
         <View
           style={{
             justifyContent: 'flex-end',
@@ -124,20 +117,24 @@ const Login = () => {
                 inputRange: [0, 1],
                 outputRange: [-height, 0],
               }),
+              opacity: changeLayoutRef.interpolate({
+                inputRange: [0, 1],
+                outputRange: [0, 1],
+              }),
             }}>
             <View>
               <Text style={styles.title}>Email</Text>
               <TextInput
                 style={styles.txtInput}
-                placeholderTextColor={'gray'}
+                placeholderTextColor={'#A5ABB9'}
                 placeholder="Enter your registered email"
               />
             </View>
-            <View style={{marginTop: HeightSize(20)}}>
+            <View style={{marginTop: HeightSize(24)}}>
               <Text style={styles.title}>Password</Text>
               <TextInput
                 style={styles.txtInput}
-                placeholderTextColor={'gray'}
+                placeholderTextColor={'#A5ABB9'}
                 placeholder="Enter password"
               />
             </View>
@@ -146,13 +143,13 @@ const Login = () => {
                 flexDirection: 'row',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                marginTop: HeightSize(20),
+                marginTop: HeightSize(30),
               }}>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <ToggleSwitch
                   isOn={toggle}
                   onColor="green"
-                  offColor="gray"
+                  offColor="#A0A5B7"
                   size="medium"
                   onToggle={isOn => setToggle(isOn)}
                 />
@@ -161,6 +158,7 @@ const Login = () => {
                     ...TextStyle.SM,
                     fontWeight: 'bold',
                     marginLeft: WidthSize(10),
+                    color: '#525A7F',
                   }}>
                   Remember me
                 </Text>
@@ -169,17 +167,17 @@ const Login = () => {
                 style={{
                   ...TextStyle.SM,
                   fontWeight: 'bold',
-                  color: 'blue',
+                  color: '#2B60E9',
                 }}>
                 Forgot password?
               </Text>
             </View>
             <PrimaryButton
               title="Sign in"
-              handlePress={() => {}}
+              handlePress={handleLogin}
               style={{
-                marginTop: HeightSize(30),
-                height: HeightSize(50),
+                marginTop: HeightSize(40),
+                height: HeightSize(64),
               }}
             />
             <Text
@@ -187,8 +185,8 @@ const Login = () => {
                 marginTop: HeightSize(20),
                 textAlign: 'center',
                 width: '100%',
-                color: 'gray',
-                ...TextStyle.SM,
+                color: '#C1C1CB',
+                ...TextStyle.XS,
               }}>
               Or continue with
             </Text>
@@ -238,9 +236,14 @@ const Login = () => {
                 Don't have an account?{' '}
               </Text>
               <TouchableOpacity onPress={handleChangeLayout}>
-                <Text style={{fontWeight: 'bold', color: 'blue'}}>
+                <Text
+                  style={{
+                    fontWeight: 'bold',
+                    color: '#2B60E9',
+                    ...TextStyle.SM,
+                  }}>
                   {' '}
-                  {currentLayout === 'signin' ? 'Sign up' : 'Sign in'}
+                  {'Sign up'}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -258,37 +261,41 @@ const Login = () => {
                 inputRange: [0, 1],
                 outputRange: [0, -height],
               }),
+              opacity: changeLayoutRef.interpolate({
+                inputRange: [0, 1],
+                outputRange: [1, 0],
+              }),
             }}>
             <View>
               <Text style={styles.title}>Full name</Text>
               <TextInput
                 style={styles.txtInput}
-                placeholderTextColor={'gray'}
+                placeholderTextColor={'#A5ABB9'}
                 placeholder="Enter your full name"
               />
             </View>
-            <View style={{marginTop: HeightSize(20)}}>
+            <View style={{marginTop: HeightSize(24)}}>
               <Text style={styles.title}>Email</Text>
               <TextInput
                 style={styles.txtInput}
-                placeholderTextColor={'gray'}
+                placeholderTextColor={'#A5ABB9'}
                 placeholder="Enter your registered email"
               />
             </View>
-            <View style={{marginTop: HeightSize(20)}}>
+            <View style={{marginTop: HeightSize(24)}}>
               <Text style={styles.title}>Password</Text>
               <TextInput
                 style={styles.txtInput}
-                placeholderTextColor={'gray'}
+                placeholderTextColor={'#A5ABB9'}
                 placeholder="Enter password"
               />
             </View>
             <PrimaryButton
-              title={currentLayout === 'signin' ? 'Sign in' : 'Create account'}
-              handlePress={() => {}}
+              title={'Create account'}
+              handlePress={handleRegister}
               style={{
-                marginTop: HeightSize(30),
-                height: HeightSize(50),
+                marginTop: HeightSize(40),
+                height: HeightSize(64),
               }}
             />
             <Text
@@ -342,20 +349,25 @@ const Login = () => {
               <Text
                 style={{
                   color: 'gray',
-                  ...TextStyle.SM,
+                  ...TextStyle.XS,
                 }}>
                 Don't have an account?{' '}
               </Text>
               <TouchableOpacity onPress={handleChangeLayout}>
-                <Text style={{fontWeight: 'bold', color: 'blue'}}>
+                <Text
+                  style={{
+                    fontWeight: 'bold',
+                    color: '#2B60E9',
+                    ...TextStyle.SM,
+                  }}>
                   {' '}
-                  {currentLayout === 'signin' ? 'Sign up' : 'Sign in'}
+                  {'Sign in'}
                 </Text>
               </TouchableOpacity>
             </View>
           </Animated.View>
         </View>
-      </View>
+      </Pressable>
     </ContainerImage>
   );
 };
@@ -367,11 +379,12 @@ const styles = StyleSheet.create({
     ...TextStyle.SM,
     fontWeight: 'bold',
     marginBottom: HeightSize(5),
+    color: '#525A7F',
   },
   txtInput: {
-    borderRadius: 10,
-    padding: WidthSize(10),
-    backgroundColor: 'rgba(0,0,0,0.1)',
+    borderRadius: 16,
+    paddingHorizontal: WidthSize(20),
+    backgroundColor: '#F2F2F4',
     color: 'black',
   },
 });

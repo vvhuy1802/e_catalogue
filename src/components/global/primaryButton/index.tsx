@@ -58,7 +58,7 @@ const PrimaryButton = ({title, handlePress, style}: PrimaryButtonProps) => {
         <Text
           style={{
             color: 'white',
-            ...TextStyle.Base,
+            ...TextStyle.LG,
             fontWeight: 'bold',
           }}>
           {title}

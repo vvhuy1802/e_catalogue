@@ -60,7 +60,7 @@ const CarouselCardItem = ({item, index, scrollX}: CarouselCardItemProps) => {
           source={item.imgUrl}
           style={{
             width: WidthSize(250),
-            height: HeightSize(400),
+            height: HeightSize(378),
             resizeMode: 'cover',
             borderRadius: 25,
           }}

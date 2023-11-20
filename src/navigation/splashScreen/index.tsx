@@ -8,6 +8,8 @@ import {HeightSize, WidthSize, height, width} from '~/theme/size';
 import {useDispatch} from 'react-redux';
 import {AppDispatch} from '~/app/store';
 import {SetIsShowSplash} from '~/redux/reducers/authSlice';
+import Header from '~/components/global/header';
+import {TextFont, TextStyle} from '~/theme/textStyle';
 
 const SplashScreen = () => {
   const AnimatedLottieView = Animated.createAnimatedComponent(LottieView);
@@ -71,11 +73,11 @@ const SplashScreen = () => {
             position: 'absolute',
             top: moveTopRef.current.interpolate({
               inputRange: [0, 1],
-              outputRange: [height / 2 - HeightSize(56), 0],
+              outputRange: [height / 2 - HeightSize(56), HeightSize(10)],
             }),
             left: moveTopRef.current.interpolate({
               inputRange: [0, 1],
-              outputRange: [width / 2 - WidthSize(50), WidthSize(50)],
+              outputRange: [width / 2 - WidthSize(50), WidthSize(32)],
             }),
           }}>
           <Animated.View
@@ -88,14 +90,6 @@ const SplashScreen = () => {
                 inputRange: [0, 1],
                 outputRange: [WidthSize(125), WidthSize(50)],
               }),
-              transform: [
-                {
-                  translateX: changeSizeRef.current.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [0, WidthSize(-30)],
-                  }),
-                },
-              ],
               backgroundColor: 'white',
               zIndex: 2,
             }}>
@@ -113,28 +107,33 @@ const SplashScreen = () => {
           </Animated.View>
           <Animated.Text
             style={{
-              fontSize: changeSizeRef.current.interpolate({
-                inputRange: [0, 0.75, 1],
-                outputRange: [WidthSize(30), WidthSize(20), WidthSize(15)],
-              }),
+              // fontSize: changeSizeRef.current.interpolate({
+              //   inputRange: [0, 0.75, 1],
+              //   outputRange: [WidthSize(30), WidthSize(20), WidthSize(15)],
+              // }),
               opacity: changeSizeRef.current.interpolate({
                 inputRange: [0, 1],
                 outputRange: [0, 1],
               }),
-              transform: [
-                {
-                  translateX: changeSizeRef.current.interpolate({
-                    inputRange: [0, 0.75, 1],
-                    outputRange: [0, WidthSize(30), WidthSize(32)],
-                  }),
-                },
-              ],
-              color: 'blue',
-              fontWeight: 'bold',
+              // transform: [
+              //   {
+              //     translateX: changeSizeRef.current.interpolate({
+              //       inputRange: [0, 1],
+              //       outputRange: [0, WidthSize(60)],
+              //     }),
+              //   },
+              // ],
+              marginLeft: changeSizeRef.current.interpolate({
+                inputRange: [0, 1],
+                outputRange: [0, WidthSize(60)],
+              }),
+              color: '#3B3021',
+              ...TextStyle.XL,
+              ...TextFont.SBold,
               position: 'absolute',
               zIndex: 1,
             }}>
-            E-Catalogue
+            NewStyle
           </Animated.Text>
         </Animated.View>
       </SafeAreaView>

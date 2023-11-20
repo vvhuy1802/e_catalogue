@@ -28,13 +28,13 @@ const CardOnBoard = ({onPress}: Props) => {
   const data = [
     {
       id: '1',
-      title: 'Mikasa',
-      body: 'She is the adoptive daughter of Grisha and Carla Jaeger and the adoptive sister of Eren Jaeger. She is also the last descendant of the Shogun clan that stayed on Paradis Island',
+      title: 'Discover \nlattest trends',
+      body: 'Over thousands of stylist product online',
       imgUrl: images.onBoard.Onboard1,
     },
     {
       id: '2',
-      title: `Eren Yeager`,
+      title: Eren Yeager,
       body: 'He lived a peaceful life in Shiganshina District with his parents Grisha and Carla Yeager, and his adoptive sister Mikasa Ackerman, until the town was destroyed by Titans during the fall of Wall Maria',
       imgUrl: images.onBoard.Onboard2,
     },
@@ -53,14 +53,14 @@ const CardOnBoard = ({onPress}: Props) => {
       style={{
         flex: 1,
       }}>
-      <View style={{height: HeightSize(400)}}>
+      <View style={{height: HeightSize(378)}}>
         <FlatList
           ref={flatListRef}
           horizontal
           showsHorizontalScrollIndicator={false}
           pagingEnabled
           bounces={false}
-          keyExtractor={item => `${item.id}`}
+          keyExtractor={item => ${item.id}}
           data={data}
           renderItem={({item, index}) => (
             <CarouselCardItem index={index} item={item} scrollX={scrollX} />
@@ -101,8 +101,8 @@ const CardOnBoard = ({onPress}: Props) => {
       </View>
       <Animated.View
         style={{
-          marginTop: HeightSize(50),
-          paddingHorizontal: WidthSize(20),
+          marginTop: HeightSize(100),
+          paddingHorizontal: WidthSize(40),
           opacity: scrollX.interpolate({
             inputRange: [
               (activeCardIndex - 1) * cardWidth,
@@ -115,19 +115,19 @@ const CardOnBoard = ({onPress}: Props) => {
         }}>
         <Text
           style={{
-            ...TextFont.Bold,
+            ...TextFont.GMedium,
             fontWeight: 'bold',
-            ...TextStyle.Title,
-            color: 'blue',
+            ...TextStyle.XXL,
+            color: '#3B3021',
           }}>
           {data[activeCardIndex].title}
         </Text>
         <Text
           style={{
-            fontWeight: '500',
+            ...TextFont.GMedium,
             ...TextStyle.SM,
-            color: 'gray',
-            marginTop: HeightSize(10),
+            color: '#836E44',
+            marginTop: HeightSize(21),
           }}>
           {data[activeCardIndex].body}
         </Text>
@@ -139,7 +139,7 @@ const CardOnBoard = ({onPress}: Props) => {
           height: HeightSize(50),
           paddingHorizontal: WidthSize(20),
           position: 'absolute',
-          bottom: HeightSize(100),
+          bottom: HeightSize(110),
         }}>
         <TouchableOpacity
           style={{

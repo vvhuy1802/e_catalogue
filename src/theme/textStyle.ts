@@ -45,19 +45,25 @@ export const TextStyle = {
   },
 };
 export const TextFont = {
-  Bold: {
-    fontFamily: 'Montserrat-Bold',
+  GBold: {
+    fontFamily: 'Glorify-Bold',
   },
-  Regular: {
-    fontFamily: 'Montserrat-Regular',
+  GLight: {
+    fontFamily: 'Glorify-Light',
   },
-  SemiBold: {
-    fontFamily: 'Montserrat-SemiBold',
+  GMedium: {
+    fontFamily: 'Glorify-Medium',
   },
-  XBold: {
-    fontFamily: 'Montserrat-ExtraBold',
+  SBold: {
+    fontFamily: 'Sebino-Bold',
   },
-  Medium: {
-    fontFamily: 'Montserrat-Medium',
+  SLight: {
+    fontFamily: 'Sebino-Light',
+  },
+  SMedium: {
+    fontFamily: 'Sebino-Medium',
+  },
+  SRegular: {
+    fontFamily: 'Sebino-Regular',
   },
 };

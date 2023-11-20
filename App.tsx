@@ -8,7 +8,11 @@ function App(): JSX.Element {
   return (
     <SafeAreaProvider>
       <GestureHandlerRootView style={{flex: 1}}>
-        <StatusBar backgroundColor={'transparent'} translucent={true} />
+        <StatusBar
+          barStyle={'dark-content'}
+          backgroundColor={'transparent'}
+          translucent={true}
+        />
         <RootNavigation />
       </GestureHandlerRootView>
     </SafeAreaProvider>

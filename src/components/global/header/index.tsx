@@ -1,8 +1,8 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {Text, View, Image} from 'react-native';
 import React from 'react';
 import {HeightSize, WidthSize} from '~/theme/size';
-import LottieView from 'lottie-react-native';
-import {animations} from '~/assets';
+import {TextStyle, TextFont} from '~/theme/textStyle';
+import {images} from '~/assets';
 
 const Header = () => {
   return (
@@ -12,35 +12,25 @@ const Header = () => {
         alignItems: 'center',
         height: HeightSize(56),
       }}>
-      <View
+      <Image
+        source={images.global.AppLogo}
         style={{
           width: WidthSize(50),
           height: WidthSize(50),
-        }}>
-        <LottieView
-          source={animations.Splash}
-          autoPlay={true}
-          loop={false}
-          style={{
-            width: '100%',
-            height: '100%',
-          }}
-        />
-      </View>
+        }}
+      />
       <Text
         style={{
-          fontSize: WidthSize(15),
           marginLeft: WidthSize(10),
-          color: 'blue',
-          fontWeight: 'bold',
+          color: '#3B3021',
+          ...TextStyle.XL,
+          ...TextFont.SBold,
           zIndex: 1,
         }}>
-        E-Catalogue
+        NewStyle
       </Text>
     </View>
   );
 };
 
 export default Header;
-
-const styles = StyleSheet.create({});

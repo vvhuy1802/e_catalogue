@@ -8,6 +8,9 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import {AppDispatch} from '~/app/store';
 import {useDispatch} from 'react-redux';
 import {SetIsShowOnBoard} from '~/redux/reducers/authSlice';
+import ContainerImage from '~/components/global/containerImage';
+import {images} from '~/assets';
+import {TextFont} from '~/theme/textStyle';
 
 const OnBoard = () => {
   const opacityRef = useRef(new Animated.Value(0));
@@ -25,18 +28,17 @@ const OnBoard = () => {
   };
 
   return (
-    <ContainerView
-      style={{
-        flex: 1,
-        backgroundColor:'white'
-      }}>
+    <ContainerImage
+      source={images.onBoard.BackgroundOnboard}
+      resizeMode="cover">
       <SafeAreaView style={{flex: 1}}>
         <View
           style={{
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'space-between',
-            paddingHorizontal: WidthSize(20),
+            paddingHorizontal: WidthSize(32),
+            marginTop: HeightSize(10),
           }}>
           <Header />
           <TouchableOpacity onPress={handleGetStarted}>
@@ -47,8 +49,8 @@ const OnBoard = () => {
                   outputRange: [0, 1],
                 }),
                 fontSize: WidthSize(15),
-                color: 'gray',
-                fontWeight: 'bold',
+                color: '#836E44',
+                ...TextFont.SLight,
               }}>
               Skip
             </Animated.Text>
@@ -65,13 +67,13 @@ const OnBoard = () => {
           }}>
           <View
             style={{
-              marginTop: HeightSize(50),
+              marginTop: HeightSize(60),
             }}>
             <CardOnBoard onPress={handleGetStarted} />
           </View>
         </Animated.View>
       </SafeAreaView>
-    </ContainerView>
+    </ContainerImage>
   );
 };
 
