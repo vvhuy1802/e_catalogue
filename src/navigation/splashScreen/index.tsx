@@ -2,14 +2,13 @@ import React, {useEffect, useRef} from 'react';
 import ContainerView from '~/components/global/containerView';
 import LottieView from 'lottie-react-native';
 import {animations} from '~/assets';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import {Animated, SafeAreaView, Text, View} from 'react-native';
+import {Animated, SafeAreaView} from 'react-native';
 import {HeightSize, WidthSize, height, width} from '~/theme/size';
 import {useDispatch} from 'react-redux';
 import {AppDispatch} from '~/app/store';
-import {SetIsShowSplash} from '~/redux/reducers/authSlice';
-import Header from '~/components/global/header';
+import {SetIsShowOnBoard, SetIsShowSplash} from '~/redux/reducers/authSlice';
 import {TextFont, TextStyle} from '~/theme/textStyle';
+import {AppProvider} from '~/app/appProvider';
 
 const SplashScreen = () => {
   const AnimatedLottieView = Animated.createAnimatedComponent(LottieView);
@@ -25,25 +24,37 @@ const SplashScreen = () => {
         toValue: 1,
         duration: 600,
         useNativeDriver: false,
-      }).start(() => {
-        Animated.timing(moveTopRef.current, {
-          toValue: 1,
-          duration: 800,
-          useNativeDriver: false,
-        }).start(() => {
-          setTimeout(() => {
-            dispatch(SetIsShowSplash(false));
-          }, 300);
-        });
+      }).start(async () => {
+        const isShowOnBoard = await AppProvider.getIsShowOnBoard();
+        isShowOnBoard
+          ? Animated.timing(moveTopRef.current, {
+              toValue: 1,
+              duration: 800,
+              useNativeDriver: false,
+            }).start(() => {
+              setTimeout(() => {
+                dispatch(SetIsShowSplash(false));
+              }, 300);
+            })
+          : setTimeout(() => {
+              dispatch(SetIsShowSplash(false));
+            }, 300);
       });
     } else {
       animationRef.current?.play();
     }
   };
 
+  const handleFetData = async () => {
+    // fetch data
+    const isShowOnBoard = await AppProvider.getIsShowOnBoard();
+    dispatch(SetIsShowOnBoard(isShowOnBoard));
+    setIsFetchSuccess(true);
+  };
+
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      setIsFetchSuccess(true);
+    const timeout = setTimeout(async () => {
+      await handleFetData();
     }, 100);
     return () => {
       clearTimeout(timeout);

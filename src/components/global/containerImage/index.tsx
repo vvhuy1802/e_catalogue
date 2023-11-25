@@ -20,18 +20,18 @@ const ContainerImage = ({
   isOpacity = false,
 }: ContainerImageProps) => {
   const insets = useSafeAreaInsets();
-  // const opacityRef = useRef(new Animated.Value(0));
-  // useEffect(() => {
-  //   Animated.timing(opacityRef.current, {
-  //     toValue: 1,
-  //     duration: 400,
-  //     useNativeDriver: false,
-  //   }).start();
-  // }, []);
+  const opacityRef = useRef(new Animated.Value(0));
+  useEffect(() => {
+    Animated.timing(opacityRef.current, {
+      toValue: 1,
+      duration: 400,
+      useNativeDriver: false,
+    }).start();
+  }, []);
   const styleContainer = [
     {flex: 1},
     style,
-    !isIOS && {
+    isIOS && {
       paddingTop: insets.top,
       paddingBottom: insets.bottom,
       paddingLeft: insets.left,
@@ -39,22 +39,22 @@ const ContainerImage = ({
     },
   ];
   return (
-    // <Animated.View
-    //   style={[
-    //     {
-    //       flex: 1,
-    //     },
-    //     isOpacity && {
-    //       opacity: opacityRef.current.interpolate({
-    //         inputRange: [0, 1],
-    //         outputRange: [0, 1],
-    //       }),
-    //     },
-    //   ]}>
-    <FastImage style={styleContainer} resizeMode={resizeMode} source={source}>
-      {children}
-    </FastImage>
-    // </Animated.View>
+    <Animated.View
+      style={[
+        {
+          flex: 1,
+        },
+        isOpacity && {
+          opacity: opacityRef.current.interpolate({
+            inputRange: [0, 1],
+            outputRange: [0.3, 1],
+          }),
+        },
+      ]}>
+      <FastImage style={styleContainer} resizeMode={resizeMode} source={source}>
+        {children}
+      </FastImage>
+    </Animated.View>
   );
 };
 

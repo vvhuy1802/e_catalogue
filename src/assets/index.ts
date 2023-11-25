@@ -19,8 +19,10 @@ export const images = {
   },
   survey: {
     BackGroundSurvey: require('~/assets/images/survey/img_survey_bg.png'),
+    LineLeft: require('~/assets/images/survey/line_left.png'),
+    LineRight: require('~/assets/images/survey/line_right.png'),
   },
   home: {
-    BackgroundHome: require('~/assets/images/home/img_home_bg.jpg'),
+    BackgroundHome: require('~/assets/images/home/img_home_bg.png'),
   },
 };

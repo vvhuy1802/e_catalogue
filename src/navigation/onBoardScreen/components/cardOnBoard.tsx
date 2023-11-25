@@ -34,7 +34,7 @@ const CardOnBoard = ({onPress}: Props) => {
     },
     {
       id: '2',
-      title: Eren Yeager,
+      title: 'Eren Yeager',
       body: 'He lived a peaceful life in Shiganshina District with his parents Grisha and Carla Yeager, and his adoptive sister Mikasa Ackerman, until the town was destroyed by Titans during the fall of Wall Maria',
       imgUrl: images.onBoard.Onboard2,
     },
@@ -60,7 +60,7 @@ const CardOnBoard = ({onPress}: Props) => {
           showsHorizontalScrollIndicator={false}
           pagingEnabled
           bounces={false}
-          keyExtractor={item => ${item.id}}
+          keyExtractor={item => item.id}
           data={data}
           renderItem={({item, index}) => (
             <CarouselCardItem index={index} item={item} scrollX={scrollX} />

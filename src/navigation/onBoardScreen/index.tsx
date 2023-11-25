@@ -11,6 +11,7 @@ import {SetIsShowOnBoard} from '~/redux/reducers/authSlice';
 import ContainerImage from '~/components/global/containerImage';
 import {images} from '~/assets';
 import {TextFont} from '~/theme/textStyle';
+import { AppProvider } from '~/app/appProvider';
 
 const OnBoard = () => {
   const opacityRef = useRef(new Animated.Value(0));
@@ -24,6 +25,7 @@ const OnBoard = () => {
   }, []);
 
   const handleGetStarted = () => {
+    AppProvider.setIsShowOnBoard();
     dispatch(SetIsShowOnBoard(false));
   };
 

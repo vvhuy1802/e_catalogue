@@ -386,5 +386,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: WidthSize(20),
     backgroundColor: '#F2F2F4',
     color: 'black',
+    height: HeightSize(64),
   },
 });

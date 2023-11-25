@@ -1,17 +1,12 @@
 import React from 'react';
-import {View, Dimensions, Image, Animated} from 'react-native';
-import navigation from '~/navigation';
-import {HeightSize, WidthSize, width} from '~/theme/size';
-import {TextFont, TextStyle} from '~/theme/textStyle';
+import {View, Dimensions, Animated} from 'react-native';
+import {HeightSize, WidthSize} from '~/theme/size';
+import {CarouselCard} from '~/types/CarouselCard';
 
 export const SLIDER_WIDTH = Dimensions.get('window').width + 80;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.7);
 type CarouselCardItemProps = {
-  item: {
-    title: string;
-    body: string;
-    imgUrl: any;
-  };
+  item: CarouselCard;
   index: number;
   scrollX: any;
 };

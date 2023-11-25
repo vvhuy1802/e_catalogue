@@ -1,8 +1,11 @@
 import {
   AUTHSTACK,
+  CATEGORY,
+  FAVORITE,
   HOME,
   LOGIN,
   MAINSTACK,
+  PROFILE,
   SURVEY,
 } from '~/constants/routeNames';
 
@@ -20,4 +23,7 @@ export type AuthenticationStackParamList = {
 
 export type HomeStackParamList = {
   [HOME]: undefined;
+  [PROFILE]: undefined;
+  [CATEGORY]: undefined;
+  [FAVORITE]: undefined;
 };

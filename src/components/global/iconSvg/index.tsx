@@ -5,9 +5,18 @@ import {Pressable, View} from 'react-native';
 import IconCloseBrown from '~/assets/icons/ic_close_brown.svg';
 import IconSearchBrown from '~/assets/icons/ic_search_brown.svg';
 import IconCheckedWhite from '~/assets/icons/ic_checked_white.svg';
+import IconBagBlack from '~/assets/icons/ic_bag_black.svg';
+import IconHeartGray from '~/assets/icons/ic_heart_gray.svg';
+import IconHeartRed from '~/assets/icons/ic_heart_red.svg';
 
 interface IconSvgProps {
-  icon: 'IconCloseBrown' | 'IconSearchBrown' | 'IconCheckedWhite';
+  icon:
+    | 'IconCloseBrown'
+    | 'IconSearchBrown'
+    | 'IconCheckedWhite'
+    | 'IconBagBlack'
+    | 'IconHeartGray'
+    | 'IconHeartRed';
   width?: number;
   height?: number;
   onPress?: () => void;
@@ -17,6 +26,9 @@ const svgComponents: Record<string, React.ComponentType> = {
   IconCloseBrown,
   IconSearchBrown,
   IconCheckedWhite,
+  IconBagBlack,
+  IconHeartGray,
+  IconHeartRed,
 };
 
 interface Svg {

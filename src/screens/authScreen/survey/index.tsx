@@ -1,4 +1,4 @@
-import {FlatList, Pressable, StyleSheet, Text, View} from 'react-native';
+import {FlatList, Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import React, {useState} from 'react';
 import ContainerImage from '~/components/global/containerImage';
 import {images} from '~/assets';
@@ -86,6 +86,22 @@ const Survey = () => {
             alignItems: 'center',
             alignSelf: 'center',
           }}>
+          <Image
+            source={images.survey.LineLeft}
+            style={{
+              position: 'absolute',
+              left: -WidthSize(20),
+              top: -HeightSize(20),
+            }}
+          />
+           <Image
+            source={images.survey.LineRight}
+            style={{
+              position: 'absolute',
+              right: -WidthSize(20),
+              top: -HeightSize(20),
+            }}
+          />
           <Text
             style={{
               ...TextFont.GBold,
