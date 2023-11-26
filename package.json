@@ -14,10 +14,12 @@
     "clear-watchman": "watchman watch-del-all",
     "restart": "npm start --reset-cache",
     "pod": "cd ios && pod install && cd ..",
-    "fix": "yarn lint --fix"
+    "fix": "yarn lint --fix",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.19.1",
+    "@react-native-community/blur": "^4.3.2",
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/native-stack": "^6.9.16",
     "@react-navigation/stack": "^6.3.20",
@@ -26,6 +28,8 @@
     "ios-deploy": "^1.12.2",
     "lottie-react-native": "^6.4.1",
     "nativewind": "^2.0.11",
+    "patch-package": "^8.0.0",
+    "postinstall-postinstall": "^2.1.0",
     "react": "18.2.0",
     "react-native": "0.72.3",
     "react-native-device-info": "^10.11.0",
