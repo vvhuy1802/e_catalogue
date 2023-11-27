@@ -1,4 +1,31 @@
-export type RootStackParamList = {
-  Login: undefined;
-  Home: undefined;
+import {
+  AUTHSTACK,
+  CATEGORY,
+  FAVORITE,
+  HOME,
+  LOGIN,
+  MAINSTACK,
+  PROFILE,
+  ROOMIDEA,
+  SURVEY,
+} from '~/constants/routeNames';
+
+export type AuthStackParamList = {
+  [AUTHSTACK]: undefined;
+};
+export type MainStackParamList = {
+  [MAINSTACK]: undefined;
+};
+
+export type AuthenticationStackParamList = {
+  [LOGIN]: undefined;
+  [SURVEY]: undefined;
+};
+
+export type HomeStackParamList = {
+  [HOME]: undefined;
+  [PROFILE]: undefined;
+  [CATEGORY]: undefined;
+  [FAVORITE]: undefined;
+  [ROOMIDEA]: undefined;
 };

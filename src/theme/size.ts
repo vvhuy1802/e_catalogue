@@ -3,7 +3,7 @@ import {isIOS} from '~/constants/global';
 
 export const {width, height} = Dimensions.get('window');
 
-const dHeight = 896;
+const dHeight = 903;
 const dWidth = 414;
 
 export const HeightSize = (inputNumber: number) => {

@@ -1,10 +1,13 @@
 {
   "extends": "@tsconfig/react-native/tsconfig.json",
   "compilerOptions": {
+    "jsx": "react",
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": ["src/*"]
+      "~/*": [
+        "src/*"
+      ]
     }
   }
 }

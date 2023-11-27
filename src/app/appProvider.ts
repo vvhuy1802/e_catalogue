@@ -1,29 +1,24 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {STORE_KEYS} from '../constants/storeKeys';
 
-let _auth: any = null;
+let _isShowOnBoard: boolean = false;
 
 class AppProvider {
-  static setAuth(token = null) {
+  static setIsShowOnBoard = async () => {
     try {
-      if (token) {
-        AsyncStorage.setItem(STORE_KEYS.TOKEN, token);
-        _auth = {authToken: token};
-      } else {
-        AsyncStorage.removeItem(STORE_KEYS.TOKEN);
-        _auth = null;
-      }
+      AsyncStorage.setItem(STORE_KEYS.IS_SHOW_ONBOARD, JSON.stringify(false));
+      _isShowOnBoard = false;
     } catch (error) {}
-  }
+  };
 
-  static getAuth = async () => {
-    if (!_auth) {
+  static getIsShowOnBoard = async () => {
+    if (!_isShowOnBoard) {
       try {
-        const token = await AsyncStorage.getItem(STORE_KEYS.TOKEN);
-        _auth = token ? {authToken: token} : null;
+        const isShow = await AsyncStorage.getItem(STORE_KEYS.IS_SHOW_ONBOARD);
+        _isShowOnBoard = isShow ? JSON.parse(isShow) : true;
       } catch (error) {}
     }
-    return _auth;
+    return _isShowOnBoard;
   };
 }
 
