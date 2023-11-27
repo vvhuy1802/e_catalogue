@@ -3,12 +3,15 @@ import React, {useState} from 'react';
 import ContainerImage from '~/components/global/containerImage';
 import {images} from '~/assets';
 import {IconSvg} from '~/components/global/iconSvg';
-import {HeightSize, WidthSize} from '~/theme/size';
+import {HeightSize, WidthSize, height} from '~/theme/size';
 import {ProgressBar} from 'react-native-paper';
 import {TextFont} from '~/theme/textStyle';
 import {TextStyle} from './../../../theme/textStyle';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Card} from 'react-native-paper';
+import {useDispatch} from 'react-redux';
+import {AppDispatch} from '~/app/store';
+import {SetIsAuthorized} from '~/redux/reducers/authSlice';
 const Survey = () => {
   const data = [
     {
@@ -46,6 +49,7 @@ const Survey = () => {
   ];
 
   const [checked, setChecked] = useState<Array<Number>>([]);
+  const dispatch = useDispatch<AppDispatch>();
 
   return (
     <ContainerImage
@@ -67,6 +71,9 @@ const Survey = () => {
             icon="IconCloseBrown"
             width={HeightSize(20)}
             height={HeightSize(20)}
+            onPress={() => {
+              dispatch(SetIsAuthorized(true));
+            }}
           />
         </View>
         <ProgressBar
@@ -94,7 +101,7 @@ const Survey = () => {
               top: -HeightSize(20),
             }}
           />
-           <Image
+          <Image
             source={images.survey.LineRight}
             style={{
               position: 'absolute',
@@ -104,7 +111,7 @@ const Survey = () => {
           />
           <Text
             style={{
-              ...TextFont.GBold,
+              ...TextFont.GDemo,
               ...TextStyle.text4XL,
               color: '#3B3021',
             }}>
@@ -112,8 +119,8 @@ const Survey = () => {
           </Text>
           <Text
             style={{
-              ...TextFont.GBold,
-              ...TextStyle.SM,
+              ...TextFont.GDemo,
+              ...TextStyle.XS,
               color: '#3B3021',
               marginTop: HeightSize(16),
             }}>
@@ -173,7 +180,11 @@ const Survey = () => {
                     alignItems: 'center',
                     justifyContent: 'center',
                   }}>
-                  <IconSvg icon="IconCheckedWhite" />
+                  <IconSvg
+                    icon="IconCheckedWhite"
+                    width={WidthSize(32)}
+                    height={WidthSize(32)}
+                  />
                   <Text
                     style={{
                       marginTop: HeightSize(20),
@@ -203,18 +214,21 @@ const Survey = () => {
         }}>
         <TouchableOpacity
           activeOpacity={0.8}
+          onPress={() => {
+            dispatch(SetIsAuthorized(true));
+          }}
           disabled={checked.length < 3}
           style={{
             width: '100%',
             height: HeightSize(70),
-            backgroundColor: '#836E44',
+            backgroundColor: checked.length < 3 ? '#2D2516' : '#836E44',
             borderRadius: 20,
             alignItems: 'center',
             justifyContent: 'center',
           }}>
           <Text
             style={{
-              ...TextStyle.Base,
+              ...TextStyle.LG,
               ...TextFont.SBold,
               color: 'white',
             }}>

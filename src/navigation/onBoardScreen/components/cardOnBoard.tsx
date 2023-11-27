@@ -117,7 +117,7 @@ const CardOnBoard = ({onPress}: Props) => {
           style={{
             ...TextFont.GMedium,
             fontWeight: 'bold',
-            ...TextStyle.XXL,
+            ...TextStyle.text3_5XL,
             color: '#3B3021',
           }}>
           {data[activeCardIndex].title}

@@ -10,17 +10,20 @@ import {
 import React, {useCallback} from 'react';
 import ContainerImage from '~/components/global/containerImage';
 import {images} from '~/assets';
-import {TextStyle} from '~/theme/textStyle';
+import {TextFont, TextStyle} from '~/theme/textStyle';
 import {HeightSize, WidthSize, height, width} from '~/theme/size';
 import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
 import PrimaryButton from '~/components/global/primaryButton';
 import ToggleSwitch from 'toggle-switch-react-native';
 import {useLogin} from './useLogin';
+import {IconSvg} from '~/components/global/iconSvg';
 const Login = () => {
   const {
     toggle,
     setToggle,
     isSignIn,
+    isShowPassword,
+    setIsShowPassword,
     changeLayoutRef,
     handleChangeLayout,
     handleLogin,
@@ -54,8 +57,8 @@ const Login = () => {
           }}>
           <Text
             style={{
-              ...TextStyle.Title,
-              fontWeight: 'bold',
+              ...TextStyle.text4XL,
+              ...TextFont.GDemo,
               color: 'white',
             }}>
             Welcome back!
@@ -63,7 +66,7 @@ const Login = () => {
           <Text
             style={{
               ...TextStyle.XS,
-              fontWeight: '500',
+              ...TextFont.GDemo,
               color: 'white',
               marginTop: HeightSize(17),
             }}>
@@ -84,8 +87,9 @@ const Login = () => {
           }}>
           <Text
             style={{
-              ...TextStyle.Title,
-              fontWeight: 'bold',
+              ...TextStyle.text4XL,
+              ...TextFont.GDemo,
+
               color: 'white',
             }}>
             Create an account
@@ -93,7 +97,7 @@ const Login = () => {
           <Text
             style={{
               ...TextStyle.XS,
-              fontWeight: '500',
+              ...TextFont.GDemo,
               color: 'white',
               marginTop: HeightSize(17),
             }}>
@@ -156,17 +160,17 @@ const Login = () => {
                 <Text
                   style={{
                     ...TextStyle.SM,
-                    fontWeight: 'bold',
+                    ...TextFont.SMedium,
                     marginLeft: WidthSize(10),
                     color: '#525A7F',
                   }}>
-                  Remember me
+                  Remember
                 </Text>
               </View>
               <Text
                 style={{
                   ...TextStyle.SM,
-                  fontWeight: 'bold',
+                  ...TextFont.SMedium,
                   color: '#2B60E9',
                 }}>
                 Forgot password?
@@ -187,6 +191,7 @@ const Login = () => {
                 width: '100%',
                 color: '#C1C1CB',
                 ...TextStyle.XS,
+                ...TextFont.SRegular,
               }}>
               Or continue with
             </Text>
@@ -231,6 +236,7 @@ const Login = () => {
               <Text
                 style={{
                   color: 'gray',
+                  ...TextFont.SRegular,
                   ...TextStyle.SM,
                 }}>
                 Don't have an account?{' '}
@@ -238,9 +244,9 @@ const Login = () => {
               <TouchableOpacity onPress={handleChangeLayout}>
                 <Text
                   style={{
-                    fontWeight: 'bold',
                     color: '#2B60E9',
                     ...TextStyle.SM,
+                    ...TextFont.SMedium,
                   }}>
                   {' '}
                   {'Sign up'}
@@ -281,6 +287,18 @@ const Login = () => {
                 placeholderTextColor={'#A5ABB9'}
                 placeholder="Enter your registered email"
               />
+              {/* <View
+                style={{
+                  position: 'absolute',
+                  bottom: HeightSize(20),
+                  right: WidthSize(20),
+                }}>
+                <IconSvg
+                  icon="IconCheck"
+                  width={WidthSize(16)}
+                  height={WidthSize(16)}
+                />
+              </View> */}
             </View>
             <View style={{marginTop: HeightSize(24)}}>
               <Text style={styles.title}>Password</Text>
@@ -288,7 +306,21 @@ const Login = () => {
                 style={styles.txtInput}
                 placeholderTextColor={'#A5ABB9'}
                 placeholder="Enter password"
+                secureTextEntry={!isShowPassword}
               />
+              <View
+                style={{
+                  position: 'absolute',
+                  bottom: HeightSize(20),
+                  right: WidthSize(20),
+                }}>
+                <IconSvg
+                  width={WidthSize(16)}
+                  height={WidthSize(16)}
+                  icon={isShowPassword ? 'IconEyeShow' : 'IconEyeHide'}
+                  onPress={() => setIsShowPassword(!isShowPassword)}
+                />
+              </View>
             </View>
             <PrimaryButton
               title={'Create account'}
@@ -303,8 +335,9 @@ const Login = () => {
                 marginTop: HeightSize(20),
                 textAlign: 'center',
                 width: '100%',
-                color: 'gray',
-                ...TextStyle.SM,
+                color: '#C1C1CB',
+                ...TextStyle.XS,
+                ...TextFont.SRegular,
               }}>
               Or continue with
             </Text>
@@ -350,15 +383,16 @@ const Login = () => {
                 style={{
                   color: 'gray',
                   ...TextStyle.XS,
+                  ...TextFont.SRegular,
                 }}>
                 Don't have an account?{' '}
               </Text>
               <TouchableOpacity onPress={handleChangeLayout}>
                 <Text
                   style={{
-                    fontWeight: 'bold',
                     color: '#2B60E9',
                     ...TextStyle.SM,
+                    ...TextFont.SMedium,
                   }}>
                   {' '}
                   {'Sign in'}
@@ -376,12 +410,14 @@ export default Login;
 
 const styles = StyleSheet.create({
   title: {
-    ...TextStyle.SM,
+    ...TextStyle.Base,
+    ...TextFont.SMedium,
     fontWeight: 'bold',
     marginBottom: HeightSize(5),
     color: '#525A7F',
   },
   txtInput: {
+    ...TextFont.SRegular,
     borderRadius: 16,
     paddingHorizontal: WidthSize(20),
     backgroundColor: '#F2F2F4',

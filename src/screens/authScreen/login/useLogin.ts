@@ -11,6 +11,7 @@ export const useLogin = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [toggle, setToggle] = useState(false);
   const [isSignIn, setIsSignIn] = useState<boolean>(true);
+  const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
   const {navigate} =
     useNavigation<StackNavigationProp<AuthenticationStackParamList>>();
 
@@ -36,6 +37,8 @@ export const useLogin = () => {
     toggle,
     setToggle,
     isSignIn,
+    isShowPassword,
+    setIsShowPassword,
     changeLayoutRef,
     handleChangeLayout,
     handleLogin,

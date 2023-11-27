@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import React from 'react';
 import {width, HeightSize, WidthSize} from '~/theme/size';
-import {TextStyle} from '~/theme/textStyle';
+import {TextFont, TextStyle} from '~/theme/textStyle';
 type PrimaryButtonProps = {
   title: string;
   handlePress: () => void;
@@ -59,7 +59,7 @@ const PrimaryButton = ({title, handlePress, style}: PrimaryButtonProps) => {
           style={{
             color: 'white',
             ...TextStyle.LG,
-            fontWeight: 'bold',
+            ...TextFont.SBold,
           }}>
           {title}
         </Text>

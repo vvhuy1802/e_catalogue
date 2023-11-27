@@ -33,7 +33,7 @@ const CardCategorySlide = () => {
   return (
     <View
       style={{
-        marginTop: HeightSize(50),
+        marginTop: HeightSize(30),
       }}>
       <View
         style={{
@@ -44,9 +44,9 @@ const CardCategorySlide = () => {
         }}>
         <Text
           style={{
-            ...TextFont.GBold,
-            ...TextStyle.XL,
             color: '#3B3021',
+            ...TextStyle.XXXL,
+            ...TextFont.GDemo,
           }}>
           Category
         </Text>
@@ -74,13 +74,14 @@ const CardCategorySlide = () => {
             }}>
             <View
               style={{
-                height: HeightSize(40),
+                height: HeightSize(44),
                 width: WidthSize(150),
                 justifyContent: 'center',
+                backgroundColor: '#D8D2C414',
               }}>
               <BlurBackground
-                blurType="light"
-                blurAmount={32}
+                // blurType="light"
+                blurAmount={15}
                 style={{
                   borderBottomLeftRadius: 20,
                   borderBottomRightRadius: 20,
@@ -89,8 +90,8 @@ const CardCategorySlide = () => {
               <Text
                 style={{
                   color: '#3B3021',
-                  marginLeft: WidthSize(10),
-                  ...TextFont.GMedium,
+                  marginLeft: WidthSize(16),
+                  ...TextFont.SMedium,
                   ...TextStyle.LG,
                 }}>
                 {item.title}

@@ -29,9 +29,17 @@ export const TextStyle = {
     fontSize: HeightSize(24),
     lineHeight: HeightSize(32),
   },
+  XXXL: {
+    fontSize: HeightSize(28),
+    lineHeight: HeightSize(36),
+  },
   text3XL: {
     fontSize: HeightSize(30),
     lineHeight: HeightSize(36),
+  },
+  text3_5XL: {
+    fontSize: HeightSize(32),
+    lineHeight: HeightSize(38),
   },
   text4XL: {
     fontSize: HeightSize(36),
@@ -53,6 +61,9 @@ export const TextFont = {
   },
   GMedium: {
     fontFamily: 'Glorify-Medium',
+  },
+  GDemo: {
+    fontFamily: 'Glorify-Demo',
   },
   SBold: {
     fontFamily: 'Sebino-Bold',

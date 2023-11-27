@@ -24,7 +24,7 @@ const CardItem = ({item, index, scrollX, onPress}: CardItemProps) => {
   // });
   const scale = scrollX.interpolate({
     inputRange,
-    outputRange: [0.7, 1, 1.1],
+    outputRange: [0.8, 1, 1.3],
   });
 
   return (
@@ -34,6 +34,20 @@ const CardItem = ({item, index, scrollX, onPress}: CardItemProps) => {
           {
             width: HeightSize(256),
             borderRadius: 24,
+            elevation: 10,
+            shadowColor: '#D8D2C499',
+            shadowOffset: {
+              width: scrollX.interpolate({
+                inputRange,
+                outputRange: [0, WidthSize(10), 0],
+              }),
+              height: scrollX.interpolate({
+                inputRange,
+                outputRange: [0, HeightSize(10), 0],
+              }),
+            },
+            shadowOpacity: 1,
+            shadowRadius: 4,
             transform: [
               {
                 scale,
@@ -60,7 +74,7 @@ const CardItem = ({item, index, scrollX, onPress}: CardItemProps) => {
               inputRange,
               outputRange: [0, 0, -cardWidth / 4],
             }),
-            height: HeightSize(400),
+            height: HeightSize(380),
             justifyContent: 'center',
           },
         ]}>

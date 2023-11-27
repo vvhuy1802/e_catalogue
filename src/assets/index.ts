@@ -28,5 +28,7 @@ export const images = {
     CategoryWomen: require('~/assets/images/home/img_category_women.png'),
     CategoryKids: require('~/assets/images/home/img_category_kids.png'),
     CategoryUniSex: require('~/assets/images/home/img_category_unisex.png'),
+    ImagePopular: require('~/assets/images/home/img_popular.png'),
+    ImageHotLook: require('~/assets/images/home/img_hot_look.png'),
   },
 };

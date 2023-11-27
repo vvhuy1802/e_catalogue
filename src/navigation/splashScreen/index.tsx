@@ -79,7 +79,7 @@ const SplashScreen = () => {
         <Animated.View
           style={{
             flexDirection: 'row',
-            alignItems: 'center',
+            alignItems: 'flex-end',
             height: HeightSize(56),
             position: 'absolute',
             top: moveTopRef.current.interpolate({

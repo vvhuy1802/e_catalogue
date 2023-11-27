@@ -1,0 +1,37 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "src/assets/fonts/Glorify-Bold.ttf",
+      "sha1": "879d0c58181923eb44e496c64a773e60b38e153b"
+    },
+    {
+      "path": "src/assets/fonts/Glorify-Demo.otf",
+      "sha1": "5f8eb3ef3867ebb97baf534151d62cb9fa435c36"
+    },
+    {
+      "path": "src/assets/fonts/Glorify-Light.otf",
+      "sha1": "d147ffcb5ba4f09a69eaa3342f2032cab6dd9ba6"
+    },
+    {
+      "path": "src/assets/fonts/Glorify-Medium.ttf",
+      "sha1": "9fe4b363f53a151d49f859db047f4f0f6f88ed6b"
+    },
+    {
+      "path": "src/assets/fonts/Sebino-Bold.ttf",
+      "sha1": "5b9315aa5ca170b2ad7cc8455391fa46b79c2c4d"
+    },
+    {
+      "path": "src/assets/fonts/Sebino-Light.ttf",
+      "sha1": "9e26027e23ddc2aa205f2e46a08b264f4edaad1f"
+    },
+    {
+      "path": "src/assets/fonts/Sebino-Medium.ttf",
+      "sha1": "5c1b289c98513931778ff10a3cec64fa9e183ce7"
+    },
+    {
+      "path": "src/assets/fonts/Sebino-Regular.ttf",
+      "sha1": "f5105998136f0157a844895ce30f8cee098ab03a"
+    }
+  ]
+}

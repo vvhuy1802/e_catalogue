@@ -71,15 +71,15 @@ const CardSlide = () => {
   return (
     <View
       style={{
-        marginTop: HeightSize(40),
+        marginTop: HeightSize(20),
         width: '100%',
-        height: HeightSize(400),
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingLeft: WidthSize(30),
+        height: HeightSize(450),
       }}>
-      <View style={{height: HeightSize(400), justifyContent: 'center'}}>
+      <View
+        style={{
+          height: HeightSize(450),
+          justifyContent: 'center',
+        }}>
         <View
           style={{
             width: WidthSize(140),
@@ -91,6 +91,7 @@ const CardSlide = () => {
             ],
             position: 'absolute',
             zIndex: 100,
+            left: WidthSize(30),
           }}>
           <View
             style={{
@@ -102,7 +103,7 @@ const CardSlide = () => {
               <Text
                 style={{
                   ...TextStyle.Base,
-                  ...TextFont.SBold,
+                  ...TextFont.SMedium,
                   color: currentTab === 0 ? '#000' : '#BBBBC9',
                 }}>
                 Item
@@ -112,7 +113,7 @@ const CardSlide = () => {
               <Text
                 style={{
                   ...TextStyle.Base,
-                  ...TextFont.SBold,
+                  ...TextFont.SMedium,
                   color: currentTab === 1 ? '#000' : '#BBBBC9',
                 }}>
                 Style ideas
@@ -133,6 +134,10 @@ const CardSlide = () => {
         </View>
         <FlatList
           ref={flatListRef}
+          style={{
+            paddingLeft: WidthSize(30),
+            paddingTop: HeightSize(35),
+          }}
           horizontal
           showsHorizontalScrollIndicator={false}
           pagingEnabled

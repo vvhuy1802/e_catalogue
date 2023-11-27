@@ -17,6 +17,10 @@ import IconProfileFocused from '~/assets/icons/ic_profile_focused.svg';
 import IconRoomIdea from '~/assets/icons/ic_roomidea.svg';
 import IconRoomIdeaFocused from '~/assets/icons/ic_roomidea_focused.svg';
 import IconFavoriteFocused from '~/assets/icons/ic_favorite_focused.svg';
+import IconArrowRightBlack from '~/assets/icons/ic_arrow_right_black.svg';
+import IconEyeShow from '~/assets/icons/ic_eye_show.svg';
+import IconEyeHide from '~/assets/icons/ic_eye_hide.svg';
+import IconCheck from '~/assets/icons/ic_check.svg';
 interface IconSvgProps {
   icon:
     | 'IconCloseBrown'
@@ -33,7 +37,11 @@ interface IconSvgProps {
     | 'IconProfileFocused'
     | 'IconRoomIdea'
     | 'IconRoomIdeaFocused'
-    | 'IconFavoriteFocused';
+    | 'IconFavoriteFocused'
+    | 'IconArrowRightBlack'
+    | 'IconCheck'
+    | 'IconEyeShow'
+    | 'IconEyeHide';
 
   width?: number;
   height?: number;
@@ -58,6 +66,10 @@ const svgComponents: Record<string, React.ComponentType> = {
   IconRoomIdea,
   IconRoomIdeaFocused,
   IconFavoriteFocused,
+  IconArrowRightBlack,
+  IconCheck,
+  IconEyeShow,
+  IconEyeHide,
 };
 
 interface Svg {

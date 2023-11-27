@@ -16,6 +16,8 @@ import {useDispatch} from 'react-redux';
 import {AppDispatch} from '~/app/store';
 import {SetDirectionBottomBar} from '~/redux/reducers/globalSlice';
 import CardCategorySlide from './components/category/cardCategorySlide';
+import PopularChoice from './components/popularChoice';
+import HotLooks from './components/hotLooks';
 
 const HomeScreen = () => {
   const lastContentOffset = useSharedValue(0);
@@ -33,52 +35,6 @@ const HomeScreen = () => {
         style={{
           flex: 1,
         }}>
-        <View
-          style={{
-            marginTop: HeightSize(10),
-            width: '100%',
-            alignItems: 'flex-end',
-            paddingHorizontal: WidthSize(20),
-          }}>
-          <View
-            style={{
-              width: WidthSize(29),
-              height: WidthSize(32),
-              justifyContent: 'flex-end',
-            }}>
-            <IconSvg
-              icon="IconBagBlack"
-              width={WidthSize(24)}
-              height={WidthSize(24)}
-            />
-            <View
-              style={{
-                position: 'absolute',
-                top: 0,
-                right: 0,
-                width: WidthSize(16),
-                height: WidthSize(16),
-                borderRadius: HeightSize(10),
-                backgroundColor: 'white',
-                padding: HeightSize(2),
-              }}>
-              <View
-                style={{
-                  flex: 1,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  backgroundColor: '#433229',
-                  borderRadius: HeightSize(10),
-                }}>
-                <Text
-                  style={{color: 'white', ...TextStyle.XS, ...TextFont.SLight}}>
-                  2
-                </Text>
-              </View>
-            </View>
-          </View>
-        </View>
-
         <ScrollView
           scrollEventThrottle={16}
           onScroll={event => {
@@ -116,7 +72,56 @@ const HomeScreen = () => {
           showsVerticalScrollIndicator={false}>
           <View
             style={{
-              marginTop: HeightSize(20),
+              marginTop: HeightSize(10),
+              width: '100%',
+              alignItems: 'flex-end',
+              paddingHorizontal: WidthSize(20),
+            }}>
+            <View
+              style={{
+                width: WidthSize(29),
+                height: WidthSize(32),
+                justifyContent: 'flex-end',
+              }}>
+              <IconSvg
+                icon="IconBagBlack"
+                width={WidthSize(24)}
+                height={WidthSize(24)}
+              />
+              <View
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  right: 0,
+                  width: WidthSize(16),
+                  height: WidthSize(16),
+                  borderRadius: HeightSize(10),
+                  backgroundColor: 'white',
+                  padding: HeightSize(2),
+                }}>
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    backgroundColor: '#433229',
+                    borderRadius: HeightSize(10),
+                  }}>
+                  <Text
+                    style={{
+                      color: 'white',
+                      ...TextStyle.XS,
+                      ...TextFont.SLight,
+                    }}>
+                    2
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </View>
+          <View
+            style={{
+              marginTop: HeightSize(30),
               width: '100%',
               alignItems: 'center',
               justifyContent: 'space-between',
@@ -125,8 +130,8 @@ const HomeScreen = () => {
             }}>
             <Text
               style={{
-                ...TextStyle.Title,
-                ...TextFont.SBold,
+                ...TextStyle.text4XL,
+                ...TextFont.GDemo,
                 color: '#3B3021',
               }}>
               Find the one {'\n'}you prefer.
@@ -150,6 +155,8 @@ const HomeScreen = () => {
           </View>
           <CardSlide />
           <CardCategorySlide />
+          <PopularChoice />
+          <HotLooks />
         </ScrollView>
       </View>
     </ContainerImage>

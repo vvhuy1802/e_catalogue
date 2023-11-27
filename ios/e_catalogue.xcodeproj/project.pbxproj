@@ -7,13 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		003B4FFF95C04CD2855C918C /* Sebino-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2DEC1638EDCB48EC9276D8F8 /* Sebino-Medium.ttf */; };
 		00E356F31AD99517003FC87E /* e_catalogueTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* e_catalogueTests.m */; };
+		01A3B5B89CE848E0916537ED /* Sebino-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4146E56FB6F643A39907FE52 /* Sebino-Bold.ttf */; };
 		0C80B921A6F3F58F76C31292 /* libPods-e_catalogue.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-e_catalogue.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		2F7A1374E07448EEAC9A2373 /* Glorify-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E99D7D565C9540A2B87796E4 /* Glorify-Bold.ttf */; };
+		7482ED2A30B847679DBBDB23 /* Glorify-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C523664768794810AD5A55C2 /* Glorify-Medium.ttf */; };
 		7699B88040F8A987B510C191 /* libPods-e_catalogue-e_catalogueTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-e_catalogue-e_catalogueTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		81F4C65A33F0400CA9B2C2F4 /* Sebino-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 04E4AEF6BAFC4FBABEADD18D /* Sebino-Regular.ttf */; };
+		960579A7A32848DE8068445E /* Sebino-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 77208E3E08F643F0B80B36C8 /* Sebino-Light.ttf */; };
+		C81F6F71CF8E4A54985E3F5A /* Glorify-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = C4844C0EFC6042718981748B /* Glorify-Light.otf */; };
+		C9DB23B5D5D74786A13D18F2 /* Glorify-Demo.otf in Resources */ = {isa = PBXBuildFile; fileRef = 195588AF65AF4B729E11F3CC /* Glorify-Demo.otf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -30,19 +38,27 @@
 		00E356EE1AD99517003FC87E /* e_catalogueTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = e_catalogueTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* e_catalogueTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = e_catalogueTests.m; sourceTree = "<group>"; };
+		04E4AEF6BAFC4FBABEADD18D /* Sebino-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Sebino-Regular.ttf"; path = "../src/assets/fonts/Sebino-Regular.ttf"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* e_catalogue.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = e_catalogue.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = e_catalogue/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = e_catalogue/AppDelegate.mm; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = e_catalogue/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = e_catalogue/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = e_catalogue/main.m; sourceTree = "<group>"; };
+		195588AF65AF4B729E11F3CC /* Glorify-Demo.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Glorify-Demo.otf"; path = "../src/assets/fonts/Glorify-Demo.otf"; sourceTree = "<group>"; };
 		19F6CBCC0A4E27FBF8BF4A61 /* libPods-e_catalogue-e_catalogueTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-e_catalogue-e_catalogueTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2DEC1638EDCB48EC9276D8F8 /* Sebino-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Sebino-Medium.ttf"; path = "../src/assets/fonts/Sebino-Medium.ttf"; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-e_catalogue.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-e_catalogue.debug.xcconfig"; path = "Target Support Files/Pods-e_catalogue/Pods-e_catalogue.debug.xcconfig"; sourceTree = "<group>"; };
+		4146E56FB6F643A39907FE52 /* Sebino-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Sebino-Bold.ttf"; path = "../src/assets/fonts/Sebino-Bold.ttf"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-e_catalogue.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-e_catalogue.release.xcconfig"; path = "Target Support Files/Pods-e_catalogue/Pods-e_catalogue.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-e_catalogue-e_catalogueTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-e_catalogue-e_catalogueTests.debug.xcconfig"; path = "Target Support Files/Pods-e_catalogue-e_catalogueTests/Pods-e_catalogue-e_catalogueTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-e_catalogue.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-e_catalogue.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		77208E3E08F643F0B80B36C8 /* Sebino-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Sebino-Light.ttf"; path = "../src/assets/fonts/Sebino-Light.ttf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = e_catalogue/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-e_catalogue-e_catalogueTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-e_catalogue-e_catalogueTests.release.xcconfig"; path = "Target Support Files/Pods-e_catalogue-e_catalogueTests/Pods-e_catalogue-e_catalogueTests.release.xcconfig"; sourceTree = "<group>"; };
+		C4844C0EFC6042718981748B /* Glorify-Light.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Glorify-Light.otf"; path = "../src/assets/fonts/Glorify-Light.otf"; sourceTree = "<group>"; };
+		C523664768794810AD5A55C2 /* Glorify-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Glorify-Medium.ttf"; path = "../src/assets/fonts/Glorify-Medium.ttf"; sourceTree = "<group>"; };
+		E99D7D565C9540A2B87796E4 /* Glorify-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Glorify-Bold.ttf"; path = "../src/assets/fonts/Glorify-Bold.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -122,6 +138,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
+				CB3832A8EDB74E0EA05CCE0F /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -146,6 +163,22 @@
 				89C6BE57DB24E9ADA2F236DE /* Pods-e_catalogue-e_catalogueTests.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		CB3832A8EDB74E0EA05CCE0F /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				C4844C0EFC6042718981748B /* Glorify-Light.otf */,
+				E99D7D565C9540A2B87796E4 /* Glorify-Bold.ttf */,
+				C523664768794810AD5A55C2 /* Glorify-Medium.ttf */,
+				4146E56FB6F643A39907FE52 /* Sebino-Bold.ttf */,
+				77208E3E08F643F0B80B36C8 /* Sebino-Light.ttf */,
+				2DEC1638EDCB48EC9276D8F8 /* Sebino-Medium.ttf */,
+				04E4AEF6BAFC4FBABEADD18D /* Sebino-Regular.ttf */,
+				195588AF65AF4B729E11F3CC /* Glorify-Demo.otf */,
+			);
+			name = Resources;
+			path = "";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -244,6 +277,14 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				C81F6F71CF8E4A54985E3F5A /* Glorify-Light.otf in Resources */,
+				2F7A1374E07448EEAC9A2373 /* Glorify-Bold.ttf in Resources */,
+				7482ED2A30B847679DBBDB23 /* Glorify-Medium.ttf in Resources */,
+				01A3B5B89CE848E0916537ED /* Sebino-Bold.ttf in Resources */,
+				960579A7A32848DE8068445E /* Sebino-Light.ttf in Resources */,
+				003B4FFF95C04CD2855C918C /* Sebino-Medium.ttf in Resources */,
+				81F4C65A33F0400CA9B2C2F4 /* Sebino-Regular.ttf in Resources */,
+				C9DB23B5D5D74786A13D18F2 /* Glorify-Demo.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
