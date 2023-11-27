@@ -29,7 +29,7 @@ const PrimaryButton = ({title, handlePress, style}: PrimaryButtonProps) => {
       ]}>
       <TouchableOpacity
         style={{
-          backgroundColor: 'blue',
+          backgroundColor: '#2D2516',
           width: '100%',
           height: '100%',
           alignItems: 'center',

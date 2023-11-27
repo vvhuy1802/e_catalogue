@@ -131,7 +131,7 @@ const HomeScreen = () => {
             <Text
               style={{
                 ...TextStyle.text4XL,
-                ...TextFont.GDemo,
+                ...TextFont.GRegular,
                 color: '#3B3021',
               }}>
               Find the one {'\n'}you prefer.

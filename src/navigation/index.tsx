@@ -1,11 +1,15 @@
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import SplashScreen from './splashScreen';
 import OnBoard from './onBoardScreen';
 import AppStack from './appStack';
 import AuthStack from './authStack';
 import {NavigationContainer, DarkTheme} from '@react-navigation/native';
-import { useSelector } from 'react-redux';
-import { selectIsAuthorized, selectIsShowOnBoard, selectIsShowSplash } from '~/redux/reducers/authSlice';
+import {useSelector} from 'react-redux';
+import {
+  selectIsAuthorized,
+  selectIsShowOnBoard,
+  selectIsShowSplash,
+} from '~/redux/reducers/authSlice';
 
 const RootNavigation = () => {
   const isAuthorized = useSelector(selectIsAuthorized);

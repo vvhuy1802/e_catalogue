@@ -34,14 +34,14 @@ const CardOnBoard = ({onPress}: Props) => {
     },
     {
       id: '2',
-      title: 'Eren Yeager',
-      body: 'He lived a peaceful life in Shiganshina District with his parents Grisha and Carla Yeager, and his adoptive sister Mikasa Ackerman, until the town was destroyed by Titans during the fall of Wall Maria',
+      title: 'Select your \nstyle',
+      body: 'Over thousands of stylist product online',
       imgUrl: images.onBoard.Onboard2,
     },
     {
       id: '3',
-      title: 'Levi Ackerman',
-      body: 'He is the current inheritor of the Attack Titan and a former member of the Survey Corps. He ranked 2nd in the 104th Training Corps and is the former captain of the Survey Corps',
+      title: 'Feel the \ncomfort & good',
+      body: ' Make your day more comfortable',
       imgUrl: images.onBoard.Onboard3,
     },
   ];
@@ -53,7 +53,7 @@ const CardOnBoard = ({onPress}: Props) => {
       style={{
         flex: 1,
       }}>
-      <View style={{height: HeightSize(378)}}>
+      <View style={{height: HeightSize(420)}}>
         <FlatList
           ref={flatListRef}
           horizontal
@@ -101,7 +101,7 @@ const CardOnBoard = ({onPress}: Props) => {
       </View>
       <Animated.View
         style={{
-          marginTop: HeightSize(100),
+          marginTop: HeightSize(50),
           paddingHorizontal: WidthSize(40),
           opacity: scrollX.interpolate({
             inputRange: [
@@ -143,7 +143,7 @@ const CardOnBoard = ({onPress}: Props) => {
         }}>
         <TouchableOpacity
           style={{
-            backgroundColor: 'blue',
+            backgroundColor: '#2D2516',
             width: '100%',
             height: HeightSize(60),
             alignItems: 'center',

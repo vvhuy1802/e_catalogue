@@ -10,7 +10,7 @@ export const images = {
     BackgroundOnboard: require('~/assets/images/onBoard/img_onboard_bg.png'),
     Onboard1: require('~/assets/images/onBoard/img1.jpg'),
     Onboard2: require('~/assets/images/onBoard/img2.jpg'),
-    Onboard3: require('~/assets/images/onBoard/img3.png'),
+    Onboard3: require('~/assets/images/onBoard/img3.jpg'),
   },
   login: {
     BackgroundLogin: require('~/assets/images/login/img_login_bg.jpg'),

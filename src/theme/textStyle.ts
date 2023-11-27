@@ -62,8 +62,8 @@ export const TextFont = {
   GMedium: {
     fontFamily: 'Glorify-Medium',
   },
-  GDemo: {
-    fontFamily: 'Glorify-Demo',
+  GRegular: {
+    fontFamily: 'Glorify-Regular',
   },
   SBold: {
     fontFamily: 'Sebino-Bold',

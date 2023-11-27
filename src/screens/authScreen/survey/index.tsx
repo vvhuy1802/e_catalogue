@@ -111,7 +111,7 @@ const Survey = () => {
           />
           <Text
             style={{
-              ...TextFont.GDemo,
+              ...TextFont.GRegular,
               ...TextStyle.text4XL,
               color: '#3B3021',
             }}>
@@ -119,7 +119,7 @@ const Survey = () => {
           </Text>
           <Text
             style={{
-              ...TextFont.GDemo,
+              ...TextFont.GRegular,
               ...TextStyle.XS,
               color: '#3B3021',
               marginTop: HeightSize(16),

@@ -6,16 +6,16 @@
       "sha1": "879d0c58181923eb44e496c64a773e60b38e153b"
     },
     {
-      "path": "src/assets/fonts/Glorify-Demo.otf",
-      "sha1": "5f8eb3ef3867ebb97baf534151d62cb9fa435c36"
-    },
-    {
       "path": "src/assets/fonts/Glorify-Light.otf",
       "sha1": "d147ffcb5ba4f09a69eaa3342f2032cab6dd9ba6"
     },
     {
       "path": "src/assets/fonts/Glorify-Medium.ttf",
       "sha1": "9fe4b363f53a151d49f859db047f4f0f6f88ed6b"
+    },
+    {
+      "path": "src/assets/fonts/Glorify-Regular.ttf",
+      "sha1": "6eaa4e0ed170fede6e482e184bde1e66cf59fff0"
     },
     {
       "path": "src/assets/fonts/Sebino-Bold.ttf",

@@ -12,6 +12,8 @@ export const useLogin = () => {
   const [toggle, setToggle] = useState(false);
   const [isSignIn, setIsSignIn] = useState<boolean>(true);
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
+  const [isShowPasswordSignIn, setIsShowPasswordSignIn] =
+    useState<boolean>(false);
   const {navigate} =
     useNavigation<StackNavigationProp<AuthenticationStackParamList>>();
 
@@ -39,6 +41,8 @@ export const useLogin = () => {
     isSignIn,
     isShowPassword,
     setIsShowPassword,
+    isShowPasswordSignIn,
+    setIsShowPasswordSignIn,
     changeLayoutRef,
     handleChangeLayout,
     handleLogin,

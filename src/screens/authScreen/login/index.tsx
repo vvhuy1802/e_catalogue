@@ -2,6 +2,7 @@ import {
   Animated,
   Image,
   Keyboard,
+  KeyboardAvoidingView,
   Pressable,
   StyleSheet,
   Text,
@@ -17,6 +18,7 @@ import PrimaryButton from '~/components/global/primaryButton';
 import ToggleSwitch from 'toggle-switch-react-native';
 import {useLogin} from './useLogin';
 import {IconSvg} from '~/components/global/iconSvg';
+import {isIOS} from '~/constants/global';
 const Login = () => {
   const {
     toggle,
@@ -24,6 +26,8 @@ const Login = () => {
     isSignIn,
     isShowPassword,
     setIsShowPassword,
+    isShowPasswordSignIn,
+    setIsShowPasswordSignIn,
     changeLayoutRef,
     handleChangeLayout,
     handleLogin,
@@ -58,7 +62,7 @@ const Login = () => {
           <Text
             style={{
               ...TextStyle.text4XL,
-              ...TextFont.GDemo,
+              ...TextFont.GRegular,
               color: 'white',
             }}>
             Welcome back!
@@ -66,7 +70,7 @@ const Login = () => {
           <Text
             style={{
               ...TextStyle.XS,
-              ...TextFont.GDemo,
+              ...TextFont.GRegular,
               color: 'white',
               marginTop: HeightSize(17),
             }}>
@@ -88,7 +92,7 @@ const Login = () => {
           <Text
             style={{
               ...TextStyle.text4XL,
-              ...TextFont.GDemo,
+              ...TextFont.GRegular,
 
               color: 'white',
             }}>
@@ -97,13 +101,14 @@ const Login = () => {
           <Text
             style={{
               ...TextStyle.XS,
-              ...TextFont.GDemo,
+              ...TextFont.GRegular,
               color: 'white',
               marginTop: HeightSize(17),
             }}>
             Sign up to get started!
           </Text>
         </Animated.View>
+
         <View
           style={{
             justifyContent: 'flex-end',
@@ -140,7 +145,21 @@ const Login = () => {
                 style={styles.txtInput}
                 placeholderTextColor={'#A5ABB9'}
                 placeholder="Enter password"
+                secureTextEntry={!isShowPasswordSignIn}
               />
+              <View
+                style={{
+                  position: 'absolute',
+                  bottom: HeightSize(20),
+                  right: WidthSize(20),
+                }}>
+                <IconSvg
+                  width={WidthSize(16)}
+                  height={WidthSize(16)}
+                  icon={isShowPasswordSignIn ? 'IconEyeShow' : 'IconEyeHide'}
+                  onPress={() => setIsShowPasswordSignIn(!isShowPasswordSignIn)}
+                />
+              </View>
             </View>
             <View
               style={{

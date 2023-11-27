@@ -56,7 +56,7 @@ const HotLooks = () => {
           style={{
             color: '#3B3021',
             ...TextStyle.XXXL,
-            ...TextFont.GDemo,
+            ...TextFont.GRegular,
           }}>
           Hot looks
         </Text>
