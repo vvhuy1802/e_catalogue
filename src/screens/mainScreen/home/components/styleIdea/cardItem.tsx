@@ -1,8 +1,7 @@
 import React from 'react';
-import {View, Dimensions, Animated} from 'react-native';
+import {View, Dimensions, Animated, Pressable} from 'react-native';
 import {IconSvg} from '~/components/global/iconSvg';
 import {HeightSize, WidthSize} from '~/theme/size';
-import {CarouselCard} from '~/types/CarouselCard';
 
 export const SLIDER_WIDTH = Dimensions.get('window').width + 80;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.7);
@@ -10,8 +9,9 @@ type CardItemProps = {
   item: any;
   index: number;
   scrollX: any;
+  onPress?: () => void;
 };
-const CardItem = ({item, index, scrollX}: CardItemProps) => {
+const CardItem = ({item, index, scrollX, onPress}: CardItemProps) => {
   const cardWidth = HeightSize(256);
   const inputRange = [
     (index - 1) * cardWidth,
@@ -28,7 +28,7 @@ const CardItem = ({item, index, scrollX}: CardItemProps) => {
   });
 
   return (
-    <View>
+    <Pressable onPress={onPress}>
       <Animated.View
         style={[
           {
@@ -41,7 +41,7 @@ const CardItem = ({item, index, scrollX}: CardItemProps) => {
               {
                 rotateY: scrollX.interpolate({
                   inputRange,
-                  outputRange: ['0deg', '0deg', '-90deg'],
+                  outputRange: ['0deg', '0deg', '-120deg'],
                 }),
               },
               {
@@ -51,8 +51,8 @@ const CardItem = ({item, index, scrollX}: CardItemProps) => {
             opacity: scrollX.interpolate({
               inputRange: [
                 (index - 1) * cardWidth,
-                (index + 0.3) * cardWidth,
-                (index + 1) * cardWidth,
+                index * cardWidth,
+                (index + 0.8) * cardWidth,
               ],
               outputRange: [1, 1, 0],
             }),
@@ -60,6 +60,8 @@ const CardItem = ({item, index, scrollX}: CardItemProps) => {
               inputRange,
               outputRange: [0, 0, -cardWidth / 4],
             }),
+            height: HeightSize(400),
+            justifyContent: 'center',
           },
         ]}>
         <Animated.Image
@@ -75,10 +77,10 @@ const CardItem = ({item, index, scrollX}: CardItemProps) => {
           style={{
             position: 'absolute',
             backgroundColor: 'white',
-            borderRadius: 12,
+            borderRadius: 100,
             width: WidthSize(44),
             height: WidthSize(44),
-            bottom: HeightSize(20),
+            bottom: WidthSize(20),
             right: WidthSize(20),
             alignItems: 'center',
             justifyContent: 'center',
@@ -90,7 +92,7 @@ const CardItem = ({item, index, scrollX}: CardItemProps) => {
           />
         </View>
       </Animated.View>
-    </View>
+    </Pressable>
   );
 };
 

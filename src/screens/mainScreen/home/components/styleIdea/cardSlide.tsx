@@ -46,6 +46,7 @@ const CardSlide = () => {
       img: 'https://api.bplusfurniture.com.vn/admin/uploads/273bdf3fe66849ac9e622f8a0dfb0b33.jpg',
     },
   ];
+  console.log('render');
   const scrollX = React.useRef(new Animated.Value(0)).current;
   const flatListRef: any = useRef(null);
   const [visibleIndex, setVisibleIndex] = useState(0);
@@ -62,17 +63,23 @@ const CardSlide = () => {
       useNativeDriver: false,
     }).start();
   };
+
+  const handlePressItem = (item: any, index: number) => () => {
+    console.log('press item', item, index);
+  };
+
   return (
     <View
       style={{
         marginTop: HeightSize(40),
         width: '100%',
-        height: HeightSize(380),
+        height: HeightSize(400),
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
+        paddingLeft: WidthSize(30),
       }}>
-      <View style={{height: HeightSize(380), justifyContent: 'center'}}>
+      <View style={{height: HeightSize(400), justifyContent: 'center'}}>
         <View
           style={{
             width: WidthSize(140),
@@ -133,7 +140,12 @@ const CardSlide = () => {
           nestedScrollEnabled
           data={data}
           renderItem={({item, index}) => (
-            <CardItem index={index} item={item} scrollX={scrollX} />
+            <CardItem
+              onPress={handlePressItem(item, index)}
+              index={index}
+              item={item}
+              scrollX={scrollX}
+            />
           )}
           onScroll={Animated.event(
             [

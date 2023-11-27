@@ -6,6 +6,7 @@ import {
   LOGIN,
   MAINSTACK,
   PROFILE,
+  ROOMIDEA,
   SURVEY,
 } from '~/constants/routeNames';
 
@@ -26,4 +27,5 @@ export type HomeStackParamList = {
   [PROFILE]: undefined;
   [CATEGORY]: undefined;
   [FAVORITE]: undefined;
+  [ROOMIDEA]: undefined;
 };

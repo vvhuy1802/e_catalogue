@@ -5,7 +5,7 @@ import {images} from '~/assets';
 import {HeightSize, WidthSize} from '~/theme/size';
 import {IconSvg} from '~/components/global/iconSvg';
 import {TextFont, TextStyle} from '~/theme/textStyle';
-import CardSlide from './components/cardSlide';
+import CardSlide from './components/styleIdea/cardSlide';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -15,6 +15,7 @@ import Animated, {
 import {useDispatch} from 'react-redux';
 import {AppDispatch} from '~/app/store';
 import {SetDirectionBottomBar} from '~/redux/reducers/globalSlice';
+import CardCategorySlide from './components/category/cardCategorySlide';
 
 const HomeScreen = () => {
   const lastContentOffset = useSharedValue(0);
@@ -28,14 +29,55 @@ const HomeScreen = () => {
       style={{flex: 1}}
       resizeMode="cover"
       source={images.home.BackgroundHome}>
-      <View style={{flex: 1}}>
+      <View
+        style={{
+          flex: 1,
+        }}>
         <View
           style={{
             marginTop: HeightSize(10),
             width: '100%',
             alignItems: 'flex-end',
             paddingHorizontal: WidthSize(20),
-          }}></View>
+          }}>
+          <View
+            style={{
+              width: WidthSize(29),
+              height: WidthSize(32),
+              justifyContent: 'flex-end',
+            }}>
+            <IconSvg
+              icon="IconBagBlack"
+              width={WidthSize(24)}
+              height={WidthSize(24)}
+            />
+            <View
+              style={{
+                position: 'absolute',
+                top: 0,
+                right: 0,
+                width: WidthSize(16),
+                height: WidthSize(16),
+                borderRadius: HeightSize(10),
+                backgroundColor: 'white',
+                padding: HeightSize(2),
+              }}>
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: '#433229',
+                  borderRadius: HeightSize(10),
+                }}>
+                <Text
+                  style={{color: 'white', ...TextStyle.XS, ...TextFont.SLight}}>
+                  2
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
 
         <ScrollView
           scrollEventThrottle={16}
@@ -70,7 +112,6 @@ const HomeScreen = () => {
           style={{
             flex: 1,
             marginTop: HeightSize(10),
-            paddingLeft: WidthSize(30),
           }}
           showsVerticalScrollIndicator={false}>
           <View
@@ -80,6 +121,7 @@ const HomeScreen = () => {
               alignItems: 'center',
               justifyContent: 'space-between',
               flexDirection: 'row',
+              paddingLeft: WidthSize(30),
             }}>
             <Text
               style={{
@@ -89,16 +131,25 @@ const HomeScreen = () => {
               }}>
               Find the one {'\n'}you prefer.
             </Text>
-            {/* Your Search Icon */}
+            <View
+              style={{
+                width: WidthSize(100),
+                height: WidthSize(80),
+                borderTopLeftRadius: WidthSize(36),
+                borderBottomLeftRadius: WidthSize(36),
+                backgroundColor: '#EFEFE8',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <IconSvg
+                icon="IconSearchBrown"
+                width={WidthSize(28)}
+                height={WidthSize(28)}
+              />
+            </View>
           </View>
-
-          {/* Your CardSlide components */}
           <CardSlide />
-          <CardSlide />
-          <CardSlide />
-          <CardSlide />
-          <CardSlide />
-          <CardSlide />
+          <CardCategorySlide />
         </ScrollView>
       </View>
     </ContainerImage>

@@ -8,7 +8,15 @@ import IconCheckedWhite from '~/assets/icons/ic_checked_white.svg';
 import IconBagBlack from '~/assets/icons/ic_bag_black.svg';
 import IconHeartGray from '~/assets/icons/ic_heart_gray.svg';
 import IconHeartRed from '~/assets/icons/ic_heart_red.svg';
-
+import IconCategory from '~/assets/icons/ic_category.svg';
+import IconCategoryFocused from '~/assets/icons/ic_category_focused.svg';
+import IconHome from '~/assets/icons/ic_home.svg';
+import IconHomeFocused from '~/assets/icons/ic_home_focused.svg';
+import IconProfile from '~/assets/icons/ic_profile.svg';
+import IconProfileFocused from '~/assets/icons/ic_profile_focused.svg';
+import IconRoomIdea from '~/assets/icons/ic_roomidea.svg';
+import IconRoomIdeaFocused from '~/assets/icons/ic_roomidea_focused.svg';
+import IconFavoriteFocused from '~/assets/icons/ic_favorite_focused.svg';
 interface IconSvgProps {
   icon:
     | 'IconCloseBrown'
@@ -16,11 +24,23 @@ interface IconSvgProps {
     | 'IconCheckedWhite'
     | 'IconBagBlack'
     | 'IconHeartGray'
-    | 'IconHeartRed';
+    | 'IconHeartRed'
+    | 'IconCategory'
+    | 'IconHomeFocused'
+    | 'IconProfile'
+    | 'IconCategoryFocused'
+    | 'IconHome'
+    | 'IconProfileFocused'
+    | 'IconRoomIdea'
+    | 'IconRoomIdeaFocused'
+    | 'IconFavoriteFocused';
+
   width?: number;
   height?: number;
   onPress?: () => void;
 }
+
+export type IconSvgType = IconSvgProps['icon'];
 
 const svgComponents: Record<string, React.ComponentType> = {
   IconCloseBrown,
@@ -29,6 +49,15 @@ const svgComponents: Record<string, React.ComponentType> = {
   IconBagBlack,
   IconHeartGray,
   IconHeartRed,
+  IconCategory,
+  IconHomeFocused,
+  IconProfile,
+  IconCategoryFocused,
+  IconHome,
+  IconProfileFocused,
+  IconRoomIdea,
+  IconRoomIdeaFocused,
+  IconFavoriteFocused,
 };
 
 interface Svg {

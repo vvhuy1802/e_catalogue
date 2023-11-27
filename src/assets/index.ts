@@ -24,5 +24,9 @@ export const images = {
   },
   home: {
     BackgroundHome: require('~/assets/images/home/img_home_bg.png'),
+    CategoryMen: require('~/assets/images/home/img_category_men.png'),
+    CategoryWomen: require('~/assets/images/home/img_category_women.png'),
+    CategoryKids: require('~/assets/images/home/img_category_kids.png'),
+    CategoryUniSex: require('~/assets/images/home/img_category_unisex.png'),
   },
 };

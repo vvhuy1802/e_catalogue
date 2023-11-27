@@ -6,16 +6,26 @@ import {HomeStackParamList} from '~/types';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import {selectDirectionBottomBar} from '~/redux/reducers/globalSlice';
+import {IconSvg, IconSvgType} from '~/components/global/iconSvg';
+import {BOTTOM_TAB_HEIGHT} from '~/constants/global';
+
+type TabProps = {
+  name: string;
+  icon: IconSvgType;
+  iconFocused: IconSvgType;
+  onPress: () => void;
+};
 
 const BottomBar = () => {
   const naviation = useNavigation<StackNavigationProp<HomeStackParamList>>();
   const [currentTab, setCurrentTab] = useState('Home');
   const direction = useSelector(selectDirectionBottomBar);
   const moveYRef = useRef(new Animated.Value(0));
-  const tabs = [
+  const tabs: Array<TabProps> = [
     {
       name: 'Home',
-      icon: 'home',
+      icon: 'IconHome',
+      iconFocused: 'IconHomeFocused',
       onPress: () => {
         naviation.navigate('Home');
         setCurrentTab('Home');
@@ -23,15 +33,26 @@ const BottomBar = () => {
     },
     {
       name: 'Category',
-      icon: 'category',
+      icon: 'IconCategory',
+      iconFocused: 'IconCategoryFocused',
       onPress: () => {
         naviation.navigate('Category');
         setCurrentTab('Category');
       },
     },
     {
+      name: 'Room Idea',
+      icon: 'IconRoomIdea',
+      iconFocused: 'IconRoomIdeaFocused',
+      onPress: () => {
+        naviation.navigate('RoomIdea');
+        setCurrentTab('RoomIdea');
+      },
+    },
+    {
       name: 'Favorite',
-      icon: 'favorite',
+      icon: 'IconHeartGray',
+      iconFocused: 'IconFavoriteFocused',
       onPress: () => {
         naviation.navigate('Favorite');
         setCurrentTab('Favorite');
@@ -39,7 +60,8 @@ const BottomBar = () => {
     },
     {
       name: 'Profile',
-      icon: 'profile',
+      icon: 'IconProfile',
+      iconFocused: 'IconProfileFocused',
       onPress: () => {
         naviation.navigate('Profile');
         setCurrentTab('Profile');
@@ -65,8 +87,8 @@ const BottomBar = () => {
         }),
         left: 0,
         right: 0,
-        backgroundColor: 'red',
-        height: HeightSize(100),
+        backgroundColor: '#FBFBFB',
+        height: BOTTOM_TAB_HEIGHT,
         borderTopLeftRadius: 40,
         borderTopRightRadius: 40,
         zIndex: 100,
@@ -82,12 +104,13 @@ const BottomBar = () => {
             key={index}
             style={{
               flex: 1,
-              backgroundColor: currentTab === tab.name ? 'blue' : 'white',
               height: HeightSize(50),
               justifyContent: 'center',
               alignItems: 'center',
             }}>
-            <Text>{tab.name}</Text>
+            <IconSvg
+              icon={currentTab === tab.name ? tab.iconFocused : tab.icon}
+            />
           </Pressable>
         );
       })}
