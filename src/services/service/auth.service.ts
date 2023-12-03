@@ -10,4 +10,7 @@ export const authService = {
   register: (params: RegisterParams) => {
     return request<RegisterResponse>(apiUrl.register(), Methods.post, params);
   },
+  me: () => {
+    return request<RegisterResponse>(apiUrl.me(), Methods.get, '');
+  },
 };

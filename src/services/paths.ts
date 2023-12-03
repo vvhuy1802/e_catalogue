@@ -10,4 +10,5 @@ export const apiUrl = {
   login: () => `${baseUrl}${Services.auth}login`,
   register: () => `${baseUrl}${Services.user}createuser`,
   refreshToken: () => `${baseUrl}${Services.auth}refresh`,
+  me: () => `${baseUrl}${Services.auth}me`,
 };

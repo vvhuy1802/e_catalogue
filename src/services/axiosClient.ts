@@ -3,7 +3,10 @@ import {AppProvider} from '../app/appProvider';
 import {Methods} from './method';
 import {checkAccessTokens} from '~/utils';
 import {apiUrl} from './paths';
-import {APIResponse, ConfigRefreshToken} from '~/types';
+import {APIResponse} from '~/types';
+import {LoginResponse} from '~/types/auth';
+import {store} from '~/app/store';
+import {SetIsAuthorized} from '~/redux/reducers/authSlice';
 
 export const request = async <T extends {}>(
   url: string,
@@ -39,6 +42,11 @@ export const request = async <T extends {}>(
     config.data = params ? params : undefined;
   }
 
+  const Logout = async () => {
+    store.dispatch(SetIsAuthorized(false));
+    await AppProvider.setTokenUser('', '');
+  };
+
   return new Promise(resolve => {
     console.log('Calling API: ', config.url);
     axios<APIResponse<T>>(config)
@@ -50,18 +58,31 @@ export const request = async <T extends {}>(
       })
       .catch(async err => {
         if (err.response.status === 401) {
-          // const {isAccessTokenValid, isRefreshTokenValid} =
-          //   await checkAccessTokens();
-          // if (isRefreshTokenValid && !isAccessTokenValid) {
-          //   let configRefreshToken = ConfigRefreshToken;
-          //   configRefreshToken.data = {
-          //     refresh_token: refreshToken,
-          //   };
-          //   axios(configRefreshToken).then(async res => {
-
-          //   });
-          // }
-          console.log('err.response.status', err.response.status);
+          const {isAccessTokenValid, isRefreshTokenValid} =
+            await checkAccessTokens();
+          if (isRefreshTokenValid && !isAccessTokenValid) {
+            const configRefreshToken = {
+              headers: header,
+              method: Methods.post,
+              url: apiUrl.refreshToken(),
+              params: null,
+              data: {
+                refreshToken: refreshToken,
+              },
+            };
+            console.log('Calling API: ', configRefreshToken.url);
+            axios(configRefreshToken).then(async res => {
+              if (res.status === 201) {
+                await AppProvider.setTokenUser(
+                  res.data.access_token,
+                  res.data.refresh_token,
+                );
+                resolve(await request<T>(url, method, params));
+              }
+            });
+          } else {
+            Logout();
+          }
         } else
           resolve({
             status: err.response.status,

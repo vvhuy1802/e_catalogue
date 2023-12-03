@@ -9,8 +9,6 @@ export type RegisterResponse = {
   username: string;
   email: string;
   role: string;
-  access_token: string;
-  refresh_token: string;
 };
 
 export type LoginParams = {
