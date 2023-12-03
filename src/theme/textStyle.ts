@@ -5,6 +5,10 @@ export const TextStyle = {
     fontSize: HeightSize(30),
     lineHeight: HeightSize(36),
   },
+  XXS: {
+    fontSize: HeightSize(10),
+    lineHeight: HeightSize(14),
+  },
   XS: {
     fontSize: HeightSize(12),
     lineHeight: HeightSize(16),

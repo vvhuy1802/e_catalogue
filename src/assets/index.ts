@@ -35,4 +35,10 @@ export const images = {
     DropDownBoy: require('~/assets/images/home/ic_dropdown_boy.png'),
     DropDownGirl: require(`~/assets/images/home/ic_dropdown_girl.png`),
   },
+  category: {
+    CategoryMenNew: require('~/assets/images/category/img_category_men_new.png'),
+    MenClothing: require('~/assets/images/category/img_category_men_clothing.png'),
+    MenSuits: require('~/assets/images/category/img_category_men_suits.png'),
+    MenAccessories: require('~/assets/images/category/img_category_men_accessories.png'),
+  },
 };

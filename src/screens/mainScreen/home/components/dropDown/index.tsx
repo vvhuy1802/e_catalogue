@@ -14,19 +14,18 @@ const DropDown = ({setIsShow}: DropDownProps) => {
   const currentDropDown = useSelector(selectCurrentDropDown);
 
   return (
-    <>
-      <Pressable
-        onPress={() => setIsShow(true)}
-        style={{
-          width: '100%',
-          height: HeightSize(80),
-          marginTop: HeightSize(28),
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          paddingLeft: WidthSize(32),
-          paddingRight: WidthSize(24),
-        }}>
+    <View
+      style={{
+        width: '100%',
+        height: HeightSize(80),
+        marginTop: HeightSize(28),
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingLeft: WidthSize(32),
+        paddingRight: WidthSize(24),
+      }}>
+      <Pressable onPress={() => setIsShow(true)}>
         <View
           style={{
             width: HeightSize(160),
@@ -62,49 +61,53 @@ const DropDown = ({setIsShow}: DropDownProps) => {
             />
           </View>
         </View>
+      </Pressable>
 
+      <View
+        style={{
+          width: HeightSize(76),
+          height: HeightSize(76),
+          borderRadius: 40,
+          backgroundColor: '#F1EFE9',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <IconSvg icon="IconBagBlack" />
         <View
           style={{
-            width: HeightSize(76),
-            height: HeightSize(76),
-            borderRadius: 40,
-            backgroundColor: '#F1EFE9',
+            position: 'absolute',
             justifyContent: 'center',
             alignItems: 'center',
+            top: HeightSize(18),
+            right: WidthSize(22),
+            width: WidthSize(16),
+            height: WidthSize(16),
+            borderRadius: 100,
+            backgroundColor: '#F1EFE9',
           }}>
-          <IconSvg icon="IconBagBlack" />
           <View
             style={{
               position: 'absolute',
-              top: HeightSize(17),
-              right: WidthSize(15),
-              width: WidthSize(16),
-              height: WidthSize(16),
-              borderRadius: 10,
-              backgroundColor: 'white',
-              padding: HeightSize(2),
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: WidthSize(14),
+              height: WidthSize(14),
+              borderRadius: 100,
+              backgroundColor: '#433229',
             }}>
-            <View
+            <Text
               style={{
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: '#433229',
-                borderRadius: 10,
+                color: 'white',
+                fontSize: HeightSize(9),
+                lineHeight: HeightSize(11),
+                ...TextFont.SMedium,
               }}>
-              <Text
-                style={{
-                  color: 'white',
-                  ...TextStyle.XS,
-                  ...TextFont.SLight,
-                }}>
-                2
-              </Text>
-            </View>
+              2
+            </Text>
           </View>
         </View>
-      </Pressable>
-    </>
+      </View>
+    </View>
   );
 };
 

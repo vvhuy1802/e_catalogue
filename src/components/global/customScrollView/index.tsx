@@ -7,7 +7,7 @@ import {SetDirectionBottomBar} from '~/redux/reducers/globalSlice';
 import {HeightSize} from '~/theme/size';
 
 type CustomScrollViewProps = {
-  children: React.ReactNode;
+  children?: React.ReactNode;
 };
 
 const CustomScrollView: React.FC<CustomScrollViewProps> = ({children}) => {

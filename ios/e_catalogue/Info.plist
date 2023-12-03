@@ -36,7 +36,18 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string></string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Glorify-Light.otf</string>
+		<string>Glorify-Bold.ttf</string>
+		<string>Glorify-Medium.ttf</string>
+		<string>Sebino-Bold.ttf</string>
+		<string>Sebino-Light.ttf</string>
+		<string>Sebino-Medium.ttf</string>
+		<string>Sebino-Regular.ttf</string>
+		<string>Glorify-Regular.ttf</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>
@@ -51,16 +62,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>UIAppFonts</key>
-	<array>
-		<string>Glorify-Light.otf</string>
-		<string>Glorify-Bold.ttf</string>
-		<string>Glorify-Medium.ttf</string>
-		<string>Sebino-Bold.ttf</string>
-		<string>Sebino-Light.ttf</string>
-		<string>Sebino-Medium.ttf</string>
-		<string>Sebino-Regular.ttf</string>
-		<string>Glorify-Regular.ttf</string>
-	</array>
 </dict>
 </plist>
