@@ -46,7 +46,7 @@ const BottomBar = () => {
       iconFocused: 'IconRoomIdeaFocused',
       onPress: () => {
         naviation.navigate('RoomIdea');
-        setCurrentTab('RoomIdea');
+        setCurrentTab('Room Idea');
       },
     },
     {
