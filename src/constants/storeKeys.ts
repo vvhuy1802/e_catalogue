@@ -1,6 +1,5 @@
 export const STORE_KEYS = {
   TOKEN: 'authenticationToken',
-
-  //isShowOnboarding: 'isShowOnboarding',
+  DATA_LOGIN: 'dataLogin',
   IS_SHOW_ONBOARD: 'isShowOnboarding',
 };

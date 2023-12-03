@@ -1,7 +1,13 @@
 import Config from '../config';
-const service = 'core-api';
 const baseUrl = Config.API_URL;
 
+const Services = {
+  user: '/users/',
+  auth: '/auth/',
+};
+
 export const apiUrl = {
-  login: () => `${baseUrl}${service}/login`,
+  login: () => `${baseUrl}${Services.auth}login`,
+  register: () => `${baseUrl}${Services.user}createuser`,
+  refreshToken: () => `${baseUrl}${Services.auth}refresh`,
 };

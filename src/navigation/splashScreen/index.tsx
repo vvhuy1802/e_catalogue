@@ -6,9 +6,14 @@ import {Animated, SafeAreaView} from 'react-native';
 import {HeightSize, WidthSize, height, width} from '~/theme/size';
 import {useDispatch} from 'react-redux';
 import {AppDispatch} from '~/app/store';
-import {SetIsShowOnBoard, SetIsShowSplash} from '~/redux/reducers/authSlice';
+import {
+  SetIsAuthorized,
+  SetIsShowOnBoard,
+  SetIsShowSplash,
+} from '~/redux/reducers/authSlice';
 import {TextFont, TextStyle} from '~/theme/textStyle';
 import {AppProvider} from '~/app/appProvider';
+import {checkAccessTokens} from '~/utils';
 
 const SplashScreen = () => {
   const AnimatedLottieView = Animated.createAnimatedComponent(LottieView);
@@ -49,17 +54,18 @@ const SplashScreen = () => {
     // fetch data
     const isShowOnBoard = await AppProvider.getIsShowOnBoard();
     dispatch(SetIsShowOnBoard(isShowOnBoard));
-    setIsFetchSuccess(true);
+  };
+  const fetchAuth = async () => {
+    const getAuth = await checkAccessTokens();
+    dispatch(SetIsAuthorized(getAuth.isRefreshTokenValid));
   };
 
   useEffect(() => {
-    const timeout = setTimeout(async () => {
-      await handleFetData();
-    }, 100);
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, [isFetchSuccess]);
+    handleFetData();
+    fetchAuth().then(() => {
+      setIsFetchSuccess(true);
+    });
+  }, []);
 
   return (
     <ContainerView

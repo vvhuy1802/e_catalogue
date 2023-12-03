@@ -9,6 +9,28 @@ import {
   ROOMIDEA,
   SURVEY,
 } from '~/constants/routeNames';
+import {Methods} from '~/services/method';
+import {apiUrl} from '~/services/paths';
+
+export type LoadingState = 'idle' | 'pending' | 'fulfilled' | 'rejected';
+
+export const ConfigRefreshToken = {
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+  },
+  method: Methods.post,
+  url: apiUrl.refreshToken,
+  params: null,
+  data: {
+    refresh_token: '',
+  },
+};
+
+export type APIResponse<T> = {
+  status: number;
+  data: T;
+};
 
 export type AuthStackParamList = {
   [AUTHSTACK]: undefined;
