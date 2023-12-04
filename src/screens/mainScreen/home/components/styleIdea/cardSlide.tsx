@@ -46,7 +46,6 @@ const CardSlide = () => {
       img: 'https://api.bplusfurniture.com.vn/admin/uploads/273bdf3fe66849ac9e622f8a0dfb0b33.jpg',
     },
   ];
-  console.log('render');
   const scrollX = React.useRef(new Animated.Value(0)).current;
   const flatListRef: any = useRef(null);
   const [visibleIndex, setVisibleIndex] = useState(0);

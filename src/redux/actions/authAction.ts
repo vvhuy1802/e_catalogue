@@ -1,10 +1,11 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {authService} from '../../services/service/auth.service';
+import {RegisterParams} from '~/types/auth';
 
-export const login = createAsyncThunk(
-  'login/login Action',
-  async (params: any) => {
-    const res = await authService.login (params);
+export const register = createAsyncThunk(
+  'register/register Action',
+  async (params: RegisterParams) => {
+    const res = await authService.register(params);
 
     /**
      * * Can transform data here

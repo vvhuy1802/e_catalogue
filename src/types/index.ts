@@ -10,6 +10,13 @@ import {
   SURVEY,
 } from '~/constants/routeNames';
 
+export type LoadingState = 'idle' | 'pending' | 'fulfilled' | 'rejected';
+
+export type APIResponse<T> = {
+  status: number;
+  data: T;
+};
+
 export type AuthStackParamList = {
   [AUTHSTACK]: undefined;
 };

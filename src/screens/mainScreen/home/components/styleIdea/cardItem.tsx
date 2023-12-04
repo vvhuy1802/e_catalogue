@@ -33,6 +33,7 @@ const CardItem = ({item, index, scrollX, onPress}: CardItemProps) => {
         style={[
           {
             width: HeightSize(256),
+            backgroundColor: 'white',
             borderRadius: 24,
             elevation: 10,
             shadowColor: '#D8D2C499',
