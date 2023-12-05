@@ -26,6 +26,7 @@
     "@reduxjs/toolkit": "^1.9.5",
     "axios": "^1.4.0",
     "ios-deploy": "^1.12.2",
+    "jwt-decode": "3.1.2",
     "lottie-react-native": "^6.4.1",
     "nativewind": "^2.0.11",
     "patch-package": "^8.0.0",

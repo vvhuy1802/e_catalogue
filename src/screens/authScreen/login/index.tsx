@@ -32,6 +32,16 @@ const Login = () => {
     handleChangeLayout,
     handleLogin,
     handleRegister,
+    userNameSignIn,
+    setUserNameSignIn,
+    passwordSignIn,
+    setPasswordSignIn,
+    fullNameSignUp,
+    setFullNameSignUp,
+    emailSignUp,
+    setEmailSignUp,
+    passwordSignUp,
+    setPasswordSignUp,
   } = useLogin();
 
   return (
@@ -132,11 +142,13 @@ const Login = () => {
               }),
             }}>
             <View>
-              <Text style={styles.title}>Email</Text>
+              <Text style={styles.title}>User name</Text>
               <TextInput
                 style={styles.txtInput}
                 placeholderTextColor={'#A5ABB9'}
-                placeholder="Enter your registered email"
+                placeholder="Enter your user name"
+                value={userNameSignIn}
+                onChangeText={text => setUserNameSignIn(text)}
               />
             </View>
             <View style={{marginTop: HeightSize(24)}}>
@@ -146,6 +158,8 @@ const Login = () => {
                 placeholderTextColor={'#A5ABB9'}
                 placeholder="Enter password"
                 secureTextEntry={!isShowPasswordSignIn}
+                value={passwordSignIn}
+                onChangeText={text => setPasswordSignIn(text)}
               />
               <View
                 style={{
@@ -297,6 +311,8 @@ const Login = () => {
                 style={styles.txtInput}
                 placeholderTextColor={'#A5ABB9'}
                 placeholder="Enter your full name"
+                value={fullNameSignUp}
+                onChangeText={text => setFullNameSignUp(text)}
               />
             </View>
             <View style={{marginTop: HeightSize(24)}}>
@@ -305,19 +321,9 @@ const Login = () => {
                 style={styles.txtInput}
                 placeholderTextColor={'#A5ABB9'}
                 placeholder="Enter your registered email"
+                value={emailSignUp}
+                onChangeText={text => setEmailSignUp(text)}
               />
-              {/* <View
-                style={{
-                  position: 'absolute',
-                  bottom: HeightSize(20),
-                  right: WidthSize(20),
-                }}>
-                <IconSvg
-                  icon="IconCheck"
-                  width={WidthSize(16)}
-                  height={WidthSize(16)}
-                />
-              </View> */}
             </View>
             <View style={{marginTop: HeightSize(24)}}>
               <Text style={styles.title}>Password</Text>
@@ -326,6 +332,8 @@ const Login = () => {
                 placeholderTextColor={'#A5ABB9'}
                 placeholder="Enter password"
                 secureTextEntry={!isShowPassword}
+                value={passwordSignUp}
+                onChangeText={text => setPasswordSignUp(text)}
               />
               <View
                 style={{

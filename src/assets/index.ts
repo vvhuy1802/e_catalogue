@@ -30,5 +30,9 @@ export const images = {
     CategoryUniSex: require('~/assets/images/home/img_category_unisex.png'),
     ImagePopular: require('~/assets/images/home/img_popular.png'),
     ImageHotLook: require('~/assets/images/home/img_hot_look.png'),
+    DropDownMan: require('~/assets/images/home/ic_dropdown_man.png'),
+    DropDownWoman: require('~/assets/images/home/ic_dropdown_woman.png'),
+    DropDownBoy: require('~/assets/images/home/ic_dropdown_boy.png'),
+    DropDownGirl: require(`~/assets/images/home/ic_dropdown_girl.png`),
   },
 };

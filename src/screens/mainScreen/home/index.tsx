@@ -1,29 +1,29 @@
-import React, {LegacyRef, useContext, useRef, useState} from 'react';
-import {Easing, ScrollView, Text, View} from 'react-native';
+import React, {useState} from 'react';
+import {ScrollView, View} from 'react-native';
 import ContainerImage from '~/components/global/containerImage';
 import {images} from '~/assets';
-import {HeightSize, WidthSize} from '~/theme/size';
-import {IconSvg} from '~/components/global/iconSvg';
-import {TextFont, TextStyle} from '~/theme/textStyle';
+import {HeightSize} from '~/theme/size';
 import CardSlide from './components/styleIdea/cardSlide';
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withTiming,
-  useAnimatedScrollHandler,
-} from 'react-native-reanimated';
+import {useSharedValue} from 'react-native-reanimated';
 import {useDispatch} from 'react-redux';
 import {AppDispatch} from '~/app/store';
-import {SetDirectionBottomBar} from '~/redux/reducers/globalSlice';
+import {
+  SetCurrentDropDown,
+  SetDirectionBottomBar,
+} from '~/redux/reducers/globalSlice';
 import CardCategorySlide from './components/category/cardCategorySlide';
 import PopularChoice from './components/popularChoice';
 import HotLooks from './components/hotLooks';
+import DropDown from './components/dropDown';
+import SearchHomeScreen from './components/search';
+import DropDownComponent from '~/components/global/dropDown';
 
 const HomeScreen = () => {
   const lastContentOffset = useSharedValue(0);
   const isScrolling = useSharedValue(false);
   const translateY = useSharedValue(0);
   const dispatch = useDispatch<AppDispatch>();
+  const [isShowDropDown, setIsShowDropDown] = useState(false);
 
   return (
     <ContainerImage
@@ -70,95 +70,21 @@ const HomeScreen = () => {
             marginTop: HeightSize(10),
           }}
           showsVerticalScrollIndicator={false}>
-          <View
-            style={{
-              marginTop: HeightSize(10),
-              width: '100%',
-              alignItems: 'flex-end',
-              paddingHorizontal: WidthSize(20),
-            }}>
-            <View
-              style={{
-                width: WidthSize(29),
-                height: WidthSize(32),
-                justifyContent: 'flex-end',
-              }}>
-              <IconSvg
-                icon="IconBagBlack"
-                width={WidthSize(24)}
-                height={WidthSize(24)}
-              />
-              <View
-                style={{
-                  position: 'absolute',
-                  top: 0,
-                  right: 0,
-                  width: WidthSize(16),
-                  height: WidthSize(16),
-                  borderRadius: HeightSize(10),
-                  backgroundColor: 'white',
-                  padding: HeightSize(2),
-                }}>
-                <View
-                  style={{
-                    flex: 1,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    backgroundColor: '#433229',
-                    borderRadius: HeightSize(10),
-                  }}>
-                  <Text
-                    style={{
-                      color: 'white',
-                      ...TextStyle.XS,
-                      ...TextFont.SLight,
-                    }}>
-                    2
-                  </Text>
-                </View>
-              </View>
-            </View>
-          </View>
-          <View
-            style={{
-              marginTop: HeightSize(30),
-              width: '100%',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              flexDirection: 'row',
-              paddingLeft: WidthSize(30),
-            }}>
-            <Text
-              style={{
-                ...TextStyle.text4XL,
-                ...TextFont.GRegular,
-                color: '#3B3021',
-              }}>
-              Find the one {'\n'}you prefer.
-            </Text>
-            <View
-              style={{
-                width: WidthSize(100),
-                height: WidthSize(80),
-                borderTopLeftRadius: WidthSize(36),
-                borderBottomLeftRadius: WidthSize(36),
-                backgroundColor: '#EFEFE8',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-              <IconSvg
-                icon="IconSearchBrown"
-                width={WidthSize(28)}
-                height={WidthSize(28)}
-              />
-            </View>
-          </View>
+          <DropDown setIsShow={setIsShowDropDown} />
+          <SearchHomeScreen />
           <CardSlide />
           <CardCategorySlide />
           <PopularChoice />
           <HotLooks />
         </ScrollView>
       </View>
+      <DropDownComponent
+        isShow={isShowDropDown}
+        onPress={(item: any) => {
+          dispatch(SetCurrentDropDown(item));
+          setIsShowDropDown(false);
+        }}
+      />
     </ContainerImage>
   );
 };

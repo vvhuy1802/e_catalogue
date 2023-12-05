@@ -2,6 +2,7 @@ import {
   Alert,
   ImageBackground,
   Pressable,
+  Pressable,
   StyleSheet,
   Text,
   View,
@@ -11,9 +12,14 @@ import Svg, {Path} from 'react-native-svg';
 import ContainerView from '~/components/global/containerView';
 import {useSelector} from 'react-redux';
 import {selectDemoImage} from '~/redux/reducers/globalSlice';
+import {useDispatch} from 'react-redux';
+import {AppDispatch} from '~/app/store';
+import {SetIsAuthorized} from '~/redux/reducers/authSlice';
+import {AppProvider} from '~/app/appProvider';
 
 const Profile = () => {
   const data = useSelector(selectDemoImage);
+  const dispatch = useDispatch<AppDispatch>();
   return (
     <ContainerView
       style={{
