@@ -4,7 +4,10 @@ import {IconSvg} from '~/components/global/iconSvg';
 import {HeightSize, WidthSize} from '~/theme/size';
 import {TextStyle, TextFont} from '~/theme/textStyle';
 
-const SearchHomeScreen = () => {
+type Props = {
+  title?: string;
+};
+const SearchHomeScreen = ({title = 'Find the one \nyou prefer.'}: Props) => {
   return (
     <View
       style={{
@@ -21,7 +24,7 @@ const SearchHomeScreen = () => {
           ...TextFont.GRegular,
           color: '#3B3021',
         }}>
-        Find the one {'\n'}you prefer.
+        {title}
       </Text>
       <View
         style={{

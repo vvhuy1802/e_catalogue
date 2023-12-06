@@ -13,7 +13,7 @@ import BottomBar from './bottombar';
 import Category from './category';
 import Favorite from './favorite';
 import Profile from './profile';
-import RoomIdea from './roomIdea';
+import RoomIdea from './styleIdea';
 
 const Stack = createNativeStackNavigator<HomeStackParamList>();
 const MainStack = () => {
