@@ -5,6 +5,7 @@ import {images} from '~/assets';
 interface GlobalState {
   directionBottomBar: 'idle' | 'up' | 'down';
   currentDropDown: any;
+  demoImage: any;
 }
 
 const initialState = {
@@ -15,6 +16,7 @@ const initialState = {
     title: 'Man',
     img: images.home.DropDownMan,
   },
+  demoImage: null,
 } as GlobalState;
 
 const globalSlice = createSlice({
@@ -27,15 +29,21 @@ const globalSlice = createSlice({
     SetCurrentDropDown: (state, action) => {
       state.currentDropDown = action.payload;
     },
+    setDemoImage: (state, action) => {
+      state.demoImage = action.payload;
+    },
   },
   //   extraReducers: {},
 });
 
 export default globalSlice.reducer;
-export const {SetDirectionBottomBar, SetCurrentDropDown} = globalSlice.actions;
+export const {SetDirectionBottomBar, SetCurrentDropDown, setDemoImage} =
+  globalSlice.actions;
 
 export const selectDirectionBottomBar = (state: RootState) =>
   state.global.directionBottomBar;
 
 export const selectCurrentDropDown = (state: RootState) =>
   state.global.currentDropDown;
+
+export const selectDemoImage = (state: RootState) => state.global.demoImage;

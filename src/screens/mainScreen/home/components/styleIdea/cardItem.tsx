@@ -36,6 +36,7 @@ const CardItem = ({item, index, scrollX, onPress}: CardItemProps) => {
             backgroundColor: 'white',
             borderRadius: 24,
             elevation: 10,
+            backgroundColor: 'white',
             shadowColor: '#D8D2C499',
             shadowOffset: {
               width: scrollX.interpolate({

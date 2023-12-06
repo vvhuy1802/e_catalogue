@@ -5,6 +5,10 @@ export const TextStyle = {
     fontSize: HeightSize(30),
     lineHeight: HeightSize(36),
   },
+  SuperXS: {
+    fontSize: HeightSize(8),
+    lineHeight: HeightSize(12),
+  },
   XXS: {
     fontSize: HeightSize(10),
     lineHeight: HeightSize(14),
