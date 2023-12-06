@@ -5,6 +5,7 @@ import {LoginParams, LoginResponse} from '~/types/auth';
 let _isShowOnBoard: boolean = false;
 let _token: LoginResponse | null = null;
 let _dataLogin: LoginParams | null = null;
+let _historySearch: string[] = [];
 
 class AppProvider {
   static setIsShowOnBoard = async () => {
@@ -64,6 +65,32 @@ class AppProvider {
       } catch (error) {}
     }
     return _dataLogin;
+  };
+
+  static setHistorySearch = async (historySearch: string) => {
+    try {
+      const historySearchOld = await this.getHistorySearch();
+      if (historySearchOld.length >= 5) {
+        historySearchOld.shift();
+      }
+      historySearchOld.push(historySearch);
+      AsyncStorage.setItem(
+        STORE_KEYS.HISTORY_SEARCH,
+        JSON.stringify(historySearchOld),
+      );
+    } catch (error) {}
+  };
+
+  static getHistorySearch = async () => {
+    if (!_historySearch) {
+      try {
+        const historySearch = await AsyncStorage.getItem(
+          STORE_KEYS.HISTORY_SEARCH,
+        );
+        _historySearch = historySearch ? JSON.parse(historySearch) : [];
+      } catch (error) {}
+    }
+    return _historySearch;
   };
 }
 

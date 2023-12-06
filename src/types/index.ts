@@ -1,3 +1,4 @@
+import {NavigatorScreenParams} from '@react-navigation/native';
 import {
   AUTHSTACK,
   CATEGORY,
@@ -7,7 +8,10 @@ import {
   MAINSTACK,
   PROFILE,
   ROOMIDEA,
+  SEARCHSTACK,
+  SEARCHSCREEN,
   SURVEY,
+  DETAILSEARCHSCREEN,
 } from '~/constants/routeNames';
 
 export type LoadingState = 'idle' | 'pending' | 'fulfilled' | 'rejected';
@@ -35,4 +39,12 @@ export type HomeStackParamList = {
   [CATEGORY]: undefined;
   [FAVORITE]: undefined;
   [ROOMIDEA]: undefined;
+  [SEARCHSTACK]: NavigatorScreenParams<SearchStackParamList>;
+};
+
+export type SearchStackParamList = {
+  [SEARCHSCREEN]: undefined;
+  [DETAILSEARCHSCREEN]: {
+    searchQuery?: string;
+  };
 };

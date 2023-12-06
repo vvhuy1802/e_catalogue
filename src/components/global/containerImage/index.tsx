@@ -1,4 +1,4 @@
-import {Animated, StyleProp, View} from 'react-native';
+import {Animated, Pressable, StyleProp, View} from 'react-native';
 import React, {useEffect, useRef} from 'react';
 import FastImage, {ImageStyle, ResizeMode} from 'react-native-fast-image';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -10,6 +10,7 @@ type ContainerImageProps = {
   source: any;
   resizeMode: ResizeMode;
   isOpacity?: boolean;
+  onPress?: () => void;
 };
 
 const ContainerImage = ({
@@ -18,6 +19,7 @@ const ContainerImage = ({
   source,
   resizeMode,
   isOpacity = false,
+  onPress,
 }: ContainerImageProps) => {
   const insets = useSafeAreaInsets();
   const opacityRef = useRef(new Animated.Value(0));
@@ -51,9 +53,27 @@ const ContainerImage = ({
           }),
         },
       ]}>
-      <FastImage style={styleContainer} resizeMode={resizeMode} source={source}>
-        {children}
-      </FastImage>
+      {onPress ? (
+        <Pressable
+          onPress={onPress}
+          style={{
+            flex: 1,
+          }}>
+          <FastImage
+            style={styleContainer}
+            resizeMode={resizeMode}
+            source={source}>
+            {children}
+          </FastImage>
+        </Pressable>
+      ) : (
+        <FastImage
+          style={styleContainer}
+          resizeMode={resizeMode}
+          source={source}>
+          {children}
+        </FastImage>
+      )}
     </Animated.View>
   );
 };

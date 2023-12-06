@@ -1,4 +1,4 @@
-import {View, Text, ScrollView} from 'react-native';
+import {View, Text, ScrollView, StyleProp, ViewStyle} from 'react-native';
 import React from 'react';
 import {useSharedValue} from 'react-native-reanimated';
 import {useDispatch} from 'react-redux';
@@ -8,9 +8,15 @@ import {HeightSize} from '~/theme/size';
 
 type CustomScrollViewProps = {
   children?: React.ReactNode;
+  style?: StyleProp<ViewStyle>;
+  contentContainerStyle?: StyleProp<ViewStyle>;
 };
 
-const CustomScrollView: React.FC<CustomScrollViewProps> = ({children}) => {
+const CustomScrollView: React.FC<CustomScrollViewProps> = ({
+  children,
+  style,
+  contentContainerStyle,
+}) => {
   const lastContentOffset = useSharedValue(0);
   const isScrolling = useSharedValue(false);
   const translateY = useSharedValue(0);
@@ -46,10 +52,13 @@ const CustomScrollView: React.FC<CustomScrollViewProps> = ({children}) => {
       onScrollEndDrag={() => {
         isScrolling.value = false;
       }}
-      style={{
-        flex: 1,
-        marginTop: HeightSize(10),
-      }}
+      style={[
+        {
+          flex: 1,
+        },
+        style,
+      ]}
+      contentContainerStyle={contentContainerStyle}
       showsVerticalScrollIndicator={false}>
       {children}
     </ScrollView>

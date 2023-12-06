@@ -1,23 +1,24 @@
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import React, {useState} from 'react';
 import ContainerImage from '~/components/global/containerImage';
 import {images} from '~/assets';
-import {useSharedValue} from 'react-native-reanimated';
 import {useDispatch} from 'react-redux';
 import {AppDispatch} from '~/app/store';
-import {
-  SetCurrentDropDown,
-  SetDirectionBottomBar,
-} from '~/redux/reducers/globalSlice';
+import {SetCurrentDropDown} from '~/redux/reducers/globalSlice';
 import {HeightSize} from '~/theme/size';
 import CustomScrollView from '~/components/global/customScrollView';
 import DropDownComponent from '~/components/global/dropDown';
 import DropDown from '../home/components/dropDown';
 import HeaderSearch from '~/components/global/headerSearch';
 import CategoryList from './components/categoryList';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {HomeStackParamList} from '~/types';
+import {DETAILSEARCHSCREEN, SEARCHSTACK} from '~/constants/routeNames';
 
 const Category = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const navigation = useNavigation<StackNavigationProp<HomeStackParamList>>();
 
   const [isShowDropDown, setIsShowDropDown] = useState<boolean>(false);
 
@@ -30,7 +31,7 @@ const Category = () => {
 
   return (
     <ContainerImage
-      isOpacity={true}
+      // isOpacity={true}
       style={{flex: 1}}
       resizeMode="cover"
       source={images.home.BackgroundHome}>
@@ -38,9 +39,19 @@ const Category = () => {
         style={{
           flex: 1,
         }}>
-        <CustomScrollView>
+        <CustomScrollView
+          style={{
+            marginTop: HeightSize(10),
+          }}>
           <DropDown setIsShow={setIsShowDropDown} />
-          <HeaderSearch title="Category" onPress={() => {}}></HeaderSearch>
+          <HeaderSearch
+            title="Category"
+            onPress={() => {
+              navigation.navigate(SEARCHSTACK, {
+                screen: 'SearchScreen',
+              });
+            }}
+          />
           <CategoryList />
         </CustomScrollView>
       </View>

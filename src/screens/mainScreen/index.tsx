@@ -6,6 +6,8 @@ import {
   HOME,
   PROFILE,
   ROOMIDEA,
+  SEARCHSTACK,
+  SEARCHSCREEN,
 } from '~/constants/routeNames';
 import HomeScrren from './home';
 import {HomeStackParamList} from '~/types';
@@ -14,6 +16,7 @@ import Category from './category';
 import Favorite from './favorite';
 import Profile from './profile';
 import RoomIdea from './styleIdea';
+import SearchStack from './searchScreen';
 
 const Stack = createNativeStackNavigator<HomeStackParamList>();
 const MainStack = () => {
@@ -63,6 +66,15 @@ const MainStack = () => {
             headerShown: false,
             gestureEnabled: false,
             animation: 'fade',
+          }}
+        />
+        <Stack.Screen
+          name={SEARCHSTACK}
+          component={SearchStack}
+          options={{
+            headerShown: false,
+            gestureEnabled: false,
+            animation: 'fade_from_bottom',
           }}
         />
       </Stack.Navigator>

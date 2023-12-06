@@ -1,13 +1,20 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {Pressable, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {IconSvg} from '~/components/global/iconSvg';
 import {HeightSize, WidthSize} from '~/theme/size';
 import {TextStyle, TextFont} from '~/theme/textStyle';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {HomeStackParamList} from '~/types';
+import {SEARCHSTACK} from '~/constants/routeNames';
 
 type Props = {
   title?: string;
+  navigation: StackNavigationProp<HomeStackParamList>;
 };
-const SearchHomeScreen = ({title = 'Find the one \nyou prefer.'}: Props) => {
+const SearchHomeScreen = ({
+  navigation,
+  title = 'Find the one \nyou prefer.',
+}: Props) => {
   return (
     <View
       style={{
@@ -26,7 +33,12 @@ const SearchHomeScreen = ({title = 'Find the one \nyou prefer.'}: Props) => {
         }}>
         {title}
       </Text>
-      <View
+      <Pressable
+        onPress={() => {
+          navigation.navigate(SEARCHSTACK, {
+            screen: 'SearchScreen',
+          });
+        }}
         style={{
           width: WidthSize(100),
           height: WidthSize(80),
@@ -41,7 +53,7 @@ const SearchHomeScreen = ({title = 'Find the one \nyou prefer.'}: Props) => {
           width={WidthSize(28)}
           height={WidthSize(28)}
         />
-      </View>
+      </Pressable>
     </View>
   );
 };

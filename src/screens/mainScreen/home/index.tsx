@@ -17,8 +17,12 @@ import HotLooks from './components/hotLooks';
 import DropDown from './components/dropDown';
 import SearchHomeScreen from './components/search';
 import DropDownComponent from '~/components/global/dropDown';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {HomeStackParamList} from '~/types';
 
 const HomeScreen = () => {
+  const navigation = useNavigation<StackNavigationProp<HomeStackParamList>>();
   const lastContentOffset = useSharedValue(0);
   const isScrolling = useSharedValue(false);
   const translateY = useSharedValue(0);
@@ -71,7 +75,7 @@ const HomeScreen = () => {
           }}
           showsVerticalScrollIndicator={false}>
           <DropDown setIsShow={setIsShowDropDown} />
-          <SearchHomeScreen />
+          <SearchHomeScreen navigation={navigation} />
           <CardSlide />
           <CardCategorySlide />
           <PopularChoice />

@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {Pressable, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {IconSvg} from '~/components/global/iconSvg';
 import {HeightSize, WidthSize} from '~/theme/size';
@@ -28,7 +28,8 @@ const HeaderSearch: React.FC<HeaderSearchProps> = ({title, onPress}) => {
         }}>
         {title}
       </Text>
-      <View
+      <Pressable
+        onPress={onPress}
         style={{
           width: WidthSize(100),
           height: WidthSize(80),
@@ -43,7 +44,7 @@ const HeaderSearch: React.FC<HeaderSearchProps> = ({title, onPress}) => {
           width={WidthSize(28)}
           height={WidthSize(28)}
         />
-      </View>
+      </Pressable>
     </View>
   );
 };

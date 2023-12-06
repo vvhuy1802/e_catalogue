@@ -22,6 +22,7 @@ import IconEyeShow from '~/assets/icons/ic_eye_show.svg';
 import IconEyeHide from '~/assets/icons/ic_eye_hide.svg';
 import IconCheck from '~/assets/icons/ic_check.svg';
 import IconDropDown from '~/assets/icons/ic_dropdown_black.svg';
+import IconClock from '~/assets/icons/ic_clock_black.svg';
 interface IconSvgProps {
   icon:
     | 'IconCloseBrown'
@@ -43,7 +44,8 @@ interface IconSvgProps {
     | 'IconCheck'
     | 'IconEyeShow'
     | 'IconEyeHide'
-    | 'IconDropDown';
+    | 'IconDropDown'
+    | 'IconClock';
 
   width?: number;
   height?: number;
@@ -73,6 +75,7 @@ const svgComponents: Record<string, React.ComponentType> = {
   IconEyeShow,
   IconEyeHide,
   IconDropDown,
+  IconClock,
 };
 
 interface Svg {

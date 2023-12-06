@@ -9,3 +9,7 @@ export const PROFILE = 'Profile';
 export const CATEGORY = 'Category';
 export const ROOMIDEA = 'RoomIdea';
 export const FAVORITE = 'Favorite';
+export const SEARCHSTACK = 'SearchStack';
+
+export const SEARCHSCREEN = 'SearchScreen';
+export const DETAILSEARCHSCREEN = 'DetailSearchScreen';
