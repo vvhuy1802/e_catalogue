@@ -28,7 +28,7 @@ const DetailScreen = ({route}: Props) => {
       }}>
       <Pressable
         onPress={() => {
-          dispatch(SetDirectionBottomBar('up'));
+          // dispatch(SetDirectionBottomBar('up'));
           navigation.navigate(SEARCHSCREEN);
         }}>
         <Text>{route.params.searchQuery}</Text>

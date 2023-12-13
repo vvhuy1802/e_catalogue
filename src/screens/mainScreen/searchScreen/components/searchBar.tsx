@@ -6,9 +6,12 @@ import {TextStyle, TextFont} from '~/theme/textStyle';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {SearchStackParamList} from '~/types';
 import {DETAILSEARCHSCREEN} from '~/constants/routeNames';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {AppDispatch} from '~/app/store';
-import {SetDirectionBottomBar} from '~/redux/reducers/globalSlice';
+import {
+  SetDirectionBottomBar,
+  selectCurrentDropDown,
+} from '~/redux/reducers/globalSlice';
 import {AppProvider} from '~/app/appProvider';
 
 type Props = {
@@ -16,6 +19,7 @@ type Props = {
 };
 const SearchBar = ({navigation}: Props) => {
   const [textSearch, setTextSearch] = React.useState<string>('');
+  const currentDropDown = useSelector(selectCurrentDropDown);
   const dispatch = useDispatch<AppDispatch>();
   const handleSearch = async () => {
     if (textSearch.trim() === '') return;
@@ -68,13 +72,14 @@ const SearchBar = ({navigation}: Props) => {
             value={textSearch}
             onChangeText={setTextSearch}
             onEndEditing={handleSearch}
-            placeholder="Search"
+            placeholder={`Search in ${currentDropDown.title}`}
             placeholderTextColor="#CCCCD0"
           />
         </View>
         <Pressable
           onPress={() => {
             navigation.goBack();
+            dispatch(SetDirectionBottomBar('up'));
           }}>
           <Text
             style={{

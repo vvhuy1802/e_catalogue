@@ -17,6 +17,7 @@ import Favorite from './favorite';
 import Profile from './profile';
 import RoomIdea from './styleIdea';
 import SearchStack from './searchScreen';
+import CategoryStack from './category';
 
 const Stack = createNativeStackNavigator<HomeStackParamList>();
 const MainStack = () => {
@@ -34,7 +35,7 @@ const MainStack = () => {
         />
         <Stack.Screen
           name={CATEGORY}
-          component={Category}
+          component={CategoryStack}
           options={{
             headerShown: false,
             gestureEnabled: false,

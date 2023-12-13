@@ -39,6 +39,9 @@ import CardSlide from '../home/components/styleIdea/cardSlide';
 import {useSharedValue} from 'react-native-reanimated';
 import Card from '~/components/global/cart';
 import {TextStyle, TextFont} from '~/theme/textStyle';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {HomeStackParamList} from '~/types';
 
 type Retangle = {
   minX: number;
@@ -233,6 +236,7 @@ const StyleIdea = () => {
     },
   ];
   const [currentTab, setCurrentTab] = useState(1);
+  const navigation = useNavigation<StackNavigationProp<HomeStackParamList>>();
   return (
     // <ContainerView
     //   style={{
@@ -509,14 +513,13 @@ const StyleIdea = () => {
           }}
           showsVerticalScrollIndicator={false}>
           <Card />
-          <SearchHomeScreen title="Style ideas" />
+          <SearchHomeScreen navigation={navigation} title="Style ideas" />
           <View
             style={{
               marginTop: HeightSize(36),
               height: HeightSize(30),
             }}>
             <FlatList
-              style={{}}
               data={tabs}
               keyExtractor={item => item.id.toString()}
               horizontal

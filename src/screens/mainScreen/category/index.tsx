@@ -1,71 +1,54 @@
-import {StyleSheet, View} from 'react-native';
-import React, {useState} from 'react';
-import ContainerImage from '~/components/global/containerImage';
-import {images} from '~/assets';
-import {useDispatch} from 'react-redux';
-import {AppDispatch} from '~/app/store';
-import {SetCurrentDropDown} from '~/redux/reducers/globalSlice';
-import {HeightSize} from '~/theme/size';
-import CustomScrollView from '~/components/global/customScrollView';
-import DropDownComponent from '~/components/global/dropDown';
-import DropDown from '../home/components/dropDown';
-import HeaderSearch from '~/components/global/headerSearch';
-import CategoryList from './components/categoryList';
-import {useNavigation} from '@react-navigation/native';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {HomeStackParamList} from '~/types';
-import {DETAILSEARCHSCREEN, SEARCHSTACK} from '~/constants/routeNames';
+import React from 'react';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {
+  CATEGORYSCREEN,
+  DETAILCATEGORYSCREEN,
+  DETAILSEARCHSCREEN,
+  PRODUCTDETAILSCREEN,
+  PRODUCTSTACK,
+  SEARCHSCREEN,
+} from '~/constants/routeNames';
+import {CategoryStackParamList} from '~/types';
+import Category from './screens/categoryScreen';
+import DetailCategory from './screens/detailCategory';
+import ProductDetail from './screens/productDetail/screens/productDetail';
+import ProductStack from './screens/productDetail';
 
-const Category = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const navigation = useNavigation<StackNavigationProp<HomeStackParamList>>();
-
-  const [isShowDropDown, setIsShowDropDown] = useState<boolean>(false);
-
-  const dataCategory = [
-    {
-      id: '1',
-      name: 'Clothing',
-    },
-  ];
-
+const Stack = createNativeStackNavigator<CategoryStackParamList>();
+const CategoryStack = () => {
   return (
-    <ContainerImage
-      // isOpacity={true}
-      style={{flex: 1}}
-      resizeMode="cover"
-      source={images.home.BackgroundHome}>
-      <View
-        style={{
-          flex: 1,
-        }}>
-        <CustomScrollView
-          style={{
-            marginTop: HeightSize(10),
-          }}>
-          <DropDown setIsShow={setIsShowDropDown} />
-          <HeaderSearch
-            title="Category"
-            onPress={() => {
-              navigation.navigate(SEARCHSTACK, {
-                screen: 'SearchScreen',
-              });
-            }}
-          />
-          <CategoryList />
-        </CustomScrollView>
-      </View>
-      <DropDownComponent
-        isShow={isShowDropDown}
-        onPress={(item: any) => {
-          dispatch(SetCurrentDropDown(item));
-          setIsShowDropDown(false);
-        }}
-      />
-    </ContainerImage>
+    <>
+      <Stack.Navigator>
+        <Stack.Screen
+          name={CATEGORYSCREEN}
+          component={Category}
+          options={{
+            headerShown: false,
+            gestureEnabled: false,
+            animation: 'fade',
+          }}
+        />
+        <Stack.Screen
+          name={DETAILCATEGORYSCREEN}
+          component={DetailCategory}
+          options={{
+            headerShown: false,
+            gestureEnabled: false,
+            animation: 'slide_from_left',
+          }}
+        />
+        <Stack.Screen
+          name={PRODUCTSTACK}
+          component={ProductStack}
+          options={{
+            headerShown: false,
+            gestureEnabled: false,
+            animation: 'slide_from_left',
+          }}
+        />
+      </Stack.Navigator>
+    </>
   );
 };
 
-export default Category;
-
-const styles = StyleSheet.create({});
+export default CategoryStack;

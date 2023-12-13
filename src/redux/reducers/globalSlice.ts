@@ -13,7 +13,7 @@ const initialState = {
   currentDropDown: {
     id: 1,
     name: 'man',
-    title: 'Man',
+    title: 'Men',
     img: images.home.DropDownMan,
   },
   demoImage: null,

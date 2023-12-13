@@ -3,6 +3,9 @@ import React from 'react';
 import {IconSvg} from '~/components/global/iconSvg';
 import {HeightSize, WidthSize} from '~/theme/size';
 import {TextStyle, TextFont} from '~/theme/textStyle';
+import {useDispatch} from 'react-redux';
+import {AppDispatch} from '~/app/store';
+import {SetDirectionBottomBar} from '~/redux/reducers/globalSlice';
 
 type HeaderSearchProps = {
   title: string;
@@ -10,6 +13,7 @@ type HeaderSearchProps = {
 };
 
 const HeaderSearch: React.FC<HeaderSearchProps> = ({title, onPress}) => {
+  const dispatch = useDispatch<AppDispatch>();
   return (
     <View
       style={{
@@ -29,7 +33,10 @@ const HeaderSearch: React.FC<HeaderSearchProps> = ({title, onPress}) => {
         {title}
       </Text>
       <Pressable
-        onPress={onPress}
+        onPress={() => {
+          dispatch(SetDirectionBottomBar('down'));
+          onPress();
+        }}
         style={{
           width: WidthSize(100),
           height: WidthSize(80),

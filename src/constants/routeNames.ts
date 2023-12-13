@@ -13,3 +13,10 @@ export const SEARCHSTACK = 'SearchStack';
 
 export const SEARCHSCREEN = 'SearchScreen';
 export const DETAILSEARCHSCREEN = 'DetailSearchScreen';
+
+export const CATEGORYSCREEN = 'CategoryScreen';
+
+export const PRODUCTSTACK = 'ProductStack';
+export const DETAILCATEGORYSCREEN = 'DetailCategoryScreen';
+export const PRODUCTDETAILSCREEN = 'ProductDetailScreen';
+export const REVIEWDETAIL = 'ReviewDetail';

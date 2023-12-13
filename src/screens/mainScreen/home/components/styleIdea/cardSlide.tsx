@@ -171,8 +171,8 @@ const CardSlide = () => {
             },
           )}
           contentContainerStyle={{
-            marginLeft: width / 2 - cardWidth / 2 - WidthSize(55),
-            paddingRight: width / 2 - WidthSize(35),
+            marginLeft: width / 2 - (cardWidth * 2) / 3,
+            paddingRight: width / 2,
           }}
           initialScrollIndex={visibleIndex}
           snapToInterval={cardWidth}

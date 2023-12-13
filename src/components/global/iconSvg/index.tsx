@@ -1,6 +1,6 @@
 import React from 'react';
 import {HeightSize} from '~/theme/size';
-import {Pressable, View} from 'react-native';
+import {Pressable, StyleProp, View, ViewStyle} from 'react-native';
 
 import IconCloseBrown from '~/assets/icons/ic_close_brown.svg';
 import IconSearchBrown from '~/assets/icons/ic_search_brown.svg';
@@ -23,6 +23,19 @@ import IconEyeHide from '~/assets/icons/ic_eye_hide.svg';
 import IconCheck from '~/assets/icons/ic_check.svg';
 import IconDropDown from '~/assets/icons/ic_dropdown_black.svg';
 import IconClock from '~/assets/icons/ic_clock_black.svg';
+import IconArrowLeftBlack from '~/assets/icons/ic_arrow_left_black.svg';
+import IconFilterBlack from '~/assets/icons/ic_filter_black.svg';
+import IconCloseBlack from '~/assets/icons/ic_close_black.svg';
+import IconArrowUpBlack from '~/assets/icons/ic_arrow_up_black.svg';
+import IconArrowDownBlack from '~/assets/icons/ic_arrow_down_black.svg';
+import IconUnCheckBlack from '~/assets/icons/ic_uncheck_black.svg';
+import IconCheckedBlack from '~/assets/icons/ic_checked_black.svg';
+import IconCloseBoldBrown from '~/assets/icons/ic_close_bold_brown.svg';
+import IconStarYellow from '~/assets/icons/ic_star_yellow.svg';
+import IconStarBrown from '~/assets/icons/ic_star_brown.svg';
+import IconPlusBrown from '~/assets/icons/ic_plus_brown.svg';
+import IconStarBrownOutline from '~/assets/icons/ic_star_brown_outline.svg';
+import IconBagWhite from '~/assets/icons/ic_bag_white.svg';
 interface IconSvgProps {
   icon:
     | 'IconCloseBrown'
@@ -45,11 +58,25 @@ interface IconSvgProps {
     | 'IconEyeShow'
     | 'IconEyeHide'
     | 'IconDropDown'
-    | 'IconClock';
+    | 'IconClock'
+    | 'IconArrowLeftBlack'
+    | 'IconFilterBlack'
+    | 'IconCloseBlack'
+    | 'IconArrowUpBlack'
+    | 'IconArrowDownBlack'
+    | 'IconUnCheckBlack'
+    | 'IconCheckedBlack'
+    | 'IconCloseBoldBrown'
+    | 'IconStarYellow'
+    | 'IconStarBrown'
+    | 'IconPlusBrown'
+    | 'IconStarBrownOutline'
+    | 'IconBagWhite';
 
   width?: number;
   height?: number;
   onPress?: () => void;
+  style?: StyleProp<ViewStyle>;
 }
 
 export type IconSvgType = IconSvgProps['icon'];
@@ -76,6 +103,19 @@ const svgComponents: Record<string, React.ComponentType> = {
   IconEyeHide,
   IconDropDown,
   IconClock,
+  IconArrowLeftBlack,
+  IconFilterBlack,
+  IconCloseBlack,
+  IconArrowUpBlack,
+  IconArrowDownBlack,
+  IconUnCheckBlack,
+  IconCheckedBlack,
+  IconCloseBoldBrown,
+  IconStarYellow,
+  IconStarBrown,
+  IconPlusBrown,
+  IconStarBrownOutline,
+  IconBagWhite,
 };
 
 interface Svg {
@@ -94,14 +134,17 @@ export const IconSvg: React.FC<IconSvgProps> = ({
   width = HeightSize(24),
   height = HeightSize(24),
   onPress,
+  style,
 }) => {
   const iconComponent = (
     <SvgComponent width={width} height={height} icon={icon} />
   );
 
   return onPress ? (
-    <Pressable onPress={onPress}>{iconComponent}</Pressable>
+    <Pressable style={[{width, height}, style]} onPress={onPress}>
+      {iconComponent}
+    </Pressable>
   ) : (
-    <View style={{width, height}}>{iconComponent}</View>
+    <View style={[{width, height}, style]}>{iconComponent}</View>
   );
 };

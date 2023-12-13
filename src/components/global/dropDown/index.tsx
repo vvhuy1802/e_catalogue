@@ -27,7 +27,7 @@ const DropDownComponent = ({
     {
       id: 1,
       name: 'man',
-      title: 'Man',
+      title: 'Men',
       img: images.home.DropDownMan,
     },
     {
@@ -65,28 +65,26 @@ const DropDownComponent = ({
           style,
         ]}>
         {dataDropDown.map((item, index) => {
-          return (
-            item.id !== currentDropDown.id && (
-              <Pressable
-                onPress={() => {
-                  onPress(item);
-                }}
-                key={index}
+          return item.id !== currentDropDown.id ? (
+            <Pressable
+              onPress={() => {
+                onPress(item);
+              }}
+              key={index}
+              style={{
+                padding: HeightSize(8),
+                width: HeightSize(160),
+              }}>
+              <Image
+                source={item.img}
                 style={{
-                  padding: HeightSize(8),
-                  width: HeightSize(160),
-                }}>
-                <Image
-                  source={item.img}
-                  style={{
-                    width: HeightSize(64),
-                    height: HeightSize(64),
-                    borderRadius: 40,
-                  }}
-                />
-              </Pressable>
-            )
-          );
+                  width: HeightSize(64),
+                  height: HeightSize(64),
+                  borderRadius: 40,
+                }}
+              />
+            </Pressable>
+          ) : null;
         })}
       </View>
     )

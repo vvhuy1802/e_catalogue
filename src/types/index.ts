@@ -12,9 +12,22 @@ import {
   SEARCHSCREEN,
   SURVEY,
   DETAILSEARCHSCREEN,
+  CATEGORYSCREEN,
+  DETAILCATEGORYSCREEN,
+  PRODUCTDETAILSCREEN,
+  PRODUCTSTACK,
+  REVIEWDETAIL,
 } from '~/constants/routeNames';
 
 export type LoadingState = 'idle' | 'pending' | 'fulfilled' | 'rejected';
+
+export type Normalized<T, B> = {
+  //normalize data
+  ids: T[];
+  entities: {
+    [key: number]: B;
+  };
+};
 
 export type APIResponse<T> = {
   status: number;
@@ -47,4 +60,19 @@ export type SearchStackParamList = {
   [DETAILSEARCHSCREEN]: {
     searchQuery?: string;
   };
+};
+
+export type CategoryStackParamList = {
+  [CATEGORYSCREEN]: undefined;
+  [DETAILCATEGORYSCREEN]: {
+    categoryId?: string;
+  };
+  [PRODUCTSTACK]: NavigatorScreenParams<ProductDetailStackParamList>;
+};
+
+export type ProductDetailStackParamList = {
+  [PRODUCTDETAILSCREEN]: {
+    productId?: string;
+  };
+  [REVIEWDETAIL]: undefined;
 };

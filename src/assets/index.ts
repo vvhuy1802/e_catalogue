@@ -40,5 +40,9 @@ export const images = {
     MenClothing: require('~/assets/images/category/img_category_men_clothing.png'),
     MenSuits: require('~/assets/images/category/img_category_men_suits.png'),
     MenAccessories: require('~/assets/images/category/img_category_men_accessories.png'),
+    products: {
+      LineLeftPrd: require('~/assets/images/category/products/line_left_prd.png'),
+      LineRightPrd: require('~/assets/images/category/products/line_right_prd.png'),
+    },
   },
 };
