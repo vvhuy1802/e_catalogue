@@ -4,6 +4,7 @@ import {HeightSize, WidthSize, width} from '~/theme/size';
 import {images} from '~/assets';
 import {TextFont, TextStyle} from '~/theme/textStyle';
 import {IconSvg} from '~/components/global/iconSvg';
+import PrimaryHeart from '~/components/global/primaryHeart';
 
 const MayULike = () => {
   const dataListItems = [
@@ -157,24 +158,17 @@ const MayULike = () => {
                 }}>
                 {item.price}
               </Text>
-              <View
-                style={{
+              <PrimaryHeart
+                styleView={{
                   position: 'absolute',
-                  backgroundColor: 'white',
-                  borderRadius: 100,
                   width: WidthSize(36),
                   height: WidthSize(36),
                   bottom: HeightSize(12),
                   right: HeightSize(16),
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                <IconSvg
-                  icon="IconHeartGray"
-                  width={WidthSize(16)}
-                  height={WidthSize(16)}
-                />
-              </View>
+                }}
+                widthIcon={WidthSize(16)}
+                heightIcon={WidthSize(16)}
+              />
             </Pressable>
           );
         }}

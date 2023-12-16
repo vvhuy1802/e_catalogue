@@ -26,6 +26,7 @@ import {IconSvg} from '~/components/global/iconSvg';
 import {TextStyle, TextFont} from '~/theme/textStyle';
 import CategoryFilter from '../components/categoryFilter';
 import HeaderProduct from '~/components/global/headerProduct';
+import PrimaryHeart from '~/components/global/primaryHeart';
 
 type Props = {
   route: RouteProp<CategoryStackParamList, 'DetailCategoryScreen'>;
@@ -432,24 +433,17 @@ const DetailCategory = ({route}: Props) => {
                   }}>
                   {item.price}
                 </Text>
-                <View
-                  style={{
+                <PrimaryHeart
+                  styleView={{
                     position: 'absolute',
-                    backgroundColor: 'white',
-                    borderRadius: 100,
                     width: WidthSize(36),
                     height: WidthSize(36),
                     bottom: HeightSize(12),
                     right: HeightSize(16),
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}>
-                  <IconSvg
-                    icon="IconHeartGray"
-                    width={WidthSize(16)}
-                    height={WidthSize(16)}
-                  />
-                </View>
+                  }}
+                  widthIcon={WidthSize(16)}
+                  heightIcon={WidthSize(16)}
+                />
               </Pressable>
             );
           })}

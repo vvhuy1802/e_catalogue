@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, Dimensions, Animated, Pressable} from 'react-native';
 import {IconSvg} from '~/components/global/iconSvg';
+import PrimaryHeart from '~/components/global/primaryHeart';
 import {HeightSize, WidthSize} from '~/theme/size';
 
 export const SLIDER_WIDTH = Dimensions.get('window').width + 80;
@@ -88,24 +89,17 @@ const CardItem = ({item, index, scrollX, onPress}: CardItemProps) => {
             borderRadius: 24,
           }}
         />
-        <View
-          style={{
+        <PrimaryHeart
+          styleView={{
             position: 'absolute',
-            backgroundColor: 'white',
-            borderRadius: 100,
             width: WidthSize(44),
             height: WidthSize(44),
             bottom: WidthSize(20),
             right: WidthSize(20),
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-          <IconSvg
-            icon="IconHeartGray"
-            width={WidthSize(20)}
-            height={WidthSize(20)}
-          />
-        </View>
+          }}
+          widthIcon={WidthSize(20)}
+          heightIcon={WidthSize(20)}
+        />
       </Animated.View>
     </Pressable>
   );

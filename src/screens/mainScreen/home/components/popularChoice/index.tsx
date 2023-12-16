@@ -5,6 +5,7 @@ import {Icon} from 'react-native-paper';
 import {IconSvg} from '~/components/global/iconSvg';
 import {TextFont, TextStyle} from '~/theme/textStyle';
 import {images} from '~/assets';
+import PrimaryHeart from '~/components/global/primaryHeart';
 
 const PopularChoice = () => {
   const data = [
@@ -136,21 +137,7 @@ const PopularChoice = () => {
                   {item.price}
                 </Text>
               </View>
-              <View
-                style={{
-                  backgroundColor: 'white',
-                  borderRadius: 100,
-                  width: HeightSize(44),
-                  height: HeightSize(44),
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                <IconSvg
-                  icon="IconHeartGray"
-                  width={HeightSize(20)}
-                  height={HeightSize(20)}
-                />
-              </View>
+              <PrimaryHeart />
             </View>
           );
         })}

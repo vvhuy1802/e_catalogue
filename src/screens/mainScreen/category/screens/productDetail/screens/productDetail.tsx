@@ -23,6 +23,7 @@ import {TextFont, TextStyle} from '~/theme/textStyle';
 import Review from '../../../components/productDetail/Review';
 import Seller from '../../../components/productDetail/Seller';
 import MayULike from '../../../components/productDetail/MayULike';
+import PrimaryHeart from '~/components/global/primaryHeart';
 
 type Props = {
   route: RouteProp<ProductDetailStackParamList, 'ProductDetailScreen'>;
@@ -167,24 +168,18 @@ const ProductDetail = ({route}: Props) => {
             </ScrollView>
 
             {renderDots()}
-            <View
-              style={{
+            <PrimaryHeart
+              styleView={{
                 position: 'absolute',
-                backgroundColor: 'white',
-                borderRadius: 100,
+
                 width: WidthSize(44),
                 height: WidthSize(44),
                 top: WidthSize(20),
                 right: WidthSize(20),
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-              <IconSvg
-                icon="IconHeartGray"
-                width={WidthSize(20)}
-                height={WidthSize(20)}
-              />
-            </View>
+              }}
+              widthIcon={WidthSize(20)}
+              heightIcon={WidthSize(20)}
+            />
             <View
               style={{
                 width: HeightSize(188),

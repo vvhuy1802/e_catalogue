@@ -5,6 +5,7 @@ import {HeightSize, WidthSize} from '~/theme/size';
 import {TextStyle, TextFont} from '~/theme/textStyle';
 import {images} from '~/assets';
 import BlurBackground from '~/components/global/blurBackground';
+import PrimaryHeart from '~/components/global/primaryHeart';
 
 const HotLooks = () => {
   const data = [
@@ -103,24 +104,17 @@ const HotLooks = () => {
                   alignItems: 'flex-end',
                   justifyContent: 'flex-end',
                 }}>
-                <View
-                  style={{
-                    backgroundColor: 'white',
-                    borderRadius: 100,
+                <PrimaryHeart
+                  styleView={{
+                    position: 'absolute',
                     width: HeightSize(36),
                     height: HeightSize(36),
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    position: 'absolute',
                     top: HeightSize(12),
                     right: WidthSize(12),
-                  }}>
-                  <IconSvg
-                    icon="IconHeartGray"
-                    width={HeightSize(16)}
-                    height={HeightSize(16)}
-                  />
-                </View>
+                  }}
+                  widthIcon={HeightSize(16)}
+                  heightIcon={HeightSize(16)}
+                />
                 <View
                   style={{
                     height: HeightSize(60),

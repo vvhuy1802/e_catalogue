@@ -31,6 +31,7 @@ import {StackNavigationProp} from '@react-navigation/stack';
 import {HomeStackParamList, StyleIdeaStackParamList} from '~/types';
 import {IconSvg} from '~/components/global/iconSvg';
 import SearchHomeScreen from '../../home/components/search';
+import PrimaryHeart from '~/components/global/primaryHeart';
 
 type Retangle = {
   minX: number;
@@ -646,24 +647,17 @@ const StyleIdea = () => {
                   source={{
                     uri: item.img,
                   }}>
-                  <View
-                    style={{
+                  <PrimaryHeart
+                    styleView={{
                       position: 'absolute',
-                      backgroundColor: 'white',
-                      borderRadius: 100,
-                      width: WidthSize(36),
-                      height: WidthSize(36),
                       bottom: HeightSize(12),
                       right: HeightSize(16),
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}>
-                    <IconSvg
-                      icon="IconHeartGray"
-                      width={WidthSize(16)}
-                      height={WidthSize(16)}
-                    />
-                  </View>
+                      width: WidthSize(36),
+                      height: WidthSize(36),
+                    }}
+                    widthIcon={WidthSize(16)}
+                    heightIcon={WidthSize(16)}
+                  />
                 </ImageBackground>
               </Pressable>
             ))}
