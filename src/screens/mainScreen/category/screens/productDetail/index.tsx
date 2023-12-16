@@ -1,6 +1,10 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {PRODUCTDETAILSCREEN, REVIEWDETAIL} from '~/constants/routeNames';
+import {
+  ORDERSTACK,
+  PRODUCTDETAILSCREEN,
+  REVIEWDETAIL,
+} from '~/constants/routeNames';
 import {ProductDetailStackParamList} from '~/types';
 import ProductDetail from './screens/productDetail';
 import ReviewDetail from './screens/reviewDetail';
@@ -16,7 +20,7 @@ const ProductStack = () => {
           options={{
             headerShown: false,
             gestureEnabled: false,
-            animation: 'slide_from_left',
+            animation: 'fade',
           }}
         />
         <Stack.Screen

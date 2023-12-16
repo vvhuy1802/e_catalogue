@@ -3,16 +3,24 @@ import React from 'react';
 import {IconSvg} from '~/components/global/iconSvg';
 import {WidthSize, HeightSize} from '~/theme/size';
 import {TextStyle, TextFont} from '~/theme/textStyle';
-import {images} from '~/assets';
-import {selectCurrentDropDown} from '~/redux/reducers/globalSlice';
-import {useSelector} from 'react-redux';
+import {
+  SetDirectionBottomBar,
+  selectCurrentDropDown,
+} from '~/redux/reducers/globalSlice';
+import {useDispatch, useSelector} from 'react-redux';
+import {HomeStackParamList} from '~/types';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {useNavigation} from '@react-navigation/native';
+import {AppDispatch} from '~/app/store';
 
 type DropDownProps = {
   setIsShow: (isShow: boolean) => void;
 };
 const DropDown = ({setIsShow}: DropDownProps) => {
   const currentDropDown = useSelector(selectCurrentDropDown);
-
+  const navigationCategory =
+    useNavigation<StackNavigationProp<HomeStackParamList>>();
+  const dispatch = useDispatch<AppDispatch>();
   return (
     <View
       style={{
@@ -63,7 +71,13 @@ const DropDown = ({setIsShow}: DropDownProps) => {
         </View>
       </Pressable>
 
-      <View
+      <Pressable
+        onPress={() => {
+          dispatch(SetDirectionBottomBar('down'));
+          navigationCategory.navigate('OrderStack', {
+            screen: 'MyBag',
+          });
+        }}
         style={{
           width: HeightSize(76),
           height: HeightSize(76),
@@ -73,40 +87,31 @@ const DropDown = ({setIsShow}: DropDownProps) => {
           alignItems: 'center',
         }}>
         <IconSvg icon="IconBagBlack" />
+
         <View
           style={{
             position: 'absolute',
             justifyContent: 'center',
             alignItems: 'center',
-            top: HeightSize(18),
-            right: WidthSize(22),
             width: WidthSize(16),
             height: WidthSize(16),
             borderRadius: 100,
-            backgroundColor: '#F1EFE9',
+            backgroundColor: '#433229',
+            borderWidth: 2,
+            borderColor: 'F9F6E8',
+            top: HeightSize(15),
+            right: HeightSize(20),
           }}>
-          <View
+          <Text
             style={{
-              position: 'absolute',
-              justifyContent: 'center',
-              alignItems: 'center',
-              width: WidthSize(14),
-              height: WidthSize(14),
-              borderRadius: 100,
-              backgroundColor: '#433229',
+              color: 'white',
+              ...TextStyle.XS,
+              ...TextFont.SMedium,
             }}>
-            <Text
-              style={{
-                color: 'white',
-                fontSize: HeightSize(9),
-                lineHeight: HeightSize(11),
-                ...TextFont.SMedium,
-              }}>
-              2
-            </Text>
-          </View>
+            2
+          </Text>
         </View>
-      </View>
+      </Pressable>
     </View>
   );
 };

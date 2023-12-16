@@ -19,11 +19,13 @@ import {
 import {images} from '~/assets';
 import {AppDispatch} from '~/app/store';
 import Animated, {Layout} from 'react-native-reanimated';
+import FastImage from 'react-native-fast-image';
 
 type Props = {
   style?: StyleProp<ViewStyle>;
+  onCartPress?: () => void;
 };
-const Cart = ({style}: Props) => {
+const Cart = ({style, onCartPress}: Props) => {
   const currentDropDown = useSelector(selectCurrentDropDown);
   const dispatch = useDispatch<AppDispatch>();
   const [isShowDropDown, setIsShowDropDown] = useState<boolean>(false);
@@ -64,6 +66,7 @@ const Cart = ({style}: Props) => {
             justifyContent: 'flex-end',
             height: HeightSize(30),
             paddingHorizontal: HeightSize(20),
+            alignItems: 'center',
           },
           style,
         ]}>
@@ -76,39 +79,36 @@ const Cart = ({style}: Props) => {
           }}>
           <IconSvg
             icon="IconDropDown"
-            width={HeightSize(16)}
-            height={HeightSize(16)}
+            width={HeightSize(20)}
+            height={HeightSize(20)}
           />
           <Text
             style={{
               color: '#3B3021',
-              ...TextStyle.Base,
+              ...TextStyle.LG,
               ...TextFont.SBold,
               marginLeft: HeightSize(8),
             }}>
             {currentDropDown.title}
           </Text>
         </Pressable>
-        <View
+        <Pressable
+          onPress={onCartPress}
           style={{
             width: HeightSize(24),
-            height: HeightSize(28),
+            height: HeightSize(36),
             justifyContent: 'flex-end',
             alignItems: 'center',
             marginLeft: HeightSize(24),
           }}>
-          <IconSvg
-            icon="IconBagBlack"
-            width={HeightSize(20)}
-            height={HeightSize(20)}
-          />
+          <IconSvg icon="IconBagBlack" />
           <View
             style={{
               position: 'absolute',
-              top: 0,
-              right: 0,
-              width: HeightSize(14),
-              height: HeightSize(14),
+              top: HeightSize(4),
+              right: -HeightSize(8),
+              width: HeightSize(20),
+              height: HeightSize(20),
               borderRadius: 10,
               backgroundColor: 'white',
               padding: HeightSize(2),
@@ -124,17 +124,18 @@ const Cart = ({style}: Props) => {
               <Text
                 style={{
                   color: 'white',
-                  ...TextStyle.SuperXS,
+                  ...TextStyle.XS,
                   ...TextFont.SLight,
                 }}>
                 2
               </Text>
             </View>
           </View>
-        </View>
+        </Pressable>
       </View>
       {isShowDropDown && (
         <Pressable
+          key={currentDropDown.id}
           onPress={() => {
             setIsShowDropDown(false);
           }}
@@ -194,7 +195,7 @@ const Cart = ({style}: Props) => {
                           alignItems: 'center',
                           flexDirection: 'row',
                         }}>
-                        <Image
+                        <FastImage
                           source={item.img}
                           style={{
                             width: HeightSize(40),

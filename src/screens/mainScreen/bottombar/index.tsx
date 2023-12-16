@@ -36,7 +36,7 @@ const BottomBar = () => {
       icon: 'IconCategory',
       iconFocused: 'IconCategoryFocused',
       onPress: () => {
-        naviation.navigate('Category');
+        naviation.navigate('Category', {screen: 'CategoryScreen'});
         setCurrentTab('Category');
       },
     },
@@ -45,7 +45,9 @@ const BottomBar = () => {
       icon: 'IconRoomIdea',
       iconFocused: 'IconRoomIdeaFocused',
       onPress: () => {
-        naviation.navigate('RoomIdea');
+        naviation.navigate('StyleIdeaStack', {
+          screen: 'StyleIdea',
+        });
         setCurrentTab('Room Idea');
       },
     },

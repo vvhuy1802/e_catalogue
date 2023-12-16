@@ -7,7 +7,7 @@ import {
   LOGIN,
   MAINSTACK,
   PROFILE,
-  ROOMIDEA,
+  STYLEIDEA,
   SEARCHSTACK,
   SEARCHSCREEN,
   SURVEY,
@@ -17,6 +17,13 @@ import {
   PRODUCTDETAILSCREEN,
   PRODUCTSTACK,
   REVIEWDETAIL,
+  MYBAG,
+  ORDERSTACK,
+  CONFIRMORDER,
+  EDITADDRESS,
+  ADDADDRESS,
+  STYLEDETAIL,
+  STYLEIDEASTACK,
 } from '~/constants/routeNames';
 
 export type LoadingState = 'idle' | 'pending' | 'fulfilled' | 'rejected';
@@ -49,16 +56,24 @@ export type AuthenticationStackParamList = {
 export type HomeStackParamList = {
   [HOME]: undefined;
   [PROFILE]: undefined;
-  [CATEGORY]: undefined;
+  [CATEGORY]: NavigatorScreenParams<CategoryStackParamList>;
   [FAVORITE]: undefined;
-  [ROOMIDEA]: undefined;
+  [STYLEIDEASTACK]: NavigatorScreenParams<StyleIdeaStackParamList>;
   [SEARCHSTACK]: NavigatorScreenParams<SearchStackParamList>;
+  [ORDERSTACK]: NavigatorScreenParams<OrderStackParamList>;
 };
 
 export type SearchStackParamList = {
   [SEARCHSCREEN]: undefined;
   [DETAILSEARCHSCREEN]: {
     searchQuery?: string;
+  };
+};
+
+export type StyleIdeaStackParamList = {
+  [STYLEIDEA]: undefined;
+  [STYLEDETAIL]: {
+    styleId?: string;
   };
 };
 
@@ -75,4 +90,11 @@ export type ProductDetailStackParamList = {
     productId?: string;
   };
   [REVIEWDETAIL]: undefined;
+};
+
+export type OrderStackParamList = {
+  [MYBAG]: undefined;
+  [CONFIRMORDER]: undefined;
+  [EDITADDRESS]: undefined;
+  [ADDADDRESS]: undefined;
 };

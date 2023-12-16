@@ -7,7 +7,7 @@ export const SURVEY = 'Survey';
 export const HOME = 'Home';
 export const PROFILE = 'Profile';
 export const CATEGORY = 'Category';
-export const ROOMIDEA = 'RoomIdea';
+export const STYLEIDEA = 'StyleIdea';
 export const FAVORITE = 'Favorite';
 export const SEARCHSTACK = 'SearchStack';
 
@@ -20,3 +20,12 @@ export const PRODUCTSTACK = 'ProductStack';
 export const DETAILCATEGORYSCREEN = 'DetailCategoryScreen';
 export const PRODUCTDETAILSCREEN = 'ProductDetailScreen';
 export const REVIEWDETAIL = 'ReviewDetail';
+
+export const ORDERSTACK = 'OrderStack';
+export const MYBAG = 'MyBag';
+export const CONFIRMORDER = 'ConfirmOrder';
+export const EDITADDRESS = 'EditAddress';
+export const ADDADDRESS = 'AddAddress';
+
+export const STYLEIDEASTACK = 'StyleIdeaStack';
+export const STYLEDETAIL = 'StyleDetail';

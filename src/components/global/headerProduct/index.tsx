@@ -4,14 +4,24 @@ import navigation from '~/navigation';
 import {SetDirectionBottomBar} from '~/redux/reducers/globalSlice';
 import {HeightSize, WidthSize} from '~/theme/size';
 import {TextStyle, TextFont} from '~/theme/textStyle';
-import {IconSvg} from '../iconSvg';
+import {IconSvg, IconSvgType} from '../iconSvg';
 
 type Props = {
   onPressBack: () => void;
+  onPressRightIcon?: () => void;
   title?: string;
   showBag?: boolean;
+  typeRightIcon?: IconSvgType;
+  children?: React.ReactNode;
 };
-const HeaderProduct = ({onPressBack, title, showBag = true}: Props) => {
+const HeaderProduct = ({
+  onPressBack,
+  onPressRightIcon,
+  title,
+  showBag = true,
+  typeRightIcon = 'IconBagBlack',
+  children,
+}: Props) => {
   return (
     <View
       style={{
@@ -39,24 +49,38 @@ const HeaderProduct = ({onPressBack, title, showBag = true}: Props) => {
           height={HeightSize(32)}
         />
       </Pressable>
-      <View
-        style={{
-          position: 'absolute',
-          height: HeightSize(50),
-          width: '100%',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-        <Text
+      {title !== '' ? (
+        <View
           style={{
-            ...TextStyle.text4XL,
-            ...TextFont.GRegular,
-            color: '#3B3021',
-            marginTop: HeightSize(10),
+            position: 'absolute',
+            height: HeightSize(50),
+            width: '100%',
+            justifyContent: 'center',
+            alignItems: 'center',
           }}>
-          {title}
-        </Text>
-      </View>
+          <Text
+            style={{
+              ...TextStyle.text4XL,
+              ...TextFont.GRegular,
+              color: '#3B3021',
+              marginTop: HeightSize(10),
+            }}>
+            {title}
+          </Text>
+        </View>
+      ) : (
+        <View
+          style={{
+            position: 'absolute',
+            height: HeightSize(50),
+            width: '100%',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          {children}
+        </View>
+      )}
+
       <View
         style={{
           display: showBag ? 'flex' : 'none',
@@ -67,38 +91,40 @@ const HeaderProduct = ({onPressBack, title, showBag = true}: Props) => {
           marginRight: WidthSize(20),
           zIndex: 99,
         }}>
-        <IconSvg icon="IconBagBlack" />
-        <View
-          style={{
-            position: 'absolute',
-            top: 0,
-            right: -HeightSize(5),
-            width: HeightSize(20),
-            height: HeightSize(20),
-            borderRadius: 10,
-            backgroundColor: 'white',
-            padding: HeightSize(2),
-          }}>
+        <IconSvg onPress={onPressRightIcon} icon={typeRightIcon} />
+        {typeRightIcon === 'IconBagBlack' && (
           <View
             style={{
-              width: '100%',
-              height: '100%',
-              justifyContent: 'center',
-              alignItems: 'center',
-              backgroundColor: '#433229',
+              position: 'absolute',
+              top: 0,
+              right: -HeightSize(5),
+              width: HeightSize(20),
+              height: HeightSize(20),
               borderRadius: 10,
+              backgroundColor: 'white',
+              padding: HeightSize(2),
             }}>
-            <Text
+            <View
               style={{
-                color: 'white',
-                ...TextStyle.SuperXS,
-                ...TextFont.SLight,
-                textAlign: 'center',
+                width: '100%',
+                height: '100%',
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: '#433229',
+                borderRadius: 10,
               }}>
-              2
-            </Text>
+              <Text
+                style={{
+                  color: 'white',
+                  ...TextStyle.SuperXS,
+                  ...TextFont.SLight,
+                  textAlign: 'center',
+                }}>
+                2
+              </Text>
+            </View>
           </View>
-        </View>
+        )}
       </View>
     </View>
   );

@@ -11,9 +11,17 @@ import {HomeStackParamList} from '~/types';
 import {SEARCHSTACK} from '~/constants/routeNames';
 import Cart from '~/components/global/cart';
 import CategoryList from '../components/categoryList';
+import {useDispatch} from 'react-redux';
+import {AppDispatch} from '~/app/store';
+import {SetDirectionBottomBar} from '~/redux/reducers/globalSlice';
 
 const Category = () => {
   const navigation = useNavigation<StackNavigationProp<HomeStackParamList>>();
+  const dispatch = useDispatch<AppDispatch>();
+  const handlePressCart = () => {
+    dispatch(SetDirectionBottomBar('down'));
+    navigation.navigate('OrderStack', {screen: 'MyBag'});
+  };
   return (
     <ContainerImage
       // isOpacity={true}
@@ -28,7 +36,7 @@ const Category = () => {
           style={{
             marginTop: HeightSize(10),
           }}>
-          <Cart />
+          <Cart onCartPress={handlePressCart} />
           <HeaderSearch
             title="Category"
             onPress={() => {

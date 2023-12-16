@@ -52,41 +52,49 @@ const DropDownComponent = ({
   const currentDropDown = useSelector(selectCurrentDropDown);
   return (
     isShow && (
-      <View
-        style={[
-          {
-            width: HeightSize(160),
-            backgroundColor: '#F0EEE8',
-            borderRadius: 20,
-            position: 'absolute',
-            marginTop: HeightSize(150),
-            marginLeft: WidthSize(32),
-          },
-          style,
-        ]}>
-        {dataDropDown.map((item, index) => {
-          return item.id !== currentDropDown.id ? (
-            <Pressable
-              onPress={() => {
-                onPress(item);
-              }}
-              key={index}
-              style={{
-                padding: HeightSize(8),
-                width: HeightSize(160),
-              }}>
-              <Image
-                source={item.img}
-                style={{
-                  width: HeightSize(64),
-                  height: HeightSize(64),
-                  borderRadius: 40,
+      <Pressable
+        onPress={() => onPress(currentDropDown)}
+        style={{
+          position: 'absolute',
+          width: '100%',
+          height: '100%',
+        }}>
+        <View
+          style={[
+            {
+              width: HeightSize(160),
+              backgroundColor: '#F0EEE8',
+              borderRadius: 20,
+              position: 'absolute',
+              marginTop: HeightSize(150),
+              marginLeft: WidthSize(32),
+            },
+            style,
+          ]}>
+          {dataDropDown.map((item, index) => {
+            return item.id !== currentDropDown.id ? (
+              <Pressable
+                onPress={() => {
+                  onPress(item);
                 }}
-              />
-            </Pressable>
-          ) : null;
-        })}
-      </View>
+                key={index}
+                style={{
+                  padding: HeightSize(8),
+                  width: HeightSize(160),
+                }}>
+                <Image
+                  source={item.img}
+                  style={{
+                    width: HeightSize(64),
+                    height: HeightSize(64),
+                    borderRadius: 40,
+                  }}
+                />
+              </Pressable>
+            ) : null;
+          })}
+        </View>
+      </Pressable>
     )
   );
 };

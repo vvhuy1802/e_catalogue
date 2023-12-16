@@ -5,19 +5,22 @@ import {
   FAVORITE,
   HOME,
   PROFILE,
-  ROOMIDEA,
   SEARCHSTACK,
   SEARCHSCREEN,
+  ORDERSTACK,
+  STYLEIDEA,
+  STYLEIDEASTACK,
 } from '~/constants/routeNames';
 import HomeScrren from './home';
 import {HomeStackParamList} from '~/types';
 import BottomBar from './bottombar';
-import Category from './category';
 import Favorite from './favorite';
 import Profile from './profile';
-import RoomIdea from './styleIdea';
 import SearchStack from './searchScreen';
 import CategoryStack from './category';
+import OrderStack from './category/screens/order';
+import StyleIdea from './styleIdea/screens/styleIdea';
+import StyleIdeaStack from './styleIdea';
 
 const Stack = createNativeStackNavigator<HomeStackParamList>();
 const MainStack = () => {
@@ -43,8 +46,8 @@ const MainStack = () => {
           }}
         />
         <Stack.Screen
-          name={ROOMIDEA}
-          component={RoomIdea}
+          name={STYLEIDEASTACK}
+          component={StyleIdeaStack}
           options={{
             headerShown: false,
             gestureEnabled: false,
@@ -76,6 +79,15 @@ const MainStack = () => {
             headerShown: false,
             gestureEnabled: false,
             animation: 'fade_from_bottom',
+          }}
+        />
+        <Stack.Screen
+          name={ORDERSTACK}
+          component={OrderStack}
+          options={{
+            headerShown: false,
+            gestureEnabled: false,
+            animation: 'fade',
           }}
         />
       </Stack.Navigator>

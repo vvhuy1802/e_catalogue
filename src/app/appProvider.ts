@@ -1,11 +1,16 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {STORE_KEYS} from '../constants/storeKeys';
-import {LoginParams, LoginResponse} from '~/types/auth';
+import {
+  LoginParams,
+  LoginResponse,
+  NormalizedLocationVietNam,
+} from '~/types/auth';
 
 let _isShowOnBoard: boolean = false;
 let _token: LoginResponse | null = null;
 let _dataLogin: LoginParams | null = null;
 let _historySearch: string[] = [];
+let _locationVietNam: NormalizedLocationVietNam | null = null;
 
 class AppProvider {
   static setIsShowOnBoard = async () => {
@@ -91,6 +96,30 @@ class AppProvider {
       } catch (error) {}
     }
     return _historySearch;
+  };
+
+  static setLocationVietNam = async (
+    locationVietNam: NormalizedLocationVietNam,
+  ) => {
+    try {
+      AsyncStorage.setItem(
+        STORE_KEYS.LOCATION_VIETNAM,
+        JSON.stringify(locationVietNam),
+      );
+      _locationVietNam = locationVietNam;
+    } catch (error) {}
+  };
+
+  static getLocationVietNam = async () => {
+    if (!_locationVietNam) {
+      try {
+        const locationVietNam = await AsyncStorage.getItem(
+          STORE_KEYS.LOCATION_VIETNAM,
+        );
+        _locationVietNam = locationVietNam ? JSON.parse(locationVietNam) : [];
+      } catch (error) {}
+    }
+    return _locationVietNam;
   };
 }
 

@@ -3,4 +3,5 @@ export const STORE_KEYS = {
   DATA_LOGIN: 'dataLogin',
   IS_SHOW_ONBOARD: 'isShowOnboarding',
   HISTORY_SEARCH: 'historySearch',
+  LOCATION_VIETNAM: 'locationVietNam',
 };

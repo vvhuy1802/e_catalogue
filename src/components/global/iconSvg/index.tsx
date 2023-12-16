@@ -1,6 +1,6 @@
 import React from 'react';
 import {HeightSize} from '~/theme/size';
-import {Pressable, StyleProp, View, ViewStyle} from 'react-native';
+import {Animated, Pressable, StyleProp, View, ViewStyle} from 'react-native';
 
 import IconCloseBrown from '~/assets/icons/ic_close_brown.svg';
 import IconSearchBrown from '~/assets/icons/ic_search_brown.svg';
@@ -36,6 +36,17 @@ import IconStarBrown from '~/assets/icons/ic_star_brown.svg';
 import IconPlusBrown from '~/assets/icons/ic_plus_brown.svg';
 import IconStarBrownOutline from '~/assets/icons/ic_star_brown_outline.svg';
 import IconBagWhite from '~/assets/icons/ic_bag_white.svg';
+import IconEditBrown from '~/assets/icons/ic_edit_brown.svg';
+import IconMinusSmallBrown from '~/assets/icons/ic_minus_small_brown.svg';
+import IconPlusSmallBrown from '~/assets/icons/ic_plus_small_brown.svg';
+import IconTrashWhite from '~/assets/icons/ic_trash_white.svg';
+import IconAngleRightBrown from '~/assets/icons/ic_angle_right_brown.svg';
+import IconCheckBoxCheckedWhite from '~/assets/icons/ic_checkbox_checked_white.svg';
+import IconCheckBoxUnCheckWhite from '~/assets/icons/ic_checkbox_uncheck_white.svg';
+import IconCheckLightBrown from '~/assets/icons/ic_check_light_brown.svg';
+import IconLocationBrown from '~/assets/icons/ic_location_brown.svg';
+import IconAddLocationBrown from '~/assets/icons/ic_add_location_brown.svg';
+import IconExpandWhite from '~/assets/icons/ic_expand_white.svg';
 interface IconSvgProps {
   icon:
     | 'IconCloseBrown'
@@ -71,7 +82,18 @@ interface IconSvgProps {
     | 'IconStarBrown'
     | 'IconPlusBrown'
     | 'IconStarBrownOutline'
-    | 'IconBagWhite';
+    | 'IconBagWhite'
+    | 'IconEditBrown'
+    | 'IconMinusSmallBrown'
+    | 'IconPlusSmallBrown'
+    | 'IconTrashWhite'
+    | 'IconAngleRightBrown'
+    | 'IconCheckBoxCheckedWhite'
+    | 'IconCheckBoxUnCheckWhite'
+    | 'IconCheckLightBrown'
+    | 'IconLocationBrown'
+    | 'IconAddLocationBrown'
+    | 'IconExpandWhite';
 
   width?: number;
   height?: number;
@@ -116,6 +138,17 @@ const svgComponents: Record<string, React.ComponentType> = {
   IconPlusBrown,
   IconStarBrownOutline,
   IconBagWhite,
+  IconEditBrown,
+  IconMinusSmallBrown,
+  IconPlusSmallBrown,
+  IconTrashWhite,
+  IconAngleRightBrown,
+  IconCheckBoxCheckedWhite,
+  IconCheckBoxUnCheckWhite,
+  IconCheckLightBrown,
+  IconLocationBrown,
+  IconAddLocationBrown,
+  IconExpandWhite,
 };
 
 interface Svg {
@@ -141,10 +174,14 @@ export const IconSvg: React.FC<IconSvgProps> = ({
   );
 
   return onPress ? (
-    <Pressable style={[{width, height}, style]} onPress={onPress}>
-      {iconComponent}
-    </Pressable>
+    <Animated.View>
+      <Pressable style={[{width, height}, style]} onPress={onPress}>
+        {iconComponent}
+      </Pressable>
+    </Animated.View>
   ) : (
-    <View style={[{width, height}, style]}>{iconComponent}</View>
+    <Animated.View style={[{width, height}, style]}>
+      {iconComponent}
+    </Animated.View>
   );
 };

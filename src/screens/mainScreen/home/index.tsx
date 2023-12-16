@@ -31,7 +31,7 @@ const HomeScreen = () => {
 
   return (
     <ContainerImage
-      isOpacity={true}
+      // isOpacity={true}
       style={{flex: 1}}
       resizeMode="cover"
       source={images.home.BackgroundHome}>
@@ -49,7 +49,6 @@ const HomeScreen = () => {
               if (translateY.value === 100) {
                 translateY.value = 0;
                 dispatch(SetDirectionBottomBar('up'));
-                console.log('scrolling up');
               }
             } else if (
               lastContentOffset.value < event.nativeEvent.contentOffset.y &&
@@ -58,7 +57,6 @@ const HomeScreen = () => {
               if (translateY.value === 0) {
                 translateY.value = 100;
                 dispatch(SetDirectionBottomBar('down'));
-                console.log('scrolling down');
               }
             }
             lastContentOffset.value = event.nativeEvent.contentOffset.y;

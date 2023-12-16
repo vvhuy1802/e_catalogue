@@ -3,15 +3,11 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {
   CATEGORYSCREEN,
   DETAILCATEGORYSCREEN,
-  DETAILSEARCHSCREEN,
-  PRODUCTDETAILSCREEN,
   PRODUCTSTACK,
-  SEARCHSCREEN,
 } from '~/constants/routeNames';
 import {CategoryStackParamList} from '~/types';
 import Category from './screens/categoryScreen';
 import DetailCategory from './screens/detailCategory';
-import ProductDetail from './screens/productDetail/screens/productDetail';
 import ProductStack from './screens/productDetail';
 
 const Stack = createNativeStackNavigator<CategoryStackParamList>();
@@ -43,7 +39,7 @@ const CategoryStack = () => {
           options={{
             headerShown: false,
             gestureEnabled: false,
-            animation: 'slide_from_left',
+            // animation: 'fade',
           }}
         />
       </Stack.Navigator>
