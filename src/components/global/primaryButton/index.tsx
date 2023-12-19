@@ -7,7 +7,7 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {width, HeightSize, WidthSize} from '~/theme/size';
 import {TextFont, TextStyle} from '~/theme/textStyle';
 type PrimaryButtonProps = {
@@ -24,20 +24,17 @@ const PrimaryButton = ({
   enable = true,
 }: PrimaryButtonProps) => {
   const scale = React.useRef(new Animated.Value(1)).current;
+  const changeColor = React.useRef(new Animated.Value(1)).current;
+  useEffect(() => {
+    Animated.timing(changeColor, {
+      toValue: enable ? 1 : 0,
+      duration: 300,
+      useNativeDriver: false,
+    }).start();
+  }, [enable]);
+  //enable ? '#2D2516' : '#BDBDBD'
   return (
     <TouchableOpacity
-      style={[
-        {
-          backgroundColor: enable ? '#2D2516' : '#BDBDBD',
-          width: '100%',
-          height: HeightSize(50),
-          alignItems: 'center',
-          justifyContent: 'center',
-          borderRadius: 15,
-          transform: [{scale}],
-        },
-        style,
-      ]}
       activeOpacity={0.7}
       onPress={async () => {
         enable && handlePress();
@@ -58,14 +55,28 @@ const PrimaryButton = ({
             useNativeDriver: true,
           }).start();
       }}>
-      <Text
-        style={{
-          color: 'white',
-          ...TextStyle.LG,
-          ...TextFont.SBold,
-        }}>
-        {title}
-      </Text>
+      <Animated.View
+        style={[
+          {
+            backgroundColor: enable ? '#2D2516' : '#BDBDBD',
+            width: '100%',
+            height: HeightSize(50),
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderRadius: 15,
+            transform: [{scale}],
+          },
+          style,
+        ]}>
+        <Text
+          style={{
+            color: 'white',
+            ...TextStyle.LG,
+            ...TextFont.SBold,
+          }}>
+          {title}
+        </Text>
+      </Animated.View>
     </TouchableOpacity>
   );
 };

@@ -1,4 +1,5 @@
 import {NavigatorScreenParams} from '@react-navigation/native';
+import {ImageSourcePropType} from 'react-native';
 import {
   AUTHSTACK,
   CATEGORY,
@@ -24,6 +25,7 @@ import {
   ADDADDRESS,
   STYLEDETAIL,
   STYLEIDEASTACK,
+  ALLIMAGE,
 } from '~/constants/routeNames';
 
 export type LoadingState = 'idle' | 'pending' | 'fulfilled' | 'rejected';
@@ -74,6 +76,12 @@ export type StyleIdeaStackParamList = {
   [STYLEIDEA]: undefined;
   [STYLEDETAIL]: {
     styleId?: string;
+  };
+  [ALLIMAGE]: {
+    arrayImages: Array<{
+      id: string;
+      url: ImageSourcePropType;
+    }>;
   };
 };
 

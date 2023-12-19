@@ -1,6 +1,7 @@
 import {AppProvider} from '~/app/appProvider';
 import jwt_decode from 'jwt-decode';
 import {LoginParams} from '~/types/auth';
+import {ImageSourcePropType, ImageURISource} from 'react-native';
 
 type decodedToken = {
   exp: number;
@@ -33,4 +34,12 @@ export const checkAccessTokens = async () => {
     }
   } catch (err) {}
   return response;
+};
+
+export const getUrl = (image: string) => {
+  const imageUri: ImageSourcePropType = {
+    uri: `https://e-catalogue.abcdavid.top/file-server/get/${image}`,
+    // uri: `https://e-catalogue.abcdavid.top/file-server/get/5f58ae36-9e85-11ee-a738-a2e28baa03ba.png`,
+  };
+  return imageUri;
 };

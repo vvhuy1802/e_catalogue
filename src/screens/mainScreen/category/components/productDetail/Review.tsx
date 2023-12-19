@@ -311,7 +311,7 @@ const Review = () => {
                   ...TextFont.SBold,
                   color: '#836E444D', //836E444D
                 }}>
-                Cancel
+                Send
               </Text>
             </View>
 

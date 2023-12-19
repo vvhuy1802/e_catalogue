@@ -1,9 +1,10 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {STYLEDETAIL, STYLEIDEA} from '~/constants/routeNames';
+import {ALLIMAGE, STYLEDETAIL, STYLEIDEA} from '~/constants/routeNames';
 import {StyleIdeaStackParamList} from '~/types';
 import StyleIdea from './screens/styleIdea';
 import DetailStyleIdea from './screens/detailStyleIdea';
+import ShowAllImage from './screens/components/showAllImage';
 
 const Stack = createNativeStackNavigator<StyleIdeaStackParamList>();
 const StyleIdeaStack = () => {
@@ -26,6 +27,15 @@ const StyleIdeaStack = () => {
             headerShown: false,
             gestureEnabled: false,
             animation: 'fade',
+          }}
+        />
+        <Stack.Screen
+          name={ALLIMAGE}
+          component={ShowAllImage}
+          options={{
+            headerShown: false,
+            gestureEnabled: false,
+            animation: 'slide_from_left',
           }}
         />
       </Stack.Navigator>

@@ -1,35 +1,19 @@
-import {FlatList, ImageBackground, StyleSheet, Text, View} from 'react-native';
+import {FlatList, ImageBackground, Text, View} from 'react-native';
 import React from 'react';
 import {HeightSize, WidthSize} from '~/theme/size';
-import {images} from '~/assets';
 import BlurBackground from '~/components/global/blurBackground';
 import {TextFont, TextStyle} from '~/theme/textStyle';
+import {useSelector} from 'react-redux';
+import {
+  selectAllCategories,
+  selectLoadingGetAllCategories,
+} from '~/redux/reducers/productSlice';
+import {getUrl} from '~/utils';
 
 const CardCategorySlide = () => {
-  const data = [
-    {
-      id: 1,
-      img: images.home.CategoryMen,
-      title: `Men's`,
-    },
-    {
-      id: 2,
-      img: images.home.CategoryWomen,
+  const allCategories = useSelector(selectAllCategories);
+  const loadingGetCategories = useSelector(selectLoadingGetAllCategories);
 
-      title: `Women's`,
-    },
-    {
-      id: 3,
-      img: images.home.CategoryKids,
-
-      title: `Kids`,
-    },
-    {
-      id: 4,
-      img: images.home.CategoryUniSex,
-      title: `Unisex`,
-    },
-  ];
   return (
     <View
       style={{
@@ -55,8 +39,9 @@ const CardCategorySlide = () => {
         style={{
           marginTop: HeightSize(20),
           paddingRight: HeightSize(20),
+          height: WidthSize(200),
         }}
-        data={data}
+        data={loadingGetCategories === 'fulfilled' ? allCategories : []}
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{
@@ -65,7 +50,7 @@ const CardCategorySlide = () => {
         }}
         renderItem={({item}) => (
           <ImageBackground
-            source={item.img}
+            source={getUrl(item.imgage)}
             imageStyle={{borderRadius: 20}}
             style={{
               width: WidthSize(150),
@@ -94,7 +79,7 @@ const CardCategorySlide = () => {
                   ...TextFont.SMedium,
                   ...TextStyle.LG,
                 }}>
-                {item.title}
+                {item.name}
               </Text>
             </View>
           </ImageBackground>

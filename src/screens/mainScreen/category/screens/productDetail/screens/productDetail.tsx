@@ -1,7 +1,8 @@
 import {
-  Dimensions,
+  Animated,
   FlatList,
   ImageBackground,
+  Pressable,
   ScrollView,
   Text,
   View,
@@ -24,6 +25,7 @@ import Review from '../../../components/productDetail/Review';
 import Seller from '../../../components/productDetail/Seller';
 import MayULike from '../../../components/productDetail/MayULike';
 import PrimaryHeart from '~/components/global/primaryHeart';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 type Props = {
   route: RouteProp<ProductDetailStackParamList, 'ProductDetailScreen'>;
@@ -88,6 +90,37 @@ const ProductDetail = ({route}: Props) => {
     setCurrentImageIndex(currentIndex);
   };
 
+  const [isAddToBag, setIsAddToBag] = React.useState(false);
+  const addToBagRef = useRef(new Animated.Value(0));
+  const moveTopRef = useRef(new Animated.Value(0));
+  const insets = useSafeAreaInsets();
+
+  const handleAddToBag = () => {
+    setIsAddToBag(true);
+    Animated.timing(addToBagRef.current, {
+      toValue: 1,
+      duration: 900,
+      useNativeDriver: false,
+    }).start(() => {
+      setTimeout(() => {
+        Animated.timing(addToBagRef.current, {
+          toValue: 2,
+          duration: 700,
+          useNativeDriver: false,
+        }).start(() => {
+          setIsAddToBag(false);
+          addToBagRef.current.setValue(0);
+          moveTopRef.current.setValue(0);
+        });
+      }, 300);
+      Animated.timing(moveTopRef.current, {
+        toValue: 1,
+        duration: 800,
+        useNativeDriver: false,
+      }).start();
+    });
+  };
+
   const renderDots = useCallback(() => {
     return (
       <View
@@ -126,6 +159,58 @@ const ProductDetail = ({route}: Props) => {
       style={{flex: 1}}
       resizeMode="cover"
       source={images.home.BackgroundHome}>
+      {isAddToBag && (
+        <Animated.Image
+          source={dataTemp[currentImageIndex].image}
+          resizeMode="cover"
+          style={{
+            position: 'absolute',
+            alignSelf: 'center',
+            marginTop: addToBagRef.current.interpolate({
+              inputRange: [0, 1, 2],
+              outputRange: [
+                HeightSize(110),
+                HeightSize(285 + insets.top),
+                HeightSize(285 + insets.top),
+              ],
+            }),
+            width: addToBagRef.current.interpolate({
+              inputRange: [0, 1, 2],
+              outputRange: [
+                WidthSize(350),
+                WidthSize(350 * 0.2),
+                WidthSize(350 * 0.2),
+              ],
+            }),
+            height: addToBagRef.current.interpolate({
+              inputRange: [0, 1, 2],
+              outputRange: [
+                WidthSize(456),
+                WidthSize(456 * 0.2),
+                WidthSize(456 * 0.2),
+              ],
+            }),
+            top: moveTopRef.current.interpolate({
+              inputRange: [0, 1],
+              outputRange: [0, -HeightSize(270)],
+            }),
+            borderRadius: 40,
+            zIndex: 99,
+            right: addToBagRef.current.interpolate({
+              inputRange: [0, 1, 2],
+              outputRange: [
+                width / 2 - WidthSize(350) / 2,
+                width / 2 - WidthSize(350 * 0.2) / 2,
+                WidthSize(20),
+              ],
+            }),
+            opacity: addToBagRef.current.interpolate({
+              inputRange: [0, 1, 2],
+              outputRange: [1, 0.8, 0.6],
+            }),
+          }}
+        />
+      )}
       <HeaderProduct title="Products" onPressBack={onGoBack} />
       <ScrollView nestedScrollEnabled={true}>
         <View
@@ -154,15 +239,17 @@ const ProductDetail = ({route}: Props) => {
               showsVerticalScrollIndicator={false}>
               {dataTemp.map((item, index) => {
                 return (
-                  <ImageBackground
-                    key={index}
-                    source={item.image}
-                    resizeMode="cover"
-                    style={{
-                      width: WidthSize(350),
-                      height: WidthSize(456),
-                    }}
-                  />
+                  <View key={index}>
+                    <ImageBackground
+                      key={index}
+                      source={item.image}
+                      resizeMode="cover"
+                      style={{
+                        width: WidthSize(350),
+                        height: WidthSize(456),
+                      }}
+                    />
+                  </View>
                 );
               })}
             </ScrollView>
@@ -171,7 +258,6 @@ const ProductDetail = ({route}: Props) => {
             <PrimaryHeart
               styleView={{
                 position: 'absolute',
-
                 width: WidthSize(44),
                 height: WidthSize(44),
                 top: WidthSize(20),
@@ -366,7 +452,10 @@ const ProductDetail = ({route}: Props) => {
             Cost
           </Text>
         </View>
-        <View
+        <Pressable
+          onPress={() => {
+            handleAddToBag();
+          }}
           style={{
             width: WidthSize(198),
             backgroundColor: '#836E44',
@@ -386,7 +475,7 @@ const ProductDetail = ({route}: Props) => {
             Add to bag
           </Text>
           <IconSvg icon="IconBagWhite" />
-        </View>
+        </Pressable>
       </View>
     </ContainerImage>
   );

@@ -1,4 +1,5 @@
 import {
+  Alert,
   Image,
   ImageBackground,
   Pressable,
@@ -7,7 +8,7 @@ import {
   Text,
   View,
 } from 'react-native';
-import React from 'react';
+import React, {useCallback} from 'react';
 import {images} from '~/assets';
 import ContainerImage from '~/components/global/containerImage';
 import {IconSvg} from '~/components/global/iconSvg';
@@ -18,13 +19,18 @@ import {StyleIdeaStackParamList} from '~/types';
 import {TextFont, TextStyle} from '~/theme/textStyle';
 import FullWidthImage from '~/components/global/fullWidthImage';
 import PrimaryHeart from '~/components/global/primaryHeart';
+import {useDispatch} from 'react-redux';
+import {AppDispatch} from '~/app/store';
+import {SetDirectionBottomBar} from '~/redux/reducers/globalSlice';
 
 const DetailStyleIdea = () => {
   const navigationStyleIdea =
     useNavigation<
       StackNavigationProp<StyleIdeaStackParamList, 'StyleDetail'>
     >();
+  const dispatch = useDispatch<AppDispatch>();
   const onGoBack = () => {
+    dispatch(SetDirectionBottomBar('up'));
     navigationStyleIdea.goBack();
   };
   const data = [
@@ -57,6 +63,69 @@ const DetailStyleIdea = () => {
       price: '178.000 VND',
     },
   ];
+
+  const test = {
+    image: {
+      assets: [
+        {
+          fileSize: 2386884,
+          height: 2000,
+          uri: 'file:///var/mobile/Containers/Data/Application/0C7BFADA-7975-4D17-A86E-F2CF337025A2/tmp/DCF517BA-6263-4476-BE67-74102E7C93CC.jpg',
+          type: 'image/jpg',
+          fileName: 'DCF517BA-6263-4476-BE67-74102E7C93CC.jpg',
+          width: 1499,
+        },
+      ],
+    },
+    width: 414,
+    height: 552.368245496998,
+    retangles: {
+      size: {
+        widthImage: 414,
+        heightImage: 414,
+      },
+      shapes: [
+        {
+          minX: 29.666656494140625,
+          minY: 160.66665649414062,
+          maxX: 122.66665649414062,
+          maxY: 266,
+          info: 'hiii',
+        },
+        {
+          minX: 238.3333282470703,
+          minY: 431,
+          maxX: 324.6666564941406,
+          maxY: 531,
+          info: 'boot',
+        },
+        {
+          minX: 172.66665649414062,
+          minY: 201.3333282470703,
+          maxX: 266,
+          maxY: 290.6666564941406,
+          info: 'lu',
+        },
+      ],
+    },
+  };
+
+  const handlePressImage = useCallback((e: any) => {
+    const x = WidthSize(e.nativeEvent.locationX);
+    const y = HeightSize(e.nativeEvent.locationY);
+    console.log(x, y);
+    test.retangles.shapes.forEach(retangle => {
+      if (
+        retangle.minX < x &&
+        retangle.maxX > x &&
+        retangle.minY < y &&
+        retangle.maxY > y
+      ) {
+        Alert.alert('Rectangle', retangle.info);
+      }
+    });
+  }, []);
+
   return (
     <ContainerImage
       isOpacity={true}
@@ -66,7 +135,8 @@ const DetailStyleIdea = () => {
       <ScrollView
         style={{}}
         showsVerticalScrollIndicator={false}
-        stickyHeaderIndices={[1]}>
+        stickyHeaderIndices={[1]}
+        stickyHeaderHiddenOnScroll={true}>
         <View
           style={{
             flexDirection: 'row',
@@ -78,11 +148,11 @@ const DetailStyleIdea = () => {
             onPress={onGoBack}
             style={{
               width: HeightSize(80),
-              height: HeightSize(50),
+              height: HeightSize(40),
               borderTopRightRadius: 36,
               borderBottomRightRadius: 36,
               backgroundColor: '#EFEFE8',
-              marginTop: HeightSize(3),
+              marginTop: HeightSize(2),
               justifyContent: 'center',
               paddingLeft: HeightSize(20),
               zIndex: 99,
@@ -106,11 +176,12 @@ const DetailStyleIdea = () => {
         </View>
         <View
           style={{
-            marginTop: HeightSize(44),
             paddingHorizontal: WidthSize(32),
           }}>
           <Text
             style={{
+              marginTop: HeightSize(28),
+
               ...TextStyle.SM,
               ...TextFont.SBold,
               color: '#3B302180',
@@ -130,13 +201,40 @@ const DetailStyleIdea = () => {
         </View>
 
         <FullWidthImage
+          onPress={(e: any) => {
+            handlePressImage(e);
+          }}
           style={{
             marginTop: HeightSize(28),
           }}
+          retangles={test.retangles}
           source={images.home.ImageHotLook}>
           <IconSvg
             onPress={() => {
-              console.log('ha');
+              navigationStyleIdea.navigate('AllImage', {
+                arrayImages: [
+                  {
+                    id: '1',
+                    url: images.home.ImageHotLook,
+                  },
+                  {
+                    id: '2',
+                    url: images.home.DropDownGirl,
+                  },
+                  {
+                    id: '3',
+                    url: images.home.CategoryKids,
+                  },
+                  {
+                    id: '4',
+                    url: images.home.DropDownWoman,
+                  },
+                  {
+                    id: '5',
+                    url: images.home.ImagePopular,
+                  },
+                ],
+              });
             }}
             style={{
               position: 'absolute',
@@ -153,7 +251,7 @@ const DetailStyleIdea = () => {
             backgroundColor: 'white',
             borderTopLeftRadius: 40,
             borderTopRightRadius: 40,
-            // top: -HeightSize(40),
+            top: -HeightSize(40),
           }}>
           <Text
             style={{

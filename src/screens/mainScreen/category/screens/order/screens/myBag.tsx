@@ -94,7 +94,7 @@ const MyBag = () => {
   useEffect(() => {
     Animated.timing(moveLeft, {
       toValue: isShowCheck ? 1 : 0,
-      duration: 200,
+      duration: 500,
       useNativeDriver: false,
     }).start();
   }, [isShowCheck]);
@@ -205,13 +205,13 @@ const MyBag = () => {
         <Animated.View
           style={{
             flex: 1,
-            paddingLeft: HeightSize(16),
+            paddingLeft: HeightSize(8),
             paddingRight: HeightSize(24),
             paddingVertical: HeightSize(8),
             backgroundColor: '#F0EFE9',
             flexDirection: 'row',
             alignItems: 'center',
-            borderRadius: 20,
+            borderRadius: 15,
             justifyContent: 'space-between',
             height: HeightSize(140),
             transform: [
@@ -231,15 +231,16 @@ const MyBag = () => {
           }}>
           <Animated.View
             style={{
+              flex: 1,
               flexDirection: 'row',
               alignItems: 'center',
-              flex: 1,
+              height: HeightSize(140),
             }}>
             <FastImage
               style={{
                 width: HeightSize(120),
                 height: HeightSize(120),
-                borderRadius: 20,
+                borderRadius: 15 - HeightSize(8),
               }}
               source={dataB.entities[data.item].img}
             />

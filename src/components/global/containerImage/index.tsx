@@ -35,9 +35,9 @@ const ContainerImage = ({
     style,
     isIOS && {
       paddingTop: insets.top,
-      paddingBottom: insets.bottom,
-      paddingLeft: insets.left,
-      paddingRight: insets.right,
+      // paddingBottom: insets.bottom,
+      // paddingLeft: insets.left,
+      // paddingRight: insets.right,
     },
   ];
   return (

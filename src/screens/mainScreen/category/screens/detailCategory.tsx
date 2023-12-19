@@ -21,7 +21,7 @@ import {
 import {SetDirectionBottomBar} from '~/redux/reducers/globalSlice';
 import ContainerImage from '~/components/global/containerImage';
 import {images} from '~/assets';
-import {HeightSize, WidthSize, width} from '~/theme/size';
+import {HeightSize, WidthSize, height, width} from '~/theme/size';
 import {IconSvg} from '~/components/global/iconSvg';
 import {TextStyle, TextFont} from '~/theme/textStyle';
 import CategoryFilter from '../components/categoryFilter';
@@ -154,42 +154,46 @@ const DetailCategory = ({route}: Props) => {
 
   useEffect(() => {
     setDataFilter([]);
-    filter.ids.map((item, index) => {
+    filter?.ids.map(async (item, index) => {
       if (item === 'sortBy') {
         setDataFilter(prev => [
           ...prev,
           {
             id: index,
-            name: filter.entities[item as any].name,
-            actualId: `sortBy-${filter.entities[item as any].id}`,
+            name: filter?.entities[item as any].name,
+            actualId: `sortBy-${filter?.entities[item as any].id}`,
           },
         ]);
       } else if (item === 'color') {
-        filter.entities[item as any].ids.map(({color, index}: any) => {
-          setDataFilter(prev => [
-            ...prev,
-            {
-              id: index,
-              name: filter.entities[item as any].entities[color].name,
-              actualId: `color-${
-                filter.entities[item as any].entities[color].id
-              }`,
-            },
-          ]);
-        });
+        await filter?.entities[item as any].ids.map(
+          (color: any, index: number) => {
+            setDataFilter(prev => [
+              ...prev,
+              {
+                id: index,
+                name: filter?.entities[item as any].entities[color]?.name,
+                actualId: `color-${
+                  filter?.entities[item as any].entities[color]?.id
+                }`,
+              },
+            ]);
+          },
+        );
       } else if (item === 'size') {
-        filter.entities[item as any].ids.map(({size, index}: any) => {
-          setDataFilter(prev => [
-            ...prev,
-            {
-              id: index,
-              name: filter.entities[item as any].entities[size].size,
-              actualId: `size-${
-                filter.entities[item as any].entities[size].id
-              }`,
-            },
-          ]);
-        });
+        await filter?.entities[item as any].ids.map(
+          (size: any, index: number) => {
+            setDataFilter(prev => [
+              ...prev,
+              {
+                id: index,
+                name: filter?.entities[item as any].entities[size].size,
+                actualId: `size-${
+                  filter?.entities[item as any].entities[size].id
+                }`,
+              },
+            ]);
+          },
+        );
       } else if (item === 'price') {
         setDataFilter(prev => [
           ...prev,
@@ -197,12 +201,12 @@ const DetailCategory = ({route}: Props) => {
             id: index,
             name:
               '$' +
-              filter.entities[item as any][0] +
+              filter?.entities[item as any][0] +
               ' - ' +
               '$' +
-              filter.entities[item as any][1],
-            actualId: `price-${filter.entities[item as any][0]}-${
-              filter.entities[item as any][1]
+              filter?.entities[item as any][1],
+            actualId: `price-${filter?.entities[item as any][0]}-${
+              filter?.entities[item as any][1]
             }`,
           },
         ]);
@@ -217,15 +221,15 @@ const DetailCategory = ({route}: Props) => {
       case 'sortBy':
         setFilter(prev => {
           const newFilter = {...prev};
-          delete newFilter.entities[splitId[0] as any];
-          newFilter.ids = newFilter.ids.filter(item => item !== splitId[0]);
+          delete newFilter?.entities[splitId[0] as any];
+          newFilter.ids = newFilter?.ids.filter(item => item !== splitId[0]);
           return newFilter;
         });
         break;
       case 'color':
         setFilter(prev => {
           const newFilter = {...prev};
-          const newColor = {...newFilter.entities[splitId[0] as any]};
+          const newColor = {...newFilter?.entities[splitId[0] as any]};
           newColor.ids.splice(newColor.ids.indexOf(parseInt(splitId[1])), 1);
           delete newColor.entities[splitId[1]];
           newFilter.entities[splitId[0] as any] = newColor;
@@ -236,7 +240,7 @@ const DetailCategory = ({route}: Props) => {
       case 'size':
         setFilter(prev => {
           const newFilter = {...prev};
-          const newSize = {...newFilter.entities[splitId[0] as any]};
+          const newSize = {...newFilter?.entities[splitId[0] as any]};
           newSize.ids.splice(newSize.ids.indexOf(parseInt(splitId[1])), 1);
           delete newSize.entities[splitId[1]];
           newFilter.entities[splitId[0] as any] = newSize;
@@ -246,8 +250,8 @@ const DetailCategory = ({route}: Props) => {
       case 'price':
         setFilter(prev => {
           const newFilter = {...prev};
-          delete newFilter.entities[splitId[0] as any];
-          newFilter.ids = newFilter.ids.filter(item => item !== splitId[0]);
+          delete newFilter?.entities[splitId[0] as any];
+          newFilter.ids = newFilter?.ids.filter(item => item !== splitId[0]);
           return newFilter;
         });
         break;
@@ -329,7 +333,7 @@ const DetailCategory = ({route}: Props) => {
           marginTop: HeightSize(20),
           gap: WidthSize(16),
         }}>
-        {dataFilter.map((item, index) => {
+        {dataFilter?.map((item, index) => {
           return (
             <View
               key={index}
@@ -400,11 +404,12 @@ const DetailCategory = ({route}: Props) => {
                   source={item.image}
                   style={{
                     width: width / 2 - WidthSize(60),
-                    height: width / 2 - WidthSize(60),
+                    aspectRatio: 1,
+                    height: undefined,
                     alignSelf: 'center',
                     borderRadius: 16,
                   }}
-                  resizeMode="contain"
+                  resizeMode="cover"
                 />
                 <Text
                   style={{

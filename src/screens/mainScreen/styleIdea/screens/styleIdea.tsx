@@ -6,8 +6,12 @@ import {
   Text,
   ScrollView,
   FlatList,
+  Keyboard,
+  Modal,
+  TextInput,
+  Image,
 } from 'react-native';
-import React, {useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
   launchImageLibrary,
   ImageLibraryOptions,
@@ -32,6 +36,8 @@ import {HomeStackParamList, StyleIdeaStackParamList} from '~/types';
 import {IconSvg} from '~/components/global/iconSvg';
 import SearchHomeScreen from '../../home/components/search';
 import PrimaryHeart from '~/components/global/primaryHeart';
+import Svg, {Path} from 'react-native-svg';
+import ContainerView from '~/components/global/containerView';
 
 type Retangle = {
   minX: number;
@@ -75,28 +81,17 @@ const StyleIdea = () => {
         console.log(response.errorMessage);
       } else if (response.assets) {
         console.log('response', response);
-        //calculate size of image
-        const ratio =
-          response.assets[0].width && response.assets[0].height
-            ? response.assets[0].height / response.assets[0].width
-            : 1;
-        const newHeight =
-          width * ratio > height - BOTTOM_TAB_HEIGHT - 50
-            ? height - BOTTOM_TAB_HEIGHT - 50
-            : width * ratio;
-        const newWidth = width;
-        setSize({width: newWidth, height: newHeight});
         setActualImage({
           image: response,
-          width: newWidth,
-          height: newHeight,
+          width: 0,
+          height: 0,
           retangles: [],
         });
         dispatch(
           setDemoImage({
             image: response,
-            width: newWidth,
-            height: newHeight,
+            width: 0,
+            height: 0,
             retangles: [],
           }),
         );
@@ -285,6 +280,41 @@ const StyleIdea = () => {
   const navigation = useNavigation<StackNavigationProp<HomeStackParamList>>();
   const navigationStyleIdea =
     useNavigation<StackNavigationProp<StyleIdeaStackParamList, 'StyleIdea'>>();
+
+  const onLayout = useCallback(
+    (event: any) => {
+      const containerWidth = event.nativeEvent.layout.width;
+      if (actualImage?.image?.assets[0].uri) {
+        Image.getSize(actualImage?.image?.assets[0].uri, (w, h) => {
+          const width = containerWidth;
+          setSize({width, height});
+          setActualImage({
+            image: actualImage?.image,
+            width: width,
+            height: height,
+            retangles: retangles,
+          });
+        });
+      }
+    },
+    [actualImage?.image?.assets[0].uri],
+  );
+
+  useEffect(() => {
+    if (actualImage?.image?.assets[0].uri) {
+      Image.getSize(actualImage?.image?.assets[0].uri, (w, h) => {
+        const widthImg = WidthSize(width);
+        const heightImg = WidthSize((width * h) / w);
+        setSize({width: widthImg, height: heightImg});
+        setActualImage({
+          image: actualImage?.image,
+          width: widthImg,
+          height: heightImg,
+          retangles: retangles,
+        });
+      });
+    }
+  }, [actualImage?.image?.assets[0].uri]);
   return (
     // <ContainerView
     //   style={{
@@ -293,9 +323,10 @@ const StyleIdea = () => {
     //     backgroundColor: 'white',
     //   }}>
     //   <View
+    //     // onLayout={onLayout}
     //     style={{
     //       width: width,
-    //       height: HeightSize(size.height),
+    //       height: size.height,
     //       alignItems: 'center',
     //       justifyContent: 'center',
     //     }}
@@ -304,10 +335,10 @@ const StyleIdea = () => {
     //       style={{
     //         position: 'absolute',
     //         zIndex: 1,
-    //         width: WidthSize(size.width),
-    //         height: HeightSize(size.height),
+    //         width: size.width,
+    //         height: size.height,
     //       }}>
-    //       {lines.map((line, index) => (
+    //       {/* {lines.map((line, index) => (
     //         <Path
     //           key={index}
     //           d={line}
@@ -315,7 +346,7 @@ const StyleIdea = () => {
     //           strokeWidth={4}
     //           fill={'none'}
     //         />
-    //       ))}
+    //       ))} */}
     //       {retangles.map(
     //         (
     //           retangle: {
@@ -355,8 +386,8 @@ const StyleIdea = () => {
     //     </Svg>
     //     <ImageBackground
     //       style={{
-    //         width: '100%',
-    //         height: HeightSize(size.height),
+    //         width: size.width,
+    //         height: size.height,
     //       }}
     //       resizeMode="contain"
     //       source={{uri: actualImage?.image?.assets[0].uri}}
@@ -387,15 +418,15 @@ const StyleIdea = () => {
     //         setRetangles(retangles => retangles.slice(0, retangles.length - 1));
     //         setActualImage({
     //           image: actualImage?.image,
-    //           width: WidthSize(size.width),
-    //           height: HeightSize(size.height),
+    //           width: size.width,
+    //           height: size.height,
     //           retangles: retangles,
     //         });
     //         dispatch(
     //           setDemoImage({
     //             image: actualImage?.image,
-    //             width: WidthSize(size.width),
-    //             height: HeightSize(size.height),
+    //             width: size.width,
+    //             height: size.height,
     //             retangles: retangles.slice(0, retangles.length - 1),
     //           }),
     //         );
@@ -408,7 +439,7 @@ const StyleIdea = () => {
     //         justifyContent: 'center',
     //         alignItems: 'center',
     //       }}>
-    //       <Text style={{color: 'white'}}>Undo</Text>
+    //       <Text style={{color: 'white'}}>{size.height}</Text>
     //     </Pressable>
     //   </View>
     //   <Modal
@@ -534,8 +565,14 @@ const StyleIdea = () => {
         style={{
           flex: 1,
         }}>
-        <Card />
-        <SearchHomeScreen navigation={navigation} title="Style ideas" />
+        <View style={{height: HeightSize(10)}} />
+        <Card
+          onCartPress={() => {
+            dispatch(SetDirectionBottomBar('down'));
+            navigation.navigate('OrderStack', {screen: 'MyBag'});
+          }}
+        />
+        <SearchHomeScreen navigation={navigation} title="Discover" />
         <View
           style={{
             marginTop: HeightSize(36),

@@ -707,6 +707,7 @@ const CategoryFilter = ({categoryId, navigation, filter, setFilter}: Props) => {
                   newFilter.ids.push('price');
                   newFilter.entities['price'] = priceFilter;
                 }
+                // console.log(JSON.stringify(newFilter, null, 2));
                 JSON.stringify(newFilter) !== JSON.stringify(filter) &&
                   setFilter(newFilter);
                 setIsShowModal(!isShowModal);
