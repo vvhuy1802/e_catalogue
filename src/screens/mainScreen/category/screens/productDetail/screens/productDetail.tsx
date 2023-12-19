@@ -159,58 +159,57 @@ const ProductDetail = ({route}: Props) => {
       style={{flex: 1}}
       resizeMode="cover"
       source={images.home.BackgroundHome}>
-      {isAddToBag && (
-        <Animated.Image
-          source={dataTemp[currentImageIndex].image}
-          resizeMode="cover"
-          style={{
-            position: 'absolute',
-            alignSelf: 'center',
-            marginTop: addToBagRef.current.interpolate({
-              inputRange: [0, 1, 2],
-              outputRange: [
-                HeightSize(110),
-                HeightSize(285 + insets.top),
-                HeightSize(285 + insets.top),
-              ],
-            }),
-            width: addToBagRef.current.interpolate({
-              inputRange: [0, 1, 2],
-              outputRange: [
-                WidthSize(350),
-                WidthSize(350 * 0.2),
-                WidthSize(350 * 0.2),
-              ],
-            }),
-            height: addToBagRef.current.interpolate({
-              inputRange: [0, 1, 2],
-              outputRange: [
-                WidthSize(456),
-                WidthSize(456 * 0.2),
-                WidthSize(456 * 0.2),
-              ],
-            }),
-            top: moveTopRef.current.interpolate({
-              inputRange: [0, 1],
-              outputRange: [0, -HeightSize(270)],
-            }),
-            borderRadius: 40,
-            zIndex: 99,
-            right: addToBagRef.current.interpolate({
-              inputRange: [0, 1, 2],
-              outputRange: [
-                width / 2 - WidthSize(350) / 2,
-                width / 2 - WidthSize(350 * 0.2) / 2,
-                WidthSize(20),
-              ],
-            }),
-            opacity: addToBagRef.current.interpolate({
-              inputRange: [0, 1, 2],
-              outputRange: [1, 0.8, 0.6],
-            }),
-          }}
-        />
-      )}
+      <Animated.Image
+        source={dataTemp[currentImageIndex].image}
+        resizeMode="cover"
+        style={{
+          display: isAddToBag ? 'flex' : 'none',
+          position: 'absolute',
+          alignSelf: 'center',
+          marginTop: addToBagRef.current.interpolate({
+            inputRange: [0, 1, 2],
+            outputRange: [
+              HeightSize(110),
+              HeightSize(285 + insets.top),
+              HeightSize(285 + insets.top),
+            ],
+          }),
+          width: addToBagRef.current.interpolate({
+            inputRange: [0, 1, 2],
+            outputRange: [
+              WidthSize(350),
+              WidthSize(350 * 0.15),
+              WidthSize(350 * 0.15),
+            ],
+          }),
+          height: addToBagRef.current.interpolate({
+            inputRange: [0, 1, 2],
+            outputRange: [
+              WidthSize(350),
+              WidthSize(350 * 0.15),
+              WidthSize(350 * 0.15),
+            ],
+          }),
+          top: moveTopRef.current.interpolate({
+            inputRange: [0, 1],
+            outputRange: [HeightSize(64), -HeightSize(270)],
+          }),
+          borderRadius: 999,
+          zIndex: 99,
+          right: addToBagRef.current.interpolate({
+            inputRange: [0, 1, 2],
+            outputRange: [
+              width / 2 - WidthSize(350) / 2,
+              width / 2 - WidthSize(350 * 0.15) / 2,
+              WidthSize(20),
+            ],
+          }),
+          opacity: addToBagRef.current.interpolate({
+            inputRange: [0, 1, 2],
+            outputRange: [1, 0.8, 0],
+          }),
+        }}
+      />
       <HeaderProduct title="Products" onPressBack={onGoBack} />
       <ScrollView nestedScrollEnabled={true}>
         <View
@@ -454,7 +453,7 @@ const ProductDetail = ({route}: Props) => {
         </View>
         <Pressable
           onPress={() => {
-            handleAddToBag();
+            isAddToBag ? null : handleAddToBag();
           }}
           style={{
             width: WidthSize(198),
