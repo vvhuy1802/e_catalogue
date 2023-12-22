@@ -13,4 +13,6 @@ export const apiUrl = {
   refreshToken: () => `${baseUrl}${Services.auth}refresh`,
   me: () => `${baseUrl}${Services.auth}me`,
   getAllCategories: () => `${baseUrl}${Services.product}category`,
+  getProductsByCategory: (categoryId: number) =>
+    `${baseUrl}${Services.product}category/${categoryId}`,
 };

@@ -11,7 +11,7 @@ import {
 import React, {useEffect, useState} from 'react';
 import {RouteProp, useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {AppDispatch} from '~/app/store';
 import {
   CategoryStackParamList,
@@ -27,6 +27,11 @@ import {TextStyle, TextFont} from '~/theme/textStyle';
 import CategoryFilter from '../components/categoryFilter';
 import HeaderProduct from '~/components/global/headerProduct';
 import PrimaryHeart from '~/components/global/primaryHeart';
+import {
+  selectLoadingGetProductsByCategory,
+  selectProductsByCategory,
+} from '~/redux/reducers/productSlice';
+import {getUrl} from '~/utils';
 
 type Props = {
   route: RouteProp<CategoryStackParamList, 'DetailCategoryScreen'>;
@@ -35,109 +40,16 @@ type Props = {
 const DetailCategory = ({route}: Props) => {
   const navigation =
     useNavigation<StackNavigationProp<CategoryStackParamList>>();
+  const category = route.params.category;
+
+  const products = useSelector(selectProductsByCategory);
+  const loadingGetProduct = useSelector(selectLoadingGetProductsByCategory);
 
   const dispatch = useDispatch<AppDispatch>();
-  const tabs = [
-    {
-      id: 1,
-      title: 'Coats',
-    },
-    {
-      id: 2,
-      title: 'Cardigans',
-    },
-    {
-      id: 3,
-      title: 'Sweater',
-    },
-    {
-      id: 4,
-      title: 'Trousers',
-    },
-  ];
-  const dataColoursNormalize = {
-    ids: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-    entities: {
-      1: {name: 'Whites', color: '#FFFFFF'},
-      2: {name: 'Blacks', color: '#000000'},
-      3: {name: 'Greys', color: '#83878D'},
-      4: {name: 'Beiges', color: '#A99C82'},
-      5: {name: 'Browns', color: '#401D0B'},
-      6: {name: 'Reds', color: '#A50221'},
-      7: {name: 'Greens', color: '#5FA758'},
-      8: {name: 'Blues', color: '#56AAFF'},
-      9: {name: 'Purples', color: '#800080'},
-      10: {name: 'Yellows', color: '#FFDD00'},
-      11: {name: 'Pinks', color: '#FF68B4'},
-      12: {name: 'Oranges', color: '#F2520A'},
-    },
-  };
-
-  const dataSizeNormalize = {
-    ids: [1, 2, 3, 4, 5, 6, 7],
-    entities: {
-      1: {size: 'XS'},
-      2: {size: 'S'},
-      3: {size: 'S'},
-      4: {size: 'M'},
-      5: {size: 'L'},
-      6: {size: 'XL'},
-      7: {size: 'XXL'},
-    },
-  };
-  const [currentTab, setCurrentTab] = useState(1);
-
-  const dataListItems = [
-    {
-      id: 1,
-      title: 'T-shirt Ahweh Yer',
-      type: 'Coats',
-      price: '$180',
-      image: images.home.ImageHotLook,
-    },
-    {
-      id: 2,
-      title: 'T-shirt Ahweh Yer',
-      type: 'Coats',
-      price: '$180',
-      image: images.home.ImageHotLook,
-    },
-    {
-      id: 3,
-      title: 'T-shirt Ahweh Yer',
-      type: 'Coats',
-      price: '$180',
-      image: images.home.ImageHotLook,
-    },
-    {
-      id: 4,
-      title: 'T-shirt Ahweh Yer',
-      type: 'Coats',
-      price: '$180',
-      image: images.home.ImageHotLook,
-    },
-    {
-      id: 5,
-      title: 'T-shirt Ahweh Yer',
-      type: 'Coats',
-      price: '$180',
-      image: images.home.ImageHotLook,
-    },
-    {
-      id: 6,
-      title: 'T-shirt Ahweh Yer',
-      type: 'Coats',
-      price: '$180',
-      image: images.home.ImageHotLook,
-    },
-    {
-      id: 7,
-      title: 'T-shirt Ahweh Yer',
-      type: 'Coats',
-      price: '$180',
-      image: images.home.ImageHotLook,
-    },
-  ];
+  console.log(category?.children.length);
+  const [currentTab, setCurrentTab] = useState(
+    category?.children.length === 0 ? 0 : category?.children[0].id,
+  );
 
   const [filter, setFilter] = useState<Normalized<string, any>>({
     ids: [],
@@ -275,7 +187,7 @@ const DetailCategory = ({route}: Props) => {
 
       <CategoryFilter
         navigation={navigation}
-        categoryId={route.params.categoryId}
+        categoryId={category?.name}
         filter={filter}
         setFilter={setFilter}
       />
@@ -285,7 +197,7 @@ const DetailCategory = ({route}: Props) => {
           height: HeightSize(30),
         }}>
         <FlatList
-          data={tabs}
+          data={category?.children}
           keyExtractor={item => item.id.toString()}
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -306,7 +218,7 @@ const DetailCategory = ({route}: Props) => {
                   ...TextStyle.Base,
                   ...TextFont.SBold,
                 }}>
-                {item.title}
+                {item.name}
               </Text>
               {currentTab === item.id && (
                 <View
@@ -380,7 +292,7 @@ const DetailCategory = ({route}: Props) => {
             justifyContent: 'space-between',
             gap: WidthSize(16),
           }}>
-          {dataListItems.map((item, index) => {
+          {products.products.map((item, index) => {
             return (
               <Pressable
                 onPress={() => {
@@ -399,9 +311,17 @@ const DetailCategory = ({route}: Props) => {
                   backgroundColor: '#F1EFE9',
                   paddingHorizontal: HeightSize(10),
                   paddingTop: HeightSize(10),
+                  elevation: 2,
+                  shadowColor: '#000',
+                  shadowOffset: {
+                    width: 0,
+                    height: 1,
+                  },
+                  shadowOpacity: 0.15,
+                  shadowRadius: 2.22,
                 }}>
                 <Image
-                  source={item.image}
+                  source={getUrl(item.image)}
                   style={{
                     width: width / 2 - WidthSize(60),
                     aspectRatio: 1,
@@ -418,7 +338,7 @@ const DetailCategory = ({route}: Props) => {
                     ...TextStyle.Base,
                     ...TextFont.SMedium,
                   }}>
-                  {item.title}
+                  {item.name}
                 </Text>
                 <Text
                   style={{
@@ -426,7 +346,7 @@ const DetailCategory = ({route}: Props) => {
                     ...TextStyle.SM,
                     ...TextFont.SMedium,
                   }}>
-                  {item.type}
+                  {item?.type ? item?.type : 'No type'}
                 </Text>
                 <Text
                   style={{
@@ -436,7 +356,7 @@ const DetailCategory = ({route}: Props) => {
                     marginTop: HeightSize(16),
                     marginBottom: HeightSize(15),
                   }}>
-                  {item.price}
+                  {item?.price ? '$' + item?.price : 'No price'}
                 </Text>
                 <PrimaryHeart
                   styleView={{

@@ -1,16 +1,31 @@
 import {createSlice} from '@reduxjs/toolkit';
 import {LoadingState} from '~/types';
-import {ProductCategoryResponse} from '~/types/product';
-import {getAllCategories} from '../actions/productAction';
+import {ProductCategoryResponse, ProductsByCategory} from '~/types/product';
+import {
+  getAllCategories,
+  getProductsByCategory,
+} from '../actions/productAction';
 
 interface ProductState {
   loadingGetAllCategories: LoadingState;
   allCategories: ProductCategoryResponse[];
+
+  loadingGetProductsByCategory: LoadingState;
+  productsByCategory: ProductsByCategory;
 }
 
 const initialState = {
   loadingGetAllCategories: 'idle',
   allCategories: [],
+
+  loadingGetProductsByCategory: 'idle',
+  productsByCategory: {
+    id: 0,
+    name: '',
+    description: '',
+    image: '',
+    products: [],
+  },
 } as ProductState;
 
 const productSlice = createSlice({
@@ -28,6 +43,17 @@ const productSlice = createSlice({
     builder.addCase(getAllCategories.rejected, state => {
       state.loadingGetAllCategories = 'rejected';
     });
+
+    builder.addCase(getProductsByCategory.pending, state => {
+      state.loadingGetProductsByCategory = 'pending';
+    });
+    builder.addCase(getProductsByCategory.fulfilled, (state, action) => {
+      state.loadingGetProductsByCategory = 'fulfilled';
+      state.productsByCategory = action.payload.data.data;
+    });
+    builder.addCase(getProductsByCategory.rejected, state => {
+      state.loadingGetProductsByCategory = 'rejected';
+    });
   },
 });
 
@@ -39,3 +65,10 @@ export const selectLoadingGetAllCategories = (state: {product: ProductState}) =>
 
 export const selectAllCategories = (state: {product: ProductState}) =>
   state.product.allCategories;
+
+export const selectLoadingGetProductsByCategory = (state: {
+  product: ProductState;
+}) => state.product.loadingGetProductsByCategory;
+
+export const selectProductsByCategory = (state: {product: ProductState}) =>
+  state.product.productsByCategory;

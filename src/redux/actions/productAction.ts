@@ -8,3 +8,12 @@ export const getAllCategories = createAsyncThunk(
     return {data: res};
   },
 );
+
+export const getProductsByCategory = createAsyncThunk(
+  'product/getProductsByCategory Action',
+  async (categoryId: number) => {
+    const res = await productService.getProductsByCategory(categoryId);
+    console.log('res', JSON.stringify(res));
+    return {data: res};
+  },
+);

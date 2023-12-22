@@ -27,6 +27,7 @@ import {
   STYLEIDEASTACK,
   ALLIMAGE,
 } from '~/constants/routeNames';
+import {ProductCategoryResponse} from './product';
 
 export type LoadingState = 'idle' | 'pending' | 'fulfilled' | 'rejected';
 
@@ -88,7 +89,7 @@ export type StyleIdeaStackParamList = {
 export type CategoryStackParamList = {
   [CATEGORYSCREEN]: undefined;
   [DETAILCATEGORYSCREEN]: {
-    categoryId?: string;
+    category?: ProductCategoryResponse;
   };
   [PRODUCTSTACK]: NavigatorScreenParams<ProductDetailStackParamList>;
 };

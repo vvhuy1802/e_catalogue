@@ -1,5 +1,5 @@
-import {View, Text, Pressable} from 'react-native';
-import React from 'react';
+import {View, Text, Pressable, Image} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import {ScrollView} from 'react-native-gesture-handler';
 import {HeightSize, WidthSize} from '~/theme/size';
 import FastImage from 'react-native-fast-image';
@@ -8,35 +8,39 @@ import {TextFont, TextStyle} from '~/theme/textStyle';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {CategoryStackParamList} from '~/types';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {AppDispatch} from '~/app/store';
-import {SetDirectionBottomBar} from '~/redux/reducers/globalSlice';
+import {
+  SetDirectionBottomBar,
+  selectCurrentDropDown,
+} from '~/redux/reducers/globalSlice';
+import {selectAllCategories} from '~/redux/reducers/productSlice';
+import {ProductCategoryResponse} from '~/types/product';
+import {getUrl} from '~/utils';
+import {getProductsByCategory} from '~/redux/actions/productAction';
 
 const CategoryList = () => {
   const navigation =
     useNavigation<StackNavigationProp<CategoryStackParamList>>();
   const dispatch = useDispatch<AppDispatch>();
-  const dataList = [
-    {
-      id: 1,
-      name: 'Clothing',
-      img: images.category.MenClothing,
-    },
-    {
-      id: 2,
-      name: 'Suits',
-      img: images.category.MenSuits,
-    },
-    {
-      id: 3,
-      name: 'Accessories',
-      img: images.category.MenAccessories,
-    },
-  ];
-  const handleNavigate = (categoryId: string) => {
+  const categories = useSelector(selectAllCategories);
+  const currentDropDown = useSelector(selectCurrentDropDown);
+  const [currentCategory, setCurrentCategory] =
+    useState<ProductCategoryResponse>();
+  useEffect(() => {
+    setCurrentCategory(undefined);
+    categories.map(item => {
+      if (item.name === currentDropDown.title) {
+        setCurrentCategory(item);
+      }
+    });
+  }, [currentDropDown]);
+
+  const handleNavigate = (category: ProductCategoryResponse) => {
     dispatch(SetDirectionBottomBar('down'));
+    dispatch(getProductsByCategory(category.id));
     navigation.navigate('DetailCategoryScreen', {
-      categoryId: categoryId,
+      category: category,
     });
   };
   return (
@@ -75,10 +79,10 @@ const CategoryList = () => {
           style={{
             marginTop: HeightSize(28),
           }}>
-          {dataList.map((item, index) => {
+          {currentCategory?.children.map((item, index) => {
             return (
               <Pressable
-                onPress={() => handleNavigate(item.name)}
+                onPress={() => handleNavigate(item)}
                 key={index}
                 style={{
                   flexDirection: 'row',
@@ -89,7 +93,7 @@ const CategoryList = () => {
                   borderRadius: WidthSize(20),
                   marginBottom: HeightSize(20),
                 }}>
-                <FastImage
+                <Image
                   style={{
                     width: WidthSize(110),
                     height: '100%',
@@ -99,7 +103,7 @@ const CategoryList = () => {
                     bottom: 0,
                   }}
                   resizeMode="contain"
-                  source={item.img}
+                  source={getUrl(item.image)}
                 />
                 <Text
                   style={{

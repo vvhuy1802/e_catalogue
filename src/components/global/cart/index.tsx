@@ -39,7 +39,7 @@ const Cart = ({style, onCartPress}: Props) => {
     {
       id: 2,
       name: 'woman',
-      title: 'Woman',
+      title: 'Women',
       img: images.home.DropDownWoman,
     },
     {
@@ -171,8 +171,6 @@ const Cart = ({style, onCartPress}: Props) => {
             },
             shadowOpacity: 0.25,
             shadowRadius: 3.84,
-            gap: HeightSize(10),
-            paddingVertical: HeightSize(10),
           }}>
           {dataDropDown.map((item, index) => {
             return (
@@ -184,6 +182,7 @@ const Cart = ({style, onCartPress}: Props) => {
                       alignItems: 'center',
                       justifyContent: 'flex-start',
                       paddingHorizontal: HeightSize(10),
+                      paddingVertical: HeightSize(10),
                     }}>
                     <Pressable
                       onPress={() => {
