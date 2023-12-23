@@ -23,9 +23,10 @@ import FastImage from 'react-native-fast-image';
 
 type Props = {
   style?: StyleProp<ViewStyle>;
+  haveDropDownList?: boolean;
   onCartPress?: () => void;
 };
-const Cart = ({style, onCartPress}: Props) => {
+const Cart = ({style, onCartPress, haveDropDownList = true}: Props) => {
   const currentDropDown = useSelector(selectCurrentDropDown);
   const dispatch = useDispatch<AppDispatch>();
   const [isShowDropDown, setIsShowDropDown] = useState<boolean>(false);
@@ -65,33 +66,36 @@ const Cart = ({style, onCartPress}: Props) => {
             flexDirection: 'row',
             justifyContent: 'flex-end',
             height: HeightSize(30),
-            paddingHorizontal: HeightSize(20),
+            paddingHorizontal: HeightSize(24),
             alignItems: 'center',
           },
           style,
         ]}>
-        <Pressable
-          onPress={() => setIsShowDropDown(!isShowDropDown)}
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-          <IconSvg
-            icon="IconDropDown"
-            width={HeightSize(20)}
-            height={HeightSize(20)}
-          />
-          <Text
+        {haveDropDownList ? (
+          <Pressable
+            onPress={() => setIsShowDropDown(!isShowDropDown)}
             style={{
-              color: '#3B3021',
-              ...TextStyle.LG,
-              ...TextFont.SBold,
-              marginLeft: HeightSize(8),
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
             }}>
-            {currentDropDown.title}
-          </Text>
-        </Pressable>
+            <IconSvg
+              icon="IconDropDown"
+              width={HeightSize(20)}
+              height={HeightSize(20)}
+            />
+            <Text
+              style={{
+                color: '#3B3021',
+                ...TextStyle.LG,
+                ...TextFont.SBold,
+                marginLeft: HeightSize(8),
+              }}>
+              {currentDropDown.title}
+            </Text>
+          </Pressable>
+        ) : null}
+
         <Pressable
           onPress={onCartPress}
           style={{
@@ -110,7 +114,7 @@ const Cart = ({style, onCartPress}: Props) => {
               width: HeightSize(20),
               height: HeightSize(20),
               borderRadius: 10,
-              backgroundColor: 'white',
+              backgroundColor: '#F9F6E8',
               padding: HeightSize(2),
             }}>
             <View
@@ -125,7 +129,7 @@ const Cart = ({style, onCartPress}: Props) => {
                 style={{
                   color: 'white',
                   ...TextStyle.XS,
-                  ...TextFont.SLight,
+                  ...TextFont.SMedium,
                 }}>
                 2
               </Text>

@@ -26,6 +26,11 @@ import {
   STYLEDETAIL,
   STYLEIDEASTACK,
   ALLIMAGE,
+  ACCOUNT_DETAIL,
+  ADDRESS_BOOK,
+  MY_PURCHASES,
+  MY_WALLET,
+  PROFILE_STACK,
 } from '~/constants/routeNames';
 import {ProductCategoryResponse} from './product';
 
@@ -58,7 +63,7 @@ export type AuthenticationStackParamList = {
 
 export type HomeStackParamList = {
   [HOME]: undefined;
-  [PROFILE]: undefined;
+  [PROFILE_STACK]: undefined;
   [CATEGORY]: NavigatorScreenParams<CategoryStackParamList>;
   [FAVORITE]: undefined;
   [STYLEIDEASTACK]: NavigatorScreenParams<StyleIdeaStackParamList>;
@@ -106,4 +111,12 @@ export type OrderStackParamList = {
   [CONFIRMORDER]: undefined;
   [EDITADDRESS]: undefined;
   [ADDADDRESS]: undefined;
+};
+
+export type ProfileStackParamList = {
+  [PROFILE]: undefined;
+  [ACCOUNT_DETAIL]: undefined;
+  [MY_PURCHASES]: undefined;
+  [ADDRESS_BOOK]: undefined;
+  [MY_WALLET]: undefined;
 };

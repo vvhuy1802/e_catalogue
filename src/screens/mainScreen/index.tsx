@@ -10,8 +10,9 @@ import {
   ORDERSTACK,
   STYLEIDEA,
   STYLEIDEASTACK,
+  PROFILE_STACK,
 } from '~/constants/routeNames';
-import HomeScrren from './home';
+import HomeScreen from './home';
 import {HomeStackParamList} from '~/types';
 import BottomBar from './bottombar';
 import Favorite from './favorite';
@@ -21,6 +22,7 @@ import CategoryStack from './category';
 import OrderStack from './category/screens/order';
 import StyleIdea from './styleIdea/screens/styleIdea';
 import StyleIdeaStack from './styleIdea';
+import ProfileStack from './profile';
 
 const Stack = createNativeStackNavigator<HomeStackParamList>();
 const MainStack = () => {
@@ -29,7 +31,7 @@ const MainStack = () => {
       <Stack.Navigator>
         <Stack.Screen
           name={HOME}
-          component={HomeScrren}
+          component={HomeScreen}
           options={{
             headerShown: false,
             gestureEnabled: false,
@@ -64,8 +66,8 @@ const MainStack = () => {
           }}
         />
         <Stack.Screen
-          name={PROFILE}
-          component={Profile}
+          name={PROFILE_STACK}
+          component={ProfileStack}
           options={{
             headerShown: false,
             gestureEnabled: false,

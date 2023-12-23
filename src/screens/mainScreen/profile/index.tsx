@@ -1,113 +1,75 @@
-import {
-  Alert,
-  ImageBackground,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
 import React from 'react';
-import Svg, {Path} from 'react-native-svg';
-import ContainerView from '~/components/global/containerView';
-import {useSelector} from 'react-redux';
-import {selectDemoImage} from '~/redux/reducers/globalSlice';
-import {useDispatch} from 'react-redux';
-import {AppDispatch} from '~/app/store';
-import {SetIsAuthorized} from '~/redux/reducers/authSlice';
-import {AppProvider} from '~/app/appProvider';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {
+  ACCOUNT_DETAIL,
+  ADDRESS_BOOK,
+  CATEGORYSCREEN,
+  DETAILCATEGORYSCREEN,
+  MY_PURCHASES,
+  MY_WALLET,
+  PRODUCTSTACK,
+  PROFILE,
+} from '~/constants/routeNames';
+import {CategoryStackParamList, ProfileStackParamList} from '~/types';
+import AccountDetail from './screens/accountDetail';
+import MyPurchases from './screens/myPurchases';
+import AddressBook from './screens/addressBook';
+import MyWallet from './screens/myWallet';
+import Profile from './screens/profile';
 
-const Profile = () => {
-  const data = useSelector(selectDemoImage);
-  const dispatch = useDispatch<AppDispatch>();
+const Stack = createNativeStackNavigator<ProfileStackParamList>();
+const ProfileStack = () => {
   return (
-    // <ContainerView
-    //   style={{
-    //     flex: 1,
-    //     alignItems: 'center',
-    //     backgroundColor: 'white',
-    //   }}>
-    //   <Pressable
-    //     onPress={e => {
-    //       //check if the user is long pressing on a rectangle
-    //       const isLongPressOnRectangle = data?.retangles.some(
-    //         (retangle: {
-    //           minX: any;
-    //           minY: any;
-    //           maxX: any;
-    //           maxY: any;
-    //           info: any;
-    //         }) => {
-    //           const {locationX, locationY} = e.nativeEvent;
-    //           const {minX, minY, maxX, maxY, info} = retangle;
-    //           if (
-    //             locationX > minX &&
-    //             locationX < maxX &&
-    //             locationY > minY &&
-    //             locationY < maxY
-    //           ) {
-    //             Alert.alert(info);
-    //             return true;
-    //           }
-    //         },
-    //       );
-    //       if (!isLongPressOnRectangle) {
-    //         Alert.alert('Press on image');
-    //       }
-    //     }}
-    //     style={{
-    //       width: data?.width,
-    //       height: data?.height,
-    //     }}>
-    //     <Svg
-    //       style={{
-    //         position: 'absolute',
-    //         zIndex: 1,
-    //         width: data?.width,
-    //         height: data?.height,
-    //       }}>
-    //       {data?.retangles.map(
-    //         (
-    //           retangle: {
-    //             minX: any;
-    //             minY: any;
-    //             maxX: any;
-    //             maxY: any;
-    //             info?: any;
-    //           },
-    //           index: React.Key | null | undefined,
-    //         ) => (
-    //           <Path
-    //             key={index}
-    //             d={`M${retangle.minX},${retangle.minY} L ${retangle.maxX},${retangle.minY} L ${retangle.maxX},${retangle.maxY} L ${retangle.minX},${retangle.maxY} L ${retangle.minX},${retangle.minY}`}
-    //             stroke="#EF6556"
-    //             strokeWidth={4}
-    //             fill={'none'}
-    //           />
-    //         ),
-    //       )}
-    //     </Svg>
-    //     <ImageBackground
-    //       style={{
-    //         width: data?.width,
-    //         height: data?.height,
-    //       }}
-    //       resizeMode="contain"
-    //       source={{uri: data?.image.assets[0].uri}}
-    //     />
-    //   </Pressable>
-    // </ContainerView>
-    <View
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'white',
-      }}>
-      <Text>Profile</Text>
-    </View>
+    <>
+      <Stack.Navigator>
+        <Stack.Screen
+          name={PROFILE}
+          component={Profile}
+          options={{
+            headerShown: false,
+            gestureEnabled: false,
+            animation: 'fade',
+          }}
+        />
+        <Stack.Screen
+          name={ACCOUNT_DETAIL}
+          component={AccountDetail}
+          options={{
+            headerShown: false,
+            gestureEnabled: false,
+            animation: 'fade',
+          }}
+        />
+        <Stack.Screen
+          name={MY_PURCHASES}
+          component={MyPurchases}
+          options={{
+            headerShown: false,
+            gestureEnabled: false,
+            animation: 'slide_from_left',
+          }}
+        />
+        <Stack.Screen
+          name={ADDRESS_BOOK}
+          component={AddressBook}
+          options={{
+            headerShown: false,
+            gestureEnabled: false,
+            // animation: 'fade',
+          }}
+        />
+        <Stack.Screen
+          name={MY_WALLET}
+          component={MyWallet}
+          options={{
+            headerShown: false,
+            gestureEnabled: false,
+            // animation: 'fade',
+          }}
+        />
+      </Stack.Navigator>
+    </>
   );
 };
 
-export default Profile;
-
-const styles = StyleSheet.create({});
+export default ProfileStack;

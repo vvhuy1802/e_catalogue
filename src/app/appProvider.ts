@@ -4,6 +4,7 @@ import {
   LoginParams,
   LoginResponse,
   NormalizedLocationVietNam,
+  RegisterResponse,
 } from '~/types/auth';
 
 let _isShowOnBoard: boolean = false;
@@ -11,6 +12,7 @@ let _token: LoginResponse | null = null;
 let _dataLogin: LoginParams | null = null;
 let _historySearch: string[] = [];
 let _locationVietNam: NormalizedLocationVietNam | null = null;
+let _dataAccount: RegisterResponse | null = null;
 
 class AppProvider {
   static setIsShowOnBoard = async () => {
@@ -120,6 +122,26 @@ class AppProvider {
       } catch (error) {}
     }
     return _locationVietNam;
+  };
+
+  static setAccountInfo = async (dataAccount: RegisterResponse) => {
+    try {
+      AsyncStorage.setItem(
+        STORE_KEYS.ACCOUNT_INFO,
+        JSON.stringify(dataAccount),
+      );
+      _dataAccount = dataAccount;
+    } catch (error) {}
+  };
+
+  static getAccountInfo = async () => {
+    if (!_dataAccount) {
+      try {
+        const dataAccount = await AsyncStorage.getItem(STORE_KEYS.ACCOUNT_INFO);
+        _dataAccount = dataAccount ? JSON.parse(dataAccount) : null;
+      } catch (error) {}
+    }
+    return _dataAccount;
   };
 }
 

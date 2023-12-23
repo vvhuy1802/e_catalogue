@@ -5,6 +5,7 @@ const Services = {
   user: '/users/',
   auth: '/auth/',
   product: '/product/',
+  userInfo: '/user-info/',
 };
 
 export const apiUrl = {
@@ -15,4 +16,6 @@ export const apiUrl = {
   getAllCategories: () => `${baseUrl}${Services.product}category`,
   getProductsByCategory: (categoryId: number) =>
     `${baseUrl}${Services.product}category/${categoryId}`,
+  profileImage: () => `${baseUrl}${Services.userInfo}profile-image`,
+  getUserInfo: () => `${baseUrl}${Services.userInfo}`,
 };

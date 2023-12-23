@@ -51,6 +51,15 @@ export const useLogin = () => {
               res.data.access_token,
               res.data.refresh_token,
             );
+            authService.me().then(res => {
+              console.log('res me', res);
+              AppProvider.setAccountInfo({
+                id: res.data.id,
+                username: res.data.username,
+                role: res.data.role,
+                email: res.data.email,
+              });
+            });
           }
         });
       navigate('Survey');
@@ -100,6 +109,15 @@ export const useLogin = () => {
             });
           }
           dispatch(SetIsAuthorized(true));
+          authService.me().then(res => {
+            console.log('res me', res);
+            AppProvider.setAccountInfo({
+              id: res.data.id,
+              username: res.data.username,
+              role: res.data.role,
+              email: res.data.email,
+            });
+          });
         }
       });
   }, [userNameSignIn, passwordSignIn, toggle]);
