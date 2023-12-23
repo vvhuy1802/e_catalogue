@@ -9,10 +9,15 @@ import {SetDirectionBottomBar} from '~/redux/reducers/globalSlice';
 
 type HeaderSearchProps = {
   title: string;
-  onPress: () => void;
+  onPress?: () => void;
+  haveSearchButton?: boolean;
 };
 
-const HeaderSearch: React.FC<HeaderSearchProps> = ({title, onPress}) => {
+const HeaderSearch: React.FC<HeaderSearchProps> = ({
+  title,
+  onPress = () => {},
+  haveSearchButton = true,
+}) => {
   const dispatch = useDispatch<AppDispatch>();
   return (
     <View
@@ -32,26 +37,28 @@ const HeaderSearch: React.FC<HeaderSearchProps> = ({title, onPress}) => {
         }}>
         {title}
       </Text>
-      <Pressable
-        onPress={() => {
-          dispatch(SetDirectionBottomBar('down'));
-          onPress();
-        }}
-        style={{
-          width: WidthSize(100),
-          height: WidthSize(80),
-          borderTopLeftRadius: WidthSize(36),
-          borderBottomLeftRadius: WidthSize(36),
-          backgroundColor: '#EFEFE8',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-        <IconSvg
-          icon="IconSearchBrown"
-          width={WidthSize(28)}
-          height={WidthSize(28)}
-        />
-      </Pressable>
+      {haveSearchButton ? (
+        <Pressable
+          onPress={() => {
+            dispatch(SetDirectionBottomBar('down'));
+            onPress();
+          }}
+          style={{
+            width: WidthSize(100),
+            height: WidthSize(80),
+            borderTopLeftRadius: WidthSize(36),
+            borderBottomLeftRadius: WidthSize(36),
+            backgroundColor: '#EFEFE8',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <IconSvg
+            icon="IconSearchBrown"
+            width={WidthSize(28)}
+            height={WidthSize(28)}
+          />
+        </Pressable>
+      ) : null}
     </View>
   );
 };

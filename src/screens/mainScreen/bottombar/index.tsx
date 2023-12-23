@@ -8,6 +8,7 @@ import {useSelector} from 'react-redux';
 import {selectDirectionBottomBar} from '~/redux/reducers/globalSlice';
 import {IconSvg, IconSvgType} from '~/components/global/iconSvg';
 import {BOTTOM_TAB_HEIGHT} from '~/constants/global';
+import {PROFILE_STACK} from '~/constants/routeNames';
 
 type TabProps = {
   name: string;
@@ -65,7 +66,7 @@ const BottomBar = () => {
       icon: 'IconProfile',
       iconFocused: 'IconProfileFocused',
       onPress: () => {
-        naviation.navigate('Profile');
+        naviation.navigate(PROFILE_STACK);
         setCurrentTab('Profile');
       },
     },

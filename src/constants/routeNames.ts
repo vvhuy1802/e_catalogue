@@ -5,7 +5,7 @@ export const LOGIN = 'Login';
 export const SURVEY = 'Survey';
 
 export const HOME = 'Home';
-export const PROFILE = 'Profile';
+export const PROFILE_STACK = 'ProfileStack';
 export const CATEGORY = 'Category';
 export const STYLEIDEA = 'StyleIdea';
 export const FAVORITE = 'Favorite';
@@ -29,3 +29,9 @@ export const ADDADDRESS = 'AddAddress';
 
 export const STYLEIDEASTACK = 'StyleIdeaStack';
 export const STYLEDETAIL = 'StyleDetail';
+
+export const PROFILE = 'Profile';
+export const ACCOUNT_DETAIL = 'AccountDetail';
+export const MY_PURCHASES = 'MyPurchases';
+export const ADDRESS_BOOK = 'AddressBook';
+export const MY_WALLET = 'MyWallet';

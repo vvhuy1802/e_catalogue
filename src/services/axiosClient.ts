@@ -12,11 +12,18 @@ export const request = async <T extends {}>(
   url: string,
   method: string,
   params: any,
+  upFile?: boolean,
 ): Promise<APIResponse<T>> => {
   let header: any = {
     Accept: '*/*',
     'Content-Type': 'application/json',
   };
+  if (upFile) {
+    header = {
+      Accept: '*/*',
+      'Content-Type': 'multipart/form-data',
+    };
+  }
 
   const token = await AppProvider.getTokenUser();
   const accessToken = token?.access_token;

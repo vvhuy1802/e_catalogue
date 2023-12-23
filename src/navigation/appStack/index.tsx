@@ -9,17 +9,17 @@ const Stack = createNativeStackNavigator<MainStackParamList>();
 
 const AppStack = () => {
   return (
-      <Stack.Navigator>
-        <Stack.Screen
-          name={MAINSTACK}
-          component={MainStack}
-          options={{
-            headerShown: false,
-            gestureEnabled: false,
-            animation: 'fade_from_bottom',
-          }}
-        />
-      </Stack.Navigator>
+    <Stack.Navigator>
+      <Stack.Screen
+        name={MAINSTACK}
+        component={MainStack}
+        options={{
+          headerShown: false,
+          gestureEnabled: false,
+          animation: 'fade_from_bottom',
+        }}
+      />
+    </Stack.Navigator>
   );
 };
 

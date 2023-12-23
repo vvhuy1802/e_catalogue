@@ -47,6 +47,14 @@ import IconCheckLightBrown from '~/assets/icons/ic_check_light_brown.svg';
 import IconLocationBrown from '~/assets/icons/ic_location_brown.svg';
 import IconAddLocationBrown from '~/assets/icons/ic_add_location_brown.svg';
 import IconExpandWhite from '~/assets/icons/ic_expand_white.svg';
+import IconCamera from '~/assets/icons/ic_camera.svg';
+import IconSetting from '~/assets/icons/ic_settings.svg';
+import IconUser from '~/assets/icons/ic_user.svg';
+import IconCube from '~/assets/icons/ic_cube.svg';
+import IconMarker from '~/assets/icons/ic_marker.svg';
+import IconCreditCard from '~/assets/icons/ic_credit_card.svg';
+import IconSignOut from '~/assets/icons/ic_sign_out.svg';
+
 interface IconSvgProps {
   icon:
     | 'IconCloseBrown'
@@ -93,7 +101,14 @@ interface IconSvgProps {
     | 'IconCheckLightBrown'
     | 'IconLocationBrown'
     | 'IconAddLocationBrown'
-    | 'IconExpandWhite';
+    | 'IconExpandWhite'
+    | 'IconCamera'
+    | 'IconSetting'
+    | 'IconCube'
+    | 'IconMarker'
+    | 'IconCreditCard'
+    | 'IconUser'
+    | 'IconSignOut';
 
   width?: number;
   height?: number;
@@ -149,6 +164,13 @@ const svgComponents: Record<string, React.ComponentType> = {
   IconLocationBrown,
   IconAddLocationBrown,
   IconExpandWhite,
+  IconCamera,
+  IconSetting,
+  IconCube,
+  IconMarker,
+  IconCreditCard,
+  IconUser,
+  IconSignOut,
 };
 
 interface Svg {
