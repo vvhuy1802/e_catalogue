@@ -11,6 +11,8 @@ type Product = {
   name: string;
   description: string;
   image: string;
+  type?: string;
+  price?: number;
 };
 
 export type ProductsByCategory = {

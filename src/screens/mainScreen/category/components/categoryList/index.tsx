@@ -56,12 +56,20 @@ const CategoryList = () => {
             justifyContent: 'center',
             height: HeightSize(110),
             marginBottom: HeightSize(28),
-            borderRadius: WidthSize(20),
+            borderRadius: 20,
           }}>
           <FastImage
-            style={{flex: 1}}
+            style={{flex: 1, borderRadius: 20}}
             resizeMode="cover"
-            source={images.category.CategoryMenNew}
+            source={
+              currentCategory?.name === 'Men'
+                ? images.category.CategoryMenNew
+                : currentCategory?.name === 'Women'
+                ? images.category.CategoryWomanNew
+                : currentCategory?.name === 'Boy'
+                ? images.category.CategoryBoyNew
+                : images.category.CategoryGirlNew
+            }
           />
           <Text
             style={{

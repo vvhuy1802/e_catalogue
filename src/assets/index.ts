@@ -45,5 +45,8 @@ export const images = {
       LineLeftPrd: require('~/assets/images/category/products/line_left_prd.png'),
       LineRightPrd: require('~/assets/images/category/products/line_right_prd.png'),
     },
+    CategoryWomanNew: require('~/assets/images/category/img_category_woman.png'),
+    CategoryBoyNew: require('~/assets/images/category/img_category_boy.png'),
+    CategoryGirlNew: require('~/assets/images/category/img_category_girl.png'),
   },
 };

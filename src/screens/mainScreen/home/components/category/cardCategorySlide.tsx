@@ -14,21 +14,26 @@ import {SetDirectionBottomBar} from '~/redux/reducers/globalSlice';
 import {ProductCategoryResponse} from '~/types/product';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
-import {CategoryStackParamList} from '~/types';
+import {CategoryStackParamList, HomeStackParamList} from '~/types';
 import {AppDispatch} from '~/app/store';
+import {getProductsByCategory} from '~/redux/actions/productAction';
+import {CATEGORY, CATEGORYSCREEN} from '~/constants/routeNames';
 
 const CardCategorySlide = () => {
   const allCategories = useSelector(selectAllCategories);
   const loadingGetCategories = useSelector(selectLoadingGetAllCategories);
   const dispatch = useDispatch<AppDispatch>();
-  const navigation =
-    useNavigation<StackNavigationProp<CategoryStackParamList>>();
+  const navigation = useNavigation<StackNavigationProp<HomeStackParamList>>();
+
   const handleNavigate = (category: ProductCategoryResponse) => {
-    // dispatch(SetDirectionBottomBar('down'));
-    // navigation.navigate('DetailCategoryScreen', {
-    //   category: category,
-    // });
-    console.log('category', category);
+    dispatch(SetDirectionBottomBar('down'));
+    dispatch(getProductsByCategory(category.id));
+    navigation.navigate('Category', {
+      screen: 'DetailCategoryScreen',
+      params: {
+        category: category,
+      },
+    });
   };
   return (
     <View

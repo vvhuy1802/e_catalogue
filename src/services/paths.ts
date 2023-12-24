@@ -13,9 +13,9 @@ export const apiUrl = {
   register: () => `${baseUrl}${Services.user}createuser`,
   refreshToken: () => `${baseUrl}${Services.auth}refresh`,
   me: () => `${baseUrl}${Services.auth}me`,
-  getAllCategories: () => `${baseUrl}${Services.product}category`,
+  getAllCategories: () => `${baseUrl}${Services.product}category/all`,
   getProductsByCategory: (categoryId: number) =>
-    `${baseUrl}${Services.product}category/${categoryId}`,
+    `${baseUrl}${Services.product}category/?id=${categoryId}`,
   profileImage: () => `${baseUrl}${Services.userInfo}profile-image`,
   getUserInfo: () => `${baseUrl}${Services.userInfo}`,
 };
