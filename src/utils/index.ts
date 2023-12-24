@@ -2,6 +2,8 @@ import {AppProvider} from '~/app/appProvider';
 import jwt_decode from 'jwt-decode';
 import {LoginParams} from '~/types/auth';
 import {ImageSourcePropType, ImageURISource} from 'react-native';
+import {useDispatch} from 'react-redux';
+import {AppDispatch} from '~/app/store';
 
 type decodedToken = {
   exp: number;
@@ -42,4 +44,18 @@ export const getUrl = (image: string) => {
     // uri: `https://e-catalogue.abcdavid.top/file-server/get/5f58ae36-9e85-11ee-a738-a2e28baa03ba.png`,
   };
   return imageUri;
+};
+
+export const checkRole = (role: string) => {
+  console.log('role', role);
+  switch (role) {
+    case 'customer':
+      return 'CUSTOMER';
+    case 'store':
+      return 'STORE';
+    case 'admin':
+      return 'ADMIN';
+    default:
+      return 'CUSTOMER';
+  }
 };

@@ -26,7 +26,7 @@ const RootNavigation = () => {
         <OnBoard />
       ) : (
         <NavigationContainer theme={DarkTheme}>
-          {isAuthorized ? <AppStack /> : <AuthStack />}
+          {isAuthorized === 'CUSTOMER' ? <AppStack /> : <AuthStack />}
         </NavigationContainer>
       )}
     </>

@@ -4,8 +4,13 @@ import {register} from '../actions/authAction';
 import {LoadingState} from '~/types';
 import {RegisterResponse} from '~/types/auth';
 
+enum Role {
+  'ADMIN' = 'ADMIN',
+  'STORE' = 'STORE',
+  'CUSTOMER' = 'CUSTOMER',
+}
 interface AuthState {
-  isAuthorized: boolean;
+  isAuthorized: Role;
   isShowSplash: boolean;
   isShowOnBoard: boolean;
 
@@ -14,7 +19,7 @@ interface AuthState {
 }
 
 const initialState = {
-  isAuthorized: false,
+  isAuthorized: 'CUSTOMER',
   isShowSplash: true,
   isShowOnBoard: true,
 

@@ -50,7 +50,7 @@ export const request = async <T extends {}>(
   }
 
   const Logout = async () => {
-    store.dispatch(SetIsAuthorized(false));
+    store.dispatch(SetIsAuthorized(''));
     await AppProvider.setTokenUser('', '');
   };
 

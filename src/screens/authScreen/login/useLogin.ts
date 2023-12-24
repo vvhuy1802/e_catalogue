@@ -108,9 +108,9 @@ export const useLogin = () => {
               password: passwordSignIn,
             });
           }
-          dispatch(SetIsAuthorized(true));
           authService.me().then(res => {
             console.log('res me', res);
+            dispatch(SetIsAuthorized(res.data.role));
             AppProvider.setAccountInfo({
               id: res.data.id,
               username: res.data.username,

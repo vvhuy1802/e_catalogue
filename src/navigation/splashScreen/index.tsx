@@ -13,7 +13,8 @@ import {
 } from '~/redux/reducers/authSlice';
 import {TextFont, TextStyle} from '~/theme/textStyle';
 import {AppProvider} from '~/app/appProvider';
-import {checkAccessTokens} from '~/utils';
+import {checkAccessTokens, checkRole} from '~/utils';
+import {authService} from '~/services/service/auth.service';
 
 const SplashScreen = () => {
   const AnimatedLottieView = Animated.createAnimatedComponent(LottieView);
@@ -57,7 +58,11 @@ const SplashScreen = () => {
   };
   const fetchAuth = async () => {
     const getAuth = await checkAccessTokens();
-    dispatch(SetIsAuthorized(getAuth.isRefreshTokenValid));
+    if (getAuth.isRefreshTokenValid) {
+      authService.me().then(res => {
+        dispatch(SetIsAuthorized(checkRole(res.data.role)));
+      });
+    }
   };
 
   useEffect(() => {

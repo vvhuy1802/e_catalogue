@@ -72,7 +72,7 @@ const Survey = () => {
             width={HeightSize(20)}
             height={HeightSize(20)}
             onPress={() => {
-              dispatch(SetIsAuthorized(true));
+              dispatch(SetIsAuthorized('CUSTOMER'));
             }}
           />
         </View>
@@ -215,7 +215,7 @@ const Survey = () => {
         <TouchableOpacity
           activeOpacity={0.8}
           onPress={() => {
-            dispatch(SetIsAuthorized(true));
+            dispatch(SetIsAuthorized('CUSTOMER'));
           }}
           disabled={checked.length < 3}
           style={{

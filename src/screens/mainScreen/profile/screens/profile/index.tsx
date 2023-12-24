@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet, ActionSheetIOS} from 'react-native';
+import {View, Text, StyleSheet, ActionSheetIOS, Pressable} from 'react-native';
 import React, {useEffect, useRef} from 'react';
 import {animations, images} from '~/assets';
 import Cart from '~/components/global/cart';
@@ -21,6 +21,8 @@ import {useImagePicker} from './hooks/useImagePicker';
 import FastImage from 'react-native-fast-image';
 import LottieView from 'lottie-react-native';
 import {URL_GET_FILE} from '~/constants/global';
+import {SetIsAuthorized} from '~/redux/reducers/authSlice';
+import {AppProvider} from '~/app/appProvider';
 
 type ProfileProps = {
   navigation: StackNavigationProp<ProfileStackParamList, 'Profile'>;
@@ -28,8 +30,15 @@ type ProfileProps = {
 
 const Profile: React.FC<ProfileProps> = ({navigation}) => {
   const {handlePressCart} = useCart();
+  const dispatch = useDispatch<AppDispatch>();
 
   const {onPressCamera, image, loadingSetProfileImage} = useImagePicker();
+
+  const handleLogout = () => {
+    dispatch(SetIsAuthorized(''));
+    AppProvider.setTokenUser('', '');
+    AppProvider.setAccountInfo(null as any);
+  };
 
   const renderAvatar = () => {
     if (loadingSetProfileImage === 'pending') {
@@ -117,13 +126,17 @@ const Profile: React.FC<ProfileProps> = ({navigation}) => {
           </View>
 
           <View style={styles.containerSignOutPart}>
-            <View style={styles.containerIconSignOut}>
+            <Pressable
+              onPress={() => {
+                handleLogout();
+              }}
+              style={styles.containerIconSignOut}>
               <IconSvg
                 icon={'IconSignOut'}
                 width={WidthSize(20)}
                 height={HeightSize(20)}
               />
-            </View>
+            </Pressable>
             <Text style={styles.textOption}>Sign out</Text>
           </View>
         </CustomScrollView>
