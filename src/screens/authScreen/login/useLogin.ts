@@ -5,6 +5,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {AppDispatch} from '~/app/store';
 import {
   SetIsAuthorized,
+  SetUserInforLogin,
   selectAuthLoadingState,
 } from '~/redux/reducers/authSlice';
 import {AuthenticationStackParamList} from '~/types';
@@ -16,6 +17,7 @@ import {apiUrl} from '~/services/paths';
 import {Methods} from '~/services/method';
 import {authService} from '~/services/service/auth.service';
 import {AppProvider} from '~/app/appProvider';
+import {checkRole} from '~/utils';
 
 export const useLogin = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -109,8 +111,14 @@ export const useLogin = () => {
             });
           }
           authService.me().then(res => {
-            console.log('res me', res);
-            dispatch(SetIsAuthorized(res.data.role));
+            dispatch(SetIsAuthorized(checkRole(res.data.role)));
+            dispatch(
+              SetUserInforLogin({
+                id: res.data.id,
+                username: res.data.username,
+                role: res.data.role,
+              }),
+            );
             AppProvider.setAccountInfo({
               id: res.data.id,
               username: res.data.username,

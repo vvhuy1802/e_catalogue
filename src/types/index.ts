@@ -31,6 +31,11 @@ import {
   MY_PURCHASES,
   MY_WALLET,
   PROFILE_STACK,
+  HOME_SCREEN_ADMIN_STORE,
+  ORDER_SCREEN_ADMIN_STORE,
+  PRODUCT_SCREEN_ADMIN_STORE,
+  ADMIN_STORE_STACK,
+  STYLE_ROOM_SCREEN_ADMIN_STORE,
 } from '~/constants/routeNames';
 import {ProductCategoryResponse} from './product';
 
@@ -54,6 +59,10 @@ export type AuthStackParamList = {
 };
 export type MainStackParamList = {
   [MAINSTACK]: undefined;
+};
+
+export type AdminStoreStackScreen = {
+  [ADMIN_STORE_STACK]: undefined;
 };
 
 export type AuthenticationStackParamList = {
@@ -119,4 +128,11 @@ export type ProfileStackParamList = {
   [MY_PURCHASES]: undefined;
   [ADDRESS_BOOK]: undefined;
   [MY_WALLET]: undefined;
+};
+
+export type AdminStoreStackParamList = {
+  [HOME_SCREEN_ADMIN_STORE]: undefined;
+  [PRODUCT_SCREEN_ADMIN_STORE]: undefined;
+  [ORDER_SCREEN_ADMIN_STORE]: undefined;
+  [STYLE_ROOM_SCREEN_ADMIN_STORE]: undefined;
 };

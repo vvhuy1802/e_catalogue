@@ -36,3 +36,9 @@ export const ACCOUNT_DETAIL = 'AccountDetail';
 export const MY_PURCHASES = 'MyPurchases';
 export const ADDRESS_BOOK = 'AddressBook';
 export const MY_WALLET = 'MyWallet';
+
+export const ADMIN_STORE_STACK = 'AdminStoreStack';
+export const HOME_SCREEN_ADMIN_STORE = 'HomeScreenAdminStore';
+export const ORDER_SCREEN_ADMIN_STORE = 'OrderScreenAdminStore';
+export const PRODUCT_SCREEN_ADMIN_STORE = 'ProductScreenAdminStore';
+export const STYLE_ROOM_SCREEN_ADMIN_STORE = 'StyleRoomScreenAdminStore';

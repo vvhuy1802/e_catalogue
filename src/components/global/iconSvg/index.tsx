@@ -1,6 +1,6 @@
 import React from 'react';
 import {HeightSize} from '~/theme/size';
-import {Animated, Pressable, StyleProp, View, ViewStyle} from 'react-native';
+import {Animated, Pressable, StyleProp, ViewStyle} from 'react-native';
 
 import IconCloseBrown from '~/assets/icons/ic_close_brown.svg';
 import IconSearchBrown from '~/assets/icons/ic_search_brown.svg';
@@ -54,6 +54,7 @@ import IconCube from '~/assets/icons/ic_cube.svg';
 import IconMarker from '~/assets/icons/ic_marker.svg';
 import IconCreditCard from '~/assets/icons/ic_credit_card.svg';
 import IconSignOut from '~/assets/icons/ic_sign_out.svg';
+import IconDrawerBrown from '~/assets/icons/ic_drawer_brown.svg';
 
 interface IconSvgProps {
   icon:
@@ -108,7 +109,8 @@ interface IconSvgProps {
     | 'IconMarker'
     | 'IconCreditCard'
     | 'IconUser'
-    | 'IconSignOut';
+    | 'IconSignOut'
+    | 'IconDrawerBrown';
 
   width?: number;
   height?: number;
@@ -171,6 +173,7 @@ const svgComponents: Record<string, React.ComponentType> = {
   IconCreditCard,
   IconUser,
   IconSignOut,
+  IconDrawerBrown,
 };
 
 interface Svg {

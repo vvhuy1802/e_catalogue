@@ -8,13 +8,14 @@ import {
   Text,
   View,
 } from 'react-native';
-import Svg, {Path} from 'react-native-svg';
-import {HeightSize, WidthSize} from '~/theme/size';
+import {WidthSize, width} from '~/theme/size';
 
 export default function FullWidthImage(props: {
+  widthNeed?: number;
   source: any;
   ratio?: number;
   style?: StyleProp<ImageStyle>;
+  imageStyle?: StyleProp<ImageStyle>;
   children?: any;
   retangles?: {
     size: {
@@ -33,44 +34,73 @@ export default function FullWidthImage(props: {
   onPressIn?: (e: any) => void;
   onPressOut?: (e: any) => void;
 }) {
-  const [width, setWidth] = useState(0);
-  const [height, setHeight] = useState(0);
+  const [widthImg, setWidthImg] = useState(0);
+  const [heightImg, setHeightImg] = useState(0);
   const [visible, setVisible] = useState(false);
 
   const onLayout = useCallback(
     (event: any) => {
-      const containerWidth = event.nativeEvent.layout.width;
+      const containerWidth = props.widthNeed
+        ? props.widthNeed
+        : event.nativeEvent.layout.width;
       if (props.ratio) {
-        setWidth(containerWidth);
-        setHeight(containerWidth * props.ratio);
+        setWidthImg(containerWidth);
+        setHeightImg(containerWidth * props.ratio);
       } else if (typeof props.source === 'number') {
         const source = Image.resolveAssetSource(props.source);
-        setWidth(containerWidth);
-        setHeight((containerWidth * source.height) / source.width);
+        setWidthImg(containerWidth);
+        setHeightImg((containerWidth * source.height) / source.width);
       } else if (typeof props.source === 'object') {
         Image.getSize(props.source.uri, (w, h) => {
-          setWidth(containerWidth);
-          setHeight((containerWidth * h) / w);
+          setWidthImg(containerWidth);
+          setHeightImg((containerWidth * h) / w);
         });
       }
     },
-    [props.ratio, props.source],
+    [props.ratio, props.source, props.widthNeed],
   );
 
   return (
-    <Pressable
-      onPress={() => {
-        setVisible(!visible);
-      }}
-      onPressIn={props.onPressIn}
-      onPressOut={props.onPressOut}
-      onLayout={onLayout}>
-      <ImageBackground
-        source={props.source}
-        style={[{width, height}, props.style]}
-        resizeMode="contain">
-        {props.children}
-      </ImageBackground>
+    <>
+      {props.onPress && props.onPressIn && props.onPressOut ? (
+        <Pressable
+          onPress={() => {
+            setVisible(!visible);
+          }}
+          onPressIn={props.onPressIn}
+          onPressOut={props.onPressOut}
+          onLayout={onLayout}>
+          <ImageBackground
+            source={props.source}
+            imageStyle={props.imageStyle}
+            style={[
+              {
+                width: widthImg,
+                height: heightImg,
+              },
+              props.style,
+            ]}
+            resizeMode="contain">
+            {props.children}
+          </ImageBackground>
+        </Pressable>
+      ) : (
+        <View onLayout={onLayout}>
+          <ImageBackground
+            source={props.source}
+            imageStyle={props.imageStyle}
+            style={[
+              {
+                width: widthImg,
+                height: heightImg,
+              },
+              props.style,
+            ]}
+            resizeMode="contain">
+            {props.children}
+          </ImageBackground>
+        </View>
+      )}
       {props.retangles && (
         // <Svg
         //   style={[
@@ -118,8 +148,8 @@ export default function FullWidthImage(props: {
               display: visible ? 'flex' : 'none',
               position: 'absolute',
               zIndex: 1,
-              width: width,
-              height: height,
+              width: widthImg,
+              height: heightImg,
             },
             props.style,
           ]}>
@@ -128,8 +158,8 @@ export default function FullWidthImage(props: {
               style={{
                 position: 'absolute',
                 zIndex: 1,
-                width: width,
-                height: height,
+                width: widthImg,
+                height: heightImg,
               }}>
               {props.retangles.shapes.map(
                 (
@@ -173,6 +203,6 @@ export default function FullWidthImage(props: {
           }
         </View>
       )}
-    </Pressable>
+    </>
   );
 }

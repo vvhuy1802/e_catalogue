@@ -10,13 +10,12 @@ import {
   selectIsShowOnBoard,
   selectIsShowSplash,
 } from '~/redux/reducers/authSlice';
+import AdminStore from './adminStoreStack';
 
 const RootNavigation = () => {
   const isAuthorized = useSelector(selectIsAuthorized);
   const isShowSplash = useSelector(selectIsShowSplash);
   const isShowOnBoard = useSelector(selectIsShowOnBoard);
-
-  useEffect(() => {}, []);
 
   return (
     <>
@@ -27,6 +26,7 @@ const RootNavigation = () => {
       ) : (
         <NavigationContainer theme={DarkTheme}>
           {isAuthorized === 'CUSTOMER' ? <AppStack /> : <AuthStack />}
+          {/* {isAuthorized === 'CUSTOMER' ? <AdminStore /> : <AuthStack />} */}
         </NavigationContainer>
       )}
     </>

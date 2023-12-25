@@ -13,6 +13,11 @@ interface AuthState {
   isAuthorized: Role;
   isShowSplash: boolean;
   isShowOnBoard: boolean;
+  useInfo: {
+    id: number;
+    username: string;
+    role: string;
+  };
 
   authLoadingState: LoadingState;
   dataRegister: RegisterResponse;
@@ -22,6 +27,11 @@ const initialState = {
   isAuthorized: 'CUSTOMER',
   isShowSplash: true,
   isShowOnBoard: true,
+  useInfo: {
+    id: 0,
+    username: '',
+    role: '',
+  },
 
   authLoadingState: 'idle',
   dataRegister: {} as RegisterResponse,
@@ -40,6 +50,9 @@ const authSlice = createSlice({
     SetIsShowOnBoard: (state, action) => {
       state.isShowOnBoard = action.payload;
     },
+    SetUserInforLogin: (state, action) => {
+      state.useInfo = action.payload;
+    },
   },
   extraReducers: builder => {
     builder.addCase(register.pending, (state, action) => {
@@ -56,8 +69,12 @@ const authSlice = createSlice({
 });
 
 export default authSlice.reducer;
-export const {SetIsAuthorized, SetIsShowSplash, SetIsShowOnBoard} =
-  authSlice.actions;
+export const {
+  SetIsAuthorized,
+  SetIsShowSplash,
+  SetIsShowOnBoard,
+  SetUserInforLogin,
+} = authSlice.actions;
 export const selectIsAuthorized = (state: RootState) => state.auth.isAuthorized;
 export const selectIsShowSplash = (state: RootState) => state.auth.isShowSplash;
 export const selectIsShowOnBoard = (state: RootState) =>
@@ -66,3 +83,4 @@ export const selectIsShowOnBoard = (state: RootState) =>
 export const selectAuthLoadingState = (state: RootState) =>
   state.auth.authLoadingState;
 export const selectDataRegister = (state: RootState) => state.auth.dataRegister;
+export const selectUserInfo = (state: RootState) => state.auth.useInfo;

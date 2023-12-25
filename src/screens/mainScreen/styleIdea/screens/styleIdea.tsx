@@ -38,6 +38,7 @@ import SearchHomeScreen from '../../home/components/search';
 import PrimaryHeart from '~/components/global/primaryHeart';
 import Svg, {Path} from 'react-native-svg';
 import ContainerView from '~/components/global/containerView';
+import CustomListView from '~/components/global/customListView';
 
 type Retangle = {
   minX: number;
@@ -256,23 +257,23 @@ const StyleIdea = () => {
     },
     {
       id: 2,
-      img: 'https://images2.thanhnien.vn/528068263637045248/2023/7/24/huu-anh-zoner-2-4-16901664385181453210496.jpg',
+      img: 'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg',
     },
     {
       id: 3,
-      img: 'https://images2.thanhnien.vn/528068263637045248/2023/7/24/huu-anh-zoner-2-4-16901664385181453210496.jpg',
+      img: 'https://imgupscaler.com/images/samples/anime-after.webp',
     },
     {
       id: 4,
-      img: 'https://images2.thanhnien.vn/528068263637045248/2023/7/24/huu-anh-zoner-2-4-16901664385181453210496.jpg',
+      img: 'https://pixlr.com/images/index/ai-image-generator-two.webp',
     },
     {
       id: 5,
-      img: 'https://images2.thanhnien.vn/528068263637045248/2023/7/24/huu-anh-zoner-2-4-16901664385181453210496.jpg',
+      img: 'https://cdn.pixabay.com/photo/2023/06/29/03/02/ai-generated-8095540_1280.jpg',
     },
     {
       id: 6,
-      img: 'https://images2.thanhnien.vn/528068263637045248/2023/7/24/huu-anh-zoner-2-4-16901664385181453210496.jpg',
+      img: 'https://db53ipnarc8vy.cloudfront.net/task-category1.png',
     },
   ];
 
@@ -281,281 +282,41 @@ const StyleIdea = () => {
   const navigationStyleIdea =
     useNavigation<StackNavigationProp<StyleIdeaStackParamList, 'StyleIdea'>>();
 
-  const onLayout = useCallback(
-    (event: any) => {
-      const containerWidth = event.nativeEvent.layout.width;
-      if (actualImage?.image?.assets[0].uri) {
-        Image.getSize(actualImage?.image?.assets[0].uri, (w, h) => {
-          const width = containerWidth;
-          setSize({width, height});
-          setActualImage({
-            image: actualImage?.image,
-            width: width,
-            height: height,
-            retangles: retangles,
-          });
-        });
-      }
-    },
-    [actualImage?.image?.assets[0].uri],
-  );
+  // const onLayout = useCallback(
+  //   (event: any) => {
+  //     const containerWidth = event.nativeEvent.layout.width;
+  //     if (actualImage?.image?.assets[0].uri) {
+  //       Image.getSize(actualImage?.image?.assets[0].uri, (w, h) => {
+  //         const width = containerWidth;
+  //         setSize({width, height});
+  //         setActualImage({
+  //           image: actualImage?.image,
+  //           width: width,
+  //           height: height,
+  //           retangles: retangles,
+  //         });
+  //       });
+  //     }
+  //   },
+  //   [actualImage?.image?.assets[0].uri],
+  // );
 
-  useEffect(() => {
-    if (actualImage?.image?.assets[0].uri) {
-      Image.getSize(actualImage?.image?.assets[0].uri, (w, h) => {
-        const widthImg = WidthSize(width);
-        const heightImg = WidthSize((width * h) / w);
-        setSize({width: widthImg, height: heightImg});
-        setActualImage({
-          image: actualImage?.image,
-          width: widthImg,
-          height: heightImg,
-          retangles: retangles,
-        });
-      });
-    }
-  }, [actualImage?.image?.assets[0].uri]);
+  // useEffect(() => {
+  //   if (actualImage?.image?.assets[0].uri) {
+  //     Image.getSize(actualImage?.image?.assets[0].uri, (w, h) => {
+  //       const widthImg = WidthSize(width);
+  //       const heightImg = WidthSize((width * h) / w);
+  //       setSize({width: widthImg, height: heightImg});
+  //       setActualImage({
+  //         image: actualImage?.image,
+  //         width: widthImg,
+  //         height: heightImg,
+  //         retangles: retangles,
+  //       });
+  //     });
+  //   }
+  // }, [actualImage?.image?.assets[0].uri]);
   return (
-    // <ContainerView
-    //   style={{
-    //     flex: 1,
-    //     alignItems: 'center',
-    //     backgroundColor: 'white',
-    //   }}>
-    //   <View
-    //     // onLayout={onLayout}
-    //     style={{
-    //       width: width,
-    //       height: size.height,
-    //       alignItems: 'center',
-    //       justifyContent: 'center',
-    //     }}
-    //     {...panResponder.panHandlers}>
-    //     <Svg
-    //       style={{
-    //         position: 'absolute',
-    //         zIndex: 1,
-    //         width: size.width,
-    //         height: size.height,
-    //       }}>
-    //       {/* {lines.map((line, index) => (
-    //         <Path
-    //           key={index}
-    //           d={line}
-    //           stroke="#EF6556"
-    //           strokeWidth={4}
-    //           fill={'none'}
-    //         />
-    //       ))} */}
-    //       {retangles.map(
-    //         (
-    //           retangle: {
-    //             minX: any;
-    //             minY: any;
-    //             maxX: any;
-    //             maxY: any;
-    //             info?: any;
-    //           },
-    //           index: React.Key | null | undefined,
-    //         ) => (
-    //           <Path
-    //             key={index}
-    //             d={`M${WidthSize(retangle.minX)},${WidthSize(
-    //               retangle.minY,
-    //             )} L ${WidthSize(retangle.maxX)},${WidthSize(
-    //               retangle.minY,
-    //             )} L ${WidthSize(retangle.maxX)},${WidthSize(
-    //               retangle.maxY,
-    //             )} L ${WidthSize(retangle.minX)},${WidthSize(
-    //               retangle.maxY,
-    //             )} L ${WidthSize(retangle.minX)},${WidthSize(retangle.minY)}`}
-    //             stroke="#EF6556"
-    //             strokeWidth={4}
-    //             fill={'none'}
-    //           />
-    //         ),
-    //       )}
-    //       {currentPosition.length > 0 && (
-    //         <Path
-    //           d={path.current}
-    //           stroke="black"
-    //           strokeWidth={4}
-    //           fill={'none'}
-    //         />
-    //       )}
-    //     </Svg>
-    //     <ImageBackground
-    //       style={{
-    //         width: size.width,
-    //         height: size.height,
-    //       }}
-    //       resizeMode="contain"
-    //       source={{uri: actualImage?.image?.assets[0].uri}}
-    //     />
-    //   </View>
-
-    //   <View
-    //     style={{
-    //       width: '100%',
-    //       flexDirection: 'row',
-    //       justifyContent: 'space-around',
-    //     }}>
-    //     <Pressable
-    //       onPress={openImagePicker}
-    //       style={{
-    //         width: '40%',
-    //         height: 50,
-    //         backgroundColor: 'blue',
-    //         justifyContent: 'center',
-    //         alignItems: 'center',
-    //       }}>
-    //       <Text style={{color: 'white'}}>Open Image Picker</Text>
-    //     </Pressable>
-    //     <Pressable
-    //       onPress={() => {
-    //         //undo previous line
-    //         setLines(lines => lines.slice(0, lines.length - 1));
-    //         setRetangles(retangles => retangles.slice(0, retangles.length - 1));
-    //         setActualImage({
-    //           image: actualImage?.image,
-    //           width: size.width,
-    //           height: size.height,
-    //           retangles: retangles,
-    //         });
-    //         dispatch(
-    //           setDemoImage({
-    //             image: actualImage?.image,
-    //             width: size.width,
-    //             height: size.height,
-    //             retangles: retangles.slice(0, retangles.length - 1),
-    //           }),
-    //         );
-    //         // console.log('actualImage', JSON.stringify(actualImage, null, 2));
-    //       }}
-    //       style={{
-    //         width: '40%',
-    //         height: 50,
-    //         backgroundColor: 'blue',
-    //         justifyContent: 'center',
-    //         alignItems: 'center',
-    //       }}>
-    //       <Text style={{color: 'white'}}>{size.height}</Text>
-    //     </Pressable>
-    //   </View>
-    //   <Modal
-    //     animationType="slide"
-    //     transparent={true}
-    //     visible={modalVisible}
-    //     onRequestClose={() => {
-    //       setLines(lines => lines.slice(0, lines.length - 1));
-    //       setRetangles(retangles => retangles.slice(0, retangles.length - 1));
-    //       setModalVisible(false);
-    //       setText('');
-    //     }}>
-    //     <Pressable
-    //       onPress={() => {
-    //         setLines(lines => lines.slice(0, lines.length - 1));
-    //         setRetangles(retangles => retangles.slice(0, retangles.length - 1));
-    //         setModalVisible(false);
-    //         setText('');
-    //       }}
-    //       style={{
-    //         flex: 1,
-    //         justifyContent: 'center',
-    //         alignItems: 'center',
-    //         backgroundColor: '#0000008d',
-    //       }}>
-    //       <Pressable
-    //         onPress={() => {
-    //           Keyboard.dismiss();
-    //         }}
-    //         style={{
-    //           width: '80%',
-    //           height: '80%',
-    //           backgroundColor: 'white',
-    //           borderRadius: 10,
-    //           padding: 20,
-    //         }}>
-    //         <View
-    //           style={{
-    //             alignItems: 'center',
-    //             flex: 1,
-    //           }}>
-    //           <Text>Add Info</Text>
-    //           <TextInput
-    //             style={{
-    //               width: '100%',
-    //               height: 50,
-    //               marginTop: 20,
-    //               borderWidth: 1,
-    //               borderColor: 'black',
-    //               borderRadius: 10,
-    //               paddingHorizontal: 10,
-    //             }}
-    //             onChangeText={text => setText(text)}
-    //             value={text}
-    //           />
-    //           <View
-    //             style={{
-    //               width: '100%',
-    //               flexDirection: 'row',
-    //               justifyContent: 'space-around',
-    //               position: 'absolute',
-    //               bottom: 20,
-    //             }}>
-    //             <Pressable
-    //               onPress={() => {
-    //                 const index = retangles.length - 1;
-    //                 retangles[index].info = text;
-    //                 const data = {
-    //                   image: actualImage?.image,
-    //                   width: size.width,
-    //                   height: size.height,
-    //                   retangles: retangles,
-    //                 };
-    //                 console.log('data', JSON.stringify(data));
-    //                 dispatch(setDemoImage(data));
-    //                 setActualImage(data);
-    //                 setModalVisible(false);
-    //                 setText('');
-    //               }}
-    //               style={{
-    //                 width: '40%',
-    //                 height: 50,
-    //                 backgroundColor: 'blue',
-    //                 justifyContent: 'center',
-    //                 alignItems: 'center',
-    //                 borderRadius: 10,
-    //               }}>
-    //               <Text style={{color: 'white'}}>Save</Text>
-    //             </Pressable>
-    //             <Pressable
-    //               onPress={() => {
-    //                 //undo previous line
-    //                 setLines(lines => lines.slice(0, lines.length - 1));
-    //                 setRetangles(retangles =>
-    //                   retangles.slice(0, retangles.length - 1),
-    //                 );
-    //                 setModalVisible(false);
-    //                 setText('');
-    //               }}
-    //               style={{
-    //                 width: '40%',
-    //                 height: 50,
-    //                 backgroundColor: 'blue',
-    //                 justifyContent: 'center',
-    //                 alignItems: 'center',
-    //                 borderRadius: 10,
-    //               }}>
-    //               <Text style={{color: 'white'}}>Cancel</Text>
-    //             </Pressable>
-    //           </View>
-    //         </View>
-    //       </Pressable>
-    //     </Pressable>
-    //   </Modal>
-    // </ContainerView>
-
     <ContainerImage
       isOpacity={true}
       style={{flex: 1}}
@@ -649,9 +410,10 @@ const StyleIdea = () => {
           style={{
             flex: 1,
             marginTop: HeightSize(10),
+            paddingHorizontal: WidthSize(32),
           }}
           showsVerticalScrollIndicator={false}>
-          <View
+          {/* <View
             style={{
               marginTop: HeightSize(20),
               flexDirection: 'row',
@@ -698,7 +460,17 @@ const StyleIdea = () => {
                 </ImageBackground>
               </Pressable>
             ))}
-          </View>
+          </View> */}
+          <CustomListView
+            data={stylelist}
+            widthView={width / 2 - WidthSize(38)}
+            onPress={item => {
+              dispatch(SetDirectionBottomBar('down'));
+              navigationStyleIdea.navigate('StyleDetail', {
+                styleId: item.id.toString(),
+              });
+            }}
+          />
         </ScrollView>
       </View>
     </ContainerImage>
