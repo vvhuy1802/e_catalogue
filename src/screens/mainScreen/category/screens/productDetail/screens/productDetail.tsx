@@ -2,12 +2,14 @@ import {
   Animated,
   FlatList,
   ImageBackground,
+  Modal,
   Pressable,
   ScrollView,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useCallback, useEffect, useRef} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {images} from '~/assets';
 import ContainerImage from '~/components/global/containerImage';
 import HeaderProduct from '~/components/global/headerProduct';
@@ -26,29 +28,61 @@ import Seller from '../../../components/productDetail/Seller';
 import MayULike from '../../../components/productDetail/MayULike';
 import PrimaryHeart from '~/components/global/primaryHeart';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {ProductById, Variant} from '~/types/product';
+import {productService} from '~/services/service/product.service';
+import {getUrl} from '~/utils';
+import {NormalizeColor} from '~/types/color';
+import FastImage from 'react-native-fast-image';
+import {orderService} from '~/services/service/order.service';
+import {addProductToCart} from '~/redux/actions/orderAction';
 
 type Props = {
   route: RouteProp<ProductDetailStackParamList, 'ProductDetailScreen'>;
 };
+
 const ProductDetail = ({route}: Props) => {
   const navigation =
     useNavigation<StackNavigationProp<CategoryStackParamList>>();
+  const productId = route.params.productId;
   const dispatch = useDispatch<AppDispatch>();
   const onGoBack = () => {
     dispatch(SetDirectionBottomBar('up'));
     navigation.goBack();
   };
 
-  const dataTemp = [
-    {id: 1, name: 'T-Shirt', image: images.home.ImageHotLook},
-    {id: 2, name: 'T-Shirt', image: images.home.ImageHotLook},
-    {id: 3, name: 'T-Shirt', image: images.home.ImageHotLook},
-    {id: 4, name: 'T-Shirt', image: images.home.ImageHotLook},
-    {id: 5, name: 'T-Shirt', image: images.home.ImageHotLook},
-    {id: 6, name: 'T-Shirt', image: images.home.ImageHotLook},
-    {id: 7, name: 'T-Shirt', image: images.home.ImageHotLook},
-    {id: 8, name: 'T-Shirt', image: images.home.ImageHotLook},
-  ];
+  const [dataProduct, setDataProduct] = React.useState<ProductById>();
+  const [loading, setLoading] = React.useState(false);
+  const [currentVariant, setCurrentVariant] = useState<Variant>();
+  const [variantAddToCart, setVariantAddToCart] = useState<Variant>();
+  const [quantity, setQuantity] = useState(1);
+
+  const [listImage, setListImage] = useState<any>([]);
+  const [isShowModal, setIsShowModal] = useState(false);
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      await productService.getProductById(Number(productId)).then(res => {
+        setLoading(false);
+        setDataProduct(res.data);
+      });
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    if (dataProduct) {
+      const imgs = [];
+      Promise.all([
+        dataProduct.variants.map((item: Variant) => {
+          imgs.push(item.image);
+        }),
+        imgs.push(...dataProduct.images),
+      ]);
+      setListImage(imgs);
+      setCurrentVariant(dataProduct.variants[0]);
+      setVariantAddToCart(dataProduct.variants[0]);
+    }
+  }, [dataProduct]);
 
   const imageRef = useRef<ScrollView>();
   useEffect(() => {
@@ -59,16 +93,6 @@ const ProductDetail = ({route}: Props) => {
     });
   }, []);
   const [currentImageIndex, setCurrentImageIndex] = React.useState(0);
-
-  const dataSize = [
-    {id: 1, size: 'XS'},
-    {id: 2, size: 'S'},
-    {id: 3, size: 'S'},
-    {id: 4, size: 'M'},
-    {id: 5, size: 'L'},
-    {id: 6, size: 'XL'},
-    {id: 7, size: 'XXL'},
-  ];
 
   const [showMore, setShowMore] = React.useState(false);
   const handleShowMore = () => {
@@ -83,11 +107,26 @@ const ProductDetail = ({route}: Props) => {
     }
   };
 
+  useEffect(() => {
+    if (currentImageIndex <= listImage.length - 1) {
+      setCurrentVariant(dataProduct?.variants[currentImageIndex]);
+      setVariantAddToCart(dataProduct?.variants[currentImageIndex]);
+    }
+  }, [currentImageIndex]);
+
   const handleOnScroll = (event: any) => {
     const layoutHeight = event.nativeEvent.layoutMeasurement.height;
     const contentOffsetY = event.nativeEvent.contentOffset.y;
     const currentIndex = Math.round(contentOffsetY / layoutHeight);
     setCurrentImageIndex(currentIndex);
+  };
+
+  const scrollToIndex = (index: number) => {
+    imageRef.current?.scrollTo({
+      x: 0,
+      y: index * WidthSize(456),
+      animated: true,
+    });
   };
 
   const [isAddToBag, setIsAddToBag] = React.useState(false);
@@ -97,6 +136,10 @@ const ProductDetail = ({route}: Props) => {
 
   const handleAddToBag = () => {
     setIsAddToBag(true);
+    const param = {
+      product_variant: variantAddToCart?.id!,
+      quantity: quantity,
+    };
     Animated.timing(addToBagRef.current, {
       toValue: 1,
       duration: 900,
@@ -109,6 +152,7 @@ const ProductDetail = ({route}: Props) => {
           useNativeDriver: false,
         }).start(() => {
           setIsAddToBag(false);
+          dispatch(addProductToCart(param));
           addToBagRef.current.setValue(0);
           moveTopRef.current.setValue(0);
         });
@@ -133,7 +177,7 @@ const ProductDetail = ({route}: Props) => {
           justifyContent: 'center',
           gap: HeightSize(8),
         }}>
-        {dataTemp.map((item, index) => {
+        {listImage.map((item: any, index: number) => {
           return (
             <View
               key={index}
@@ -153,6 +197,11 @@ const ProductDetail = ({route}: Props) => {
     );
   }, [currentImageIndex]);
 
+  const handleHideModal = () => {
+    setIsShowModal(false);
+    setQuantity(1);
+  };
+
   return (
     <ContainerImage
       // isOpacity={true}
@@ -160,7 +209,7 @@ const ProductDetail = ({route}: Props) => {
       resizeMode="cover"
       source={images.home.BackgroundHome}>
       <Animated.Image
-        source={dataTemp[currentImageIndex].image}
+        source={getUrl(variantAddToCart?.image as any)}
         resizeMode="cover"
         style={{
           display: isAddToBag ? 'flex' : 'none',
@@ -210,7 +259,11 @@ const ProductDetail = ({route}: Props) => {
           }),
         }}
       />
-      <HeaderProduct title="Products" onPressBack={onGoBack} />
+      <HeaderProduct
+        isShowBottomBarWhenBack={false}
+        title="Products"
+        onPressBack={onGoBack}
+      />
       <ScrollView nestedScrollEnabled={true}>
         <View
           style={{
@@ -236,12 +289,12 @@ const ProductDetail = ({route}: Props) => {
               scrollEventThrottle={16}
               pagingEnabled
               showsVerticalScrollIndicator={false}>
-              {dataTemp.map((item, index) => {
+              {listImage.map((item: any, index: number) => {
                 return (
                   <View key={index}>
                     <ImageBackground
                       key={index}
-                      source={item.image}
+                      source={getUrl(item)}
                       resizeMode="cover"
                       style={{
                         width: WidthSize(350),
@@ -293,39 +346,64 @@ const ProductDetail = ({route}: Props) => {
                     justifyContent: 'space-between',
                     paddingHorizontal: HeightSize(22),
                   }}>
-                  <View
-                    style={{
-                      width: HeightSize(24),
-                      height: HeightSize(24),
-                      backgroundColor: '#83878D',
-                      borderRadius: 100,
-                    }}
-                  />
-                  <View
-                    style={{
-                      width: HeightSize(48),
-                      height: HeightSize(48),
+                  <FlatList
+                    data={dataProduct?.variants}
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}
+                    contentContainerStyle={{
                       alignItems: 'center',
-                      justifyContent: 'center',
-                      borderRadius: 100,
-                      borderWidth: HeightSize(2),
-                      borderColor: '#000000',
-                    }}>
-                    <View
-                      style={{
-                        width: HeightSize(36),
-                        height: HeightSize(36),
-                        backgroundColor: '#000000',
-                        borderRadius: 100,
-                      }}
-                    />
-                  </View>
-                  <View
-                    style={{
-                      width: HeightSize(24),
-                      height: HeightSize(24),
-                      backgroundColor: '#401D0B',
-                      borderRadius: 100,
+                      gap: HeightSize(20),
+                    }}
+                    keyExtractor={(item, index) => index.toString()}
+                    pagingEnabled
+                    scrollEnabled={dataProduct?.variants.length! > 3}
+                    renderItem={({item, index}) => {
+                      return (
+                        <View key={index}>
+                          {currentVariant?.id === item.id ? (
+                            <View
+                              style={{
+                                width: HeightSize(48),
+                                height: HeightSize(48),
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                borderRadius: 100,
+                                borderWidth: 2,
+                                borderColor:
+                                  NormalizeColor.entities[
+                                    item.color.toLocaleLowerCase()
+                                  ],
+                              }}>
+                              <View
+                                style={{
+                                  width: HeightSize(36),
+                                  height: HeightSize(36),
+                                  backgroundColor:
+                                    NormalizeColor.entities[
+                                      item.color.toLocaleLowerCase()
+                                    ],
+                                  borderRadius: 100,
+                                }}
+                              />
+                            </View>
+                          ) : (
+                            <Pressable
+                              onPress={() => {
+                                setCurrentVariant(item), scrollToIndex(index);
+                              }}
+                              style={{
+                                width: HeightSize(24),
+                                height: HeightSize(24),
+                                backgroundColor:
+                                  NormalizeColor.entities[
+                                    item.color.toLocaleLowerCase()
+                                  ],
+                                borderRadius: 100,
+                              }}
+                            />
+                          )}
+                        </View>
+                      );
                     }}
                   />
                 </View>
@@ -347,7 +425,7 @@ const ProductDetail = ({route}: Props) => {
                 ...TextFont.GRegular,
                 flex: 1,
               }}>
-              T-shirt Ahweh Yerth
+              {dataProduct?.name}
             </Text>
             <View
               style={{
@@ -371,53 +449,60 @@ const ProductDetail = ({route}: Props) => {
             </View>
           </View>
 
-          <View style={{marginTop: HeightSize(20)}}>
+          {/* <View style={{marginTop: HeightSize(20)}}>
             <FlatList
-              data={dataSize}
+              data={dataProduct?.variants}
               contentContainerStyle={{
                 gap: WidthSize(12),
               }}
               renderItem={({item, index}) => {
                 return (
-                  <View
+                  <Pressable
+                    onPress={() => {
+                      item.id === currentVariant?.id
+                        ? null
+                        : (setCurrentVariant(item), scrollToIndex(index));
+                    }}
                     style={{
                       width: WidthSize(65),
                       height: HeightSize(57),
                       borderRadius: 28,
-                      backgroundColor: '#EFEFE8',
+                      backgroundColor:
+                        currentVariant?.id === item.id ? '#836E44' : '#EFEFE8',
                       alignItems: 'center',
                       justifyContent: 'center',
                     }}>
                     <Text
                       style={{
-                        color: '#3B3021',
+                        color:
+                          currentVariant?.id === item.id ? 'white' : '#3B3021',
                         ...TextStyle.Base,
                         ...TextFont.SRegular,
                       }}>
                       {item.size}
                     </Text>
-                  </View>
+                  </Pressable>
                 );
               }}
               keyExtractor={(item, index) => index.toString()}
               horizontal={true}
               showsHorizontalScrollIndicator={false}
             />
-          </View>
+          </View> */}
 
           <View style={{marginTop: HeightSize(20)}}>
             <Text>
-              {formatText(
-                `Embark on a journey of discovery with the Ahweh Yerth Exploration Tee the perfect companion for adventurers and dreamers alike. Crafted from a blend of breathable cotton and eco-friendly fibers, this shirt is as comfortable as it is stylish. The design features a mesmerizing interplay of celestial elements and earthly landscapes, symbolizing the harmony between the cosmos and our planet. The celestial patterns intertwine with mountain silhouettes and lush forests, creating a visual narrative of exploration and connection.`,
-              )}{' '}
-              <Text
-                onPress={handleShowMore}
-                style={{
-                  ...TextFont.SBold,
-                  color: '#3B3021',
-                }}>
-                {showMore ? 'Show less' : '... Show more'}
-              </Text>
+              {formatText(dataProduct?.description || 'No description')}{' '}
+              {dataProduct?.description?.length! > 200 ? (
+                <Text
+                  onPress={handleShowMore}
+                  style={{
+                    ...TextFont.SBold,
+                    color: '#3B3021',
+                  }}>
+                  {showMore ? 'Show less' : '... Show more'}
+                </Text>
+              ) : null}
             </Text>
           </View>
           <Review />
@@ -448,12 +533,13 @@ const ProductDetail = ({route}: Props) => {
               ...TextStyle.XL,
               color: '#3B3021',
             }}>
-            Cost
+            {currentVariant?.price}$
           </Text>
         </View>
         <Pressable
           onPress={() => {
-            isAddToBag ? null : handleAddToBag();
+            // isAddToBag ? null : handleAddToBag();
+            setIsShowModal(true);
           }}
           style={{
             width: WidthSize(198),
@@ -476,6 +562,303 @@ const ProductDetail = ({route}: Props) => {
           <IconSvg icon="IconBagWhite" />
         </Pressable>
       </View>
+      <Modal
+        visible={isShowModal}
+        transparent={true}
+        animationType="slide"
+        onRequestClose={() => setIsShowModal(false)}>
+        <Pressable
+          onPress={handleHideModal}
+          style={{
+            flex: 1,
+            justifyContent: 'flex-end',
+          }}>
+          <Pressable
+            style={{
+              backgroundColor: 'white',
+              width: width,
+              padding: WidthSize(16),
+              borderTopLeftRadius: 16,
+              borderTopRightRadius: 16,
+              elevation: 10,
+              shadowColor: '#000',
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
+              shadowOpacity: 0.25,
+            }}>
+            <View
+              style={{
+                flexDirection: 'row',
+                borderBottomWidth: 1,
+                borderBottomColor: '#EFEFE8',
+                paddingBottom: HeightSize(16),
+              }}>
+              <FastImage
+                source={getUrl(variantAddToCart?.image as any) as any}
+                style={{
+                  width: WidthSize(150),
+                  height: WidthSize(150),
+                  borderRadius: 16,
+                }}
+                resizeMode="cover"
+              />
+              <View
+                style={{
+                  marginLeft: WidthSize(16),
+                  justifyContent: 'flex-end',
+                  flex: 1,
+                }}>
+                <Text
+                  style={{
+                    color: '#3B3021',
+                    ...TextFont.SBold,
+                    ...TextStyle.XXL,
+                  }}>
+                  {variantAddToCart?.price}$
+                </Text>
+                <Text
+                  style={{
+                    color: '#3B3021',
+                    ...TextFont.SLight,
+                    ...TextStyle.Base,
+                  }}>
+                  Storage : {variantAddToCart?.quantity}
+                </Text>
+              </View>
+              <IconSvg onPress={handleHideModal} icon="IconCloseBoldBrown" />
+            </View>
+            <View
+              style={{
+                marginTop: HeightSize(16),
+                borderBottomWidth: 1,
+                borderBottomColor: '#EFEFE8',
+                paddingBottom: HeightSize(16),
+              }}>
+              <Text
+                style={{
+                  color: '#3B3021',
+                  ...TextFont.SMedium,
+                  ...TextStyle.Base,
+                }}>
+                Color
+              </Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  marginTop: HeightSize(12),
+                  gap: WidthSize(12),
+                }}>
+                {dataProduct?.variants.map((item: Variant, index: number) => {
+                  return (
+                    <Pressable
+                      onPress={() => {
+                        setVariantAddToCart(item);
+                      }}
+                      key={index}
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        gap: WidthSize(8),
+                        borderWidth: 1,
+                        borderColor:
+                          item.id === variantAddToCart?.id
+                            ? '#3B3021'
+                            : '#EFEFE8',
+                        borderRadius: 8,
+                        padding: HeightSize(8),
+                      }}>
+                      <View
+                        style={{
+                          width: WidthSize(20),
+                          height: WidthSize(20),
+                          backgroundColor:
+                            NormalizeColor.entities[
+                              item.color.toLocaleLowerCase()
+                            ],
+                          borderRadius: 100,
+                          elevation: 10,
+                          shadowColor: '#000',
+                          shadowOffset: {
+                            width: 0,
+                            height: 2,
+                          },
+                          shadowOpacity: 0.25,
+                        }}
+                      />
+                      <Text
+                        style={{
+                          ...TextFont.SRegular,
+                          ...TextStyle.Base,
+                          color: '#3B3021',
+                        }}>
+                        {item.color}
+                      </Text>
+                    </Pressable>
+                  );
+                })}
+              </View>
+            </View>
+            <View
+              style={{
+                marginTop: HeightSize(16),
+                borderBottomWidth: 1,
+                borderBottomColor: '#EFEFE8',
+                paddingBottom: HeightSize(16),
+              }}>
+              <Text
+                style={{
+                  color: '#3B3021',
+                  ...TextFont.SMedium,
+                  ...TextStyle.Base,
+                }}>
+                Size
+              </Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  marginTop: HeightSize(12),
+                  gap: WidthSize(12),
+                }}>
+                {dataProduct?.variants.map((item: Variant, index: number) => {
+                  return (
+                    <Pressable
+                      onPress={() => {
+                        setVariantAddToCart(item);
+                      }}
+                      key={index}
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        gap: WidthSize(8),
+                        borderWidth: 1,
+                        borderColor:
+                          item.id === variantAddToCart?.id
+                            ? '#3B3021'
+                            : '#EFEFE8',
+                        borderRadius: 8,
+                        paddingVertical: HeightSize(8),
+                        paddingHorizontal: WidthSize(24),
+                      }}>
+                      <Text
+                        style={{
+                          ...TextFont.SRegular,
+                          ...TextStyle.Base,
+                          color: '#3B3021',
+                        }}>
+                        {item.size}
+                      </Text>
+                    </Pressable>
+                  );
+                })}
+              </View>
+            </View>
+            <View
+              style={{
+                marginTop: HeightSize(16),
+                paddingBottom: HeightSize(16),
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}>
+              <Text
+                style={{
+                  color: '#3B3021',
+                  ...TextFont.SMedium,
+                  ...TextStyle.Base,
+                }}>
+                Quantity
+              </Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  marginTop: HeightSize(12),
+                  gap: WidthSize(12),
+                }}>
+                <Pressable
+                  onPress={() => {
+                    if (quantity > 1) {
+                      setQuantity(quantity - 1);
+                    }
+                  }}
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    paddingHorizontal: HeightSize(8),
+                    borderWidth: 1,
+                    borderColor: '#EFEFE8',
+                    borderRadius: 8,
+                  }}>
+                  <IconSvg icon="IconMinusBrown" />
+                </Pressable>
+                <View
+                  style={{
+                    width: WidthSize(48),
+                    height: HeightSize(48),
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderWidth: 1,
+                    borderColor: '#EFEFE8',
+                    borderRadius: 8,
+                  }}>
+                  <Text
+                    style={{
+                      color: '#3B3021',
+                      ...TextFont.SRegular,
+                      ...TextStyle.Base,
+                    }}>
+                    {quantity}
+                  </Text>
+                </View>
+                <Pressable
+                  onPress={() => {
+                    if (quantity < variantAddToCart?.quantity!) {
+                      setQuantity(quantity + 1);
+                    }
+                  }}
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    paddingHorizontal: HeightSize(8),
+                    borderWidth: 1,
+                    borderColor: '#EFEFE8',
+                    borderRadius: 8,
+                  }}>
+                  <IconSvg icon="IconAddBrown" />
+                </Pressable>
+              </View>
+            </View>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              style={{
+                backgroundColor: '#836E44',
+                paddingVertical: HeightSize(16),
+                borderRadius: 8,
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginHorizontal: WidthSize(16),
+                marginTop: HeightSize(16),
+              }}
+              onPress={() => {
+                setIsShowModal(false);
+                handleAddToBag();
+              }}>
+              <Text
+                style={{
+                  color: 'white',
+                  ...TextFont.SBold,
+                  ...TextStyle.Base,
+                }}>
+                Add to bag
+              </Text>
+            </TouchableOpacity>
+          </Pressable>
+        </Pressable>
+      </Modal>
     </ContainerImage>
   );
 };

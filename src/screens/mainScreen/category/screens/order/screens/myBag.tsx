@@ -11,7 +11,7 @@ import {
   View,
 } from 'react-native';
 import React, {useCallback, useEffect, useRef} from 'react';
-import {useNavigation} from '@react-navigation/native';
+import {RouteProp, useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {HomeStackParamList, Normalized, OrderStackParamList} from '~/types';
 import {AppDispatch} from '~/app/store';
@@ -28,13 +28,18 @@ import {RowMap, SwipeListView} from 'react-native-swipe-list-view';
 import PrimaryButton from '~/components/global/primaryButton';
 import {setDataOrder} from '~/redux/reducers/orderSlice';
 
-const MyBag = () => {
+type Props = {
+  route: RouteProp<OrderStackParamList, 'MyBag'>;
+};
+const MyBag = ({route}: Props) => {
   const navigation = useNavigation<StackNavigationProp<HomeStackParamList>>();
   const navigationOrder =
     useNavigation<StackNavigationProp<OrderStackParamList>>();
   const dispatch = useDispatch<AppDispatch>();
   const onGoBack = () => {
-    dispatch(SetDirectionBottomBar('up'));
+    if (route.params.isShowBottomBarWhenBack) {
+      dispatch(SetDirectionBottomBar('up'));
+    }
     navigation.goBack();
   };
   const dataBag: Normalized<number, any> = {

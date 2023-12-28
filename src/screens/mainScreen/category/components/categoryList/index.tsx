@@ -38,7 +38,6 @@ const CategoryList = () => {
 
   const handleNavigate = (category: ProductCategoryResponse) => {
     dispatch(SetDirectionBottomBar('down'));
-    dispatch(getProductsByCategory(category.id));
     navigation.navigate('DetailCategoryScreen', {
       category: category,
     });

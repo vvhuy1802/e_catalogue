@@ -330,7 +330,10 @@ const StyleIdea = () => {
         <Card
           onCartPress={() => {
             dispatch(SetDirectionBottomBar('down'));
-            navigation.navigate('OrderStack', {screen: 'MyBag'});
+            navigation.navigate('OrderStack', {
+              screen: 'MyBag',
+              params: {isShowBottomBarWhenBack: true},
+            });
           }}
         />
         <SearchHomeScreen navigation={navigation} title="Discover" />

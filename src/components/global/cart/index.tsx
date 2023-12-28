@@ -20,6 +20,7 @@ import {images} from '~/assets';
 import {AppDispatch} from '~/app/store';
 import Animated, {Layout} from 'react-native-reanimated';
 import FastImage from 'react-native-fast-image';
+import {selectDataCart} from '~/redux/reducers/orderSlice';
 
 type Props = {
   style?: StyleProp<ViewStyle>;
@@ -30,6 +31,7 @@ const Cart = ({style, onCartPress, haveDropDownList = true}: Props) => {
   const currentDropDown = useSelector(selectCurrentDropDown);
   const dispatch = useDispatch<AppDispatch>();
   const [isShowDropDown, setIsShowDropDown] = useState<boolean>(false);
+  const dataCart = useSelector(selectDataCart);
   const dataDropDown = [
     {
       id: 1,
@@ -131,7 +133,7 @@ const Cart = ({style, onCartPress, haveDropDownList = true}: Props) => {
                   ...TextStyle.XS,
                   ...TextFont.SMedium,
                 }}>
-                2
+                {dataCart.items?.length || 0}
               </Text>
             </View>
           </View>

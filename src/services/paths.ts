@@ -6,6 +6,7 @@ const Services = {
   auth: '/auth/',
   product: '/product/',
   userInfo: '/user-info/',
+  order: '/order/',
 };
 
 export const apiUrl = {
@@ -13,9 +14,16 @@ export const apiUrl = {
   register: () => `${baseUrl}${Services.user}createuser`,
   refreshToken: () => `${baseUrl}${Services.auth}refresh`,
   me: () => `${baseUrl}${Services.auth}me`,
+
   getAllCategories: () => `${baseUrl}${Services.product}category/all`,
   getProductsByCategory: (categoryId: number) =>
     `${baseUrl}${Services.product}category/?id=${categoryId}`,
+  getProductById: (productId: number) =>
+    `${baseUrl}${Services.product}?id=${productId}`,
+
+  addProductToCart: () => `${baseUrl}${Services.order}cart`,
+  getCartUser: () => `${baseUrl}${Services.order}cart`,
+
   profileImage: () => `${baseUrl}${Services.userInfo}profile-image`,
   getUserInfo: () => `${baseUrl}${Services.userInfo}`,
 };

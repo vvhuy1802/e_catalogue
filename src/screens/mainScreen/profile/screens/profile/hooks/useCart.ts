@@ -14,7 +14,12 @@ export const useCart = () => {
   const dispatch = useDispatch<AppDispatch>();
   const handlePressCart = () => {
     dispatch(SetDirectionBottomBar('down'));
-    homeNavigation.navigate(ORDERSTACK, {screen: 'MyBag'});
+    homeNavigation.navigate(ORDERSTACK, {
+      screen: 'MyBag',
+      params: {
+        isShowBottomBarWhenBack: true,
+      },
+    });
   };
   return {
     handlePressCart,

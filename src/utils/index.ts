@@ -4,6 +4,7 @@ import {LoginParams} from '~/types/auth';
 import {ImageSourcePropType, ImageURISource} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {AppDispatch} from '~/app/store';
+import {createContext} from 'react';
 
 type decodedToken = {
   exp: number;
@@ -41,7 +42,6 @@ export const checkAccessTokens = async () => {
 export const getUrl = (image: string) => {
   const imageUri: ImageSourcePropType = {
     uri: `https://e-catalogue.abcdavid.top/file-server/get/${image}`,
-    // uri: `https://e-catalogue.abcdavid.top/file-server/get/5f58ae36-9e85-11ee-a738-a2e28baa03ba.png`,
   };
   return imageUri;
 };
@@ -51,7 +51,7 @@ export const checkRole = (role: string) => {
   switch (role) {
     case 'customer':
       return 'CUSTOMER';
-    case 'store':
+    case 'shop_owner':
       return 'STORE';
     case 'admin':
       return 'ADMIN';

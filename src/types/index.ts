@@ -36,8 +36,12 @@ import {
   PRODUCT_SCREEN_ADMIN_STORE,
   ADMIN_STORE_STACK,
   STYLE_ROOM_SCREEN_ADMIN_STORE,
+  ADD_STYLE_ROOM_SCREEN_ADMIN_STORE,
+  DETAIL_STYLE_ROOM_SCREEN_ADMIN_STORE,
+  STYLE_ROOM_STACK_PARAMS_LIST,
 } from '~/constants/routeNames';
 import {ProductCategoryResponse} from './product';
+import {ImagePickerResponse} from 'react-native-image-picker';
 
 export type LoadingState = 'idle' | 'pending' | 'fulfilled' | 'rejected';
 
@@ -45,7 +49,7 @@ export type Normalized<T, B> = {
   //normalize data
   ids: T[];
   entities: {
-    [key: number]: B;
+    [key: string]: B;
   };
 };
 
@@ -116,7 +120,9 @@ export type ProductDetailStackParamList = {
 };
 
 export type OrderStackParamList = {
-  [MYBAG]: undefined;
+  [MYBAG]: {
+    isShowBottomBarWhenBack?: boolean;
+  };
   [CONFIRMORDER]: undefined;
   [EDITADDRESS]: undefined;
   [ADDADDRESS]: undefined;
@@ -134,5 +140,13 @@ export type AdminStoreStackParamList = {
   [HOME_SCREEN_ADMIN_STORE]: undefined;
   [PRODUCT_SCREEN_ADMIN_STORE]: undefined;
   [ORDER_SCREEN_ADMIN_STORE]: undefined;
+  [STYLE_ROOM_STACK_PARAMS_LIST]: NavigatorScreenParams<StyleRoomStackParamList>;
+};
+
+export type StyleRoomStackParamList = {
   [STYLE_ROOM_SCREEN_ADMIN_STORE]: undefined;
+  [ADD_STYLE_ROOM_SCREEN_ADMIN_STORE]: {
+    imageAdding: ImagePickerResponse;
+  };
+  [DETAIL_STYLE_ROOM_SCREEN_ADMIN_STORE]: undefined;
 };
