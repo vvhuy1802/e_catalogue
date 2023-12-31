@@ -21,6 +21,7 @@ import {AppDispatch} from '~/app/store';
 import Animated, {Layout} from 'react-native-reanimated';
 import FastImage from 'react-native-fast-image';
 import {selectDataCart} from '~/redux/reducers/orderSlice';
+import {countTotalItemInCart} from '~/utils';
 
 type Props = {
   style?: StyleProp<ViewStyle>;
@@ -133,7 +134,7 @@ const Cart = ({style, onCartPress, haveDropDownList = true}: Props) => {
                   ...TextStyle.XS,
                   ...TextFont.SMedium,
                 }}>
-                {dataCart.items?.length || 0}
+                {countTotalItemInCart(dataCart)}
               </Text>
             </View>
           </View>

@@ -204,6 +204,8 @@ const DetailStyleIdea = () => {
           onPress={(e: any) => {
             handlePressImage(e);
           }}
+          onPressIn={() => {}}
+          onPressOut={() => {}}
           style={{
             marginTop: HeightSize(28),
           }}
@@ -249,9 +251,8 @@ const DetailStyleIdea = () => {
             paddingHorizontal: WidthSize(32),
             paddingTop: HeightSize(28),
             backgroundColor: 'white',
-            borderTopLeftRadius: 40,
-            borderTopRightRadius: 40,
-            top: -HeightSize(40),
+            // borderTopLeftRadius: 40,
+            // borderTopRightRadius: 40,
           }}>
           <Text
             style={{

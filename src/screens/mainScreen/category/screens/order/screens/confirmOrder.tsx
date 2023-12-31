@@ -7,8 +7,8 @@ import {
   Text,
   View,
 } from 'react-native';
-import React from 'react';
-import {useSelector} from 'react-redux';
+import React, {useContext, useEffect} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import {selectOrder, setDataOrder} from '~/redux/reducers/orderSlice';
 import {images} from '~/assets';
 import ContainerImage from '~/components/global/containerImage';
@@ -16,19 +16,32 @@ import {IconSvg} from '~/components/global/iconSvg';
 import PrimaryButton from '~/components/global/primaryButton';
 import {HeightSize, WidthSize} from '~/theme/size';
 import {TextFont, TextStyle} from '~/theme/textStyle';
-import {Normalized, OrderStackParamList} from '~/types';
-import {useNavigation} from '@react-navigation/native';
+import {HomeStackParamList, Normalized, OrderStackParamList} from '~/types';
+import {RouteProp, useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
+import {getUrl} from '~/utils';
+import {CartVariant, NormalizeCartVariant, OrderParams} from '~/types/order';
+import {OrderStackContext} from '~/utils/context';
+import {orderService} from '~/services/service/order.service';
+import {AppDispatch} from '~/app/store';
+import {SetDirectionBottomBar} from '~/redux/reducers/globalSlice';
 
-const ConfirmOrder = () => {
-  const selectDataOrder = useSelector(selectOrder);
+type Props = {
+  route: RouteProp<OrderStackParamList, 'ConfirmOrder'>;
+};
+const ConfirmOrder = ({route}: Props) => {
+  const dataOrder = route.params.dataOrder as NormalizeCartVariant;
   const navigation = useNavigation<StackNavigationProp<OrderStackParamList>>();
+  const rootNavigation =
+    useNavigation<StackNavigationProp<HomeStackParamList>>();
   const onGoBack = () => {
     navigation.goBack();
   };
   const [paymentMethod, setPaymentMethod] = React.useState<'COD' | 'Momo'>(
     'COD',
   );
+  const {localAddress, dataAddress} = useContext(OrderStackContext);
+  const dispatch = useDispatch<AppDispatch>();
   return (
     <ContainerImage
       style={{flex: 1}}
@@ -123,31 +136,36 @@ const ConfirmOrder = () => {
               paddingHorizontal: WidthSize(16),
               paddingVertical: HeightSize(16),
             }}>
-            <Text
-              style={{
-                ...TextFont.SMedium,
-                ...TextStyle.XL,
-                color: '#3B3021',
-              }}>
-              Shipping Address
-            </Text>
-            <Text
-              style={{
-                ...TextFont.SMedium,
-                ...TextStyle.Base,
-                color: '#836E44',
-              }}>
-              Vũ Viết Huy | 0987134912
-            </Text>
-            <Text
-              style={{
-                ...TextFont.SMedium,
-                ...TextStyle.Base,
-                color: '#836E44',
-              }}>
-              90m, Hoang Quoc Viet Street, Phu My Residence, Phu My Ward, 7
-              Dist, Ho Chi Minh City
-            </Text>
+            <View>
+              <Text
+                style={{
+                  ...TextFont.SMedium,
+                  ...TextStyle.Base,
+                  color: '#836E44',
+                }}>
+                {dataAddress?.fullname ? dataAddress?.fullname : 'Vũ Viết Huy'}{' '}
+                | {dataAddress?.phone}
+              </Text>
+              <Text
+                style={{
+                  ...TextFont.SMedium,
+                  ...TextStyle.Base,
+                  color: '#836E44',
+                }}>
+                {dataAddress?.address?.details || ''},{' '}
+                {
+                  localAddress?.entities[dataAddress?.address?.province]
+                    ?.districts.entities[dataAddress?.address?.district]?.wards
+                    .entities[dataAddress?.address?.ward]?.name
+                }
+                ,{' '}
+                {
+                  localAddress?.entities[dataAddress?.address?.province]
+                    ?.districts.entities[dataAddress?.address?.district]?.name
+                }
+                , {localAddress?.entities[dataAddress?.address?.province]?.name}
+              </Text>
+            </View>
           </View>
         </View>
         <View
@@ -164,21 +182,22 @@ const ConfirmOrder = () => {
               ...TextStyle.XL,
               color: '#3B3021',
             }}>
-            {`Order item${selectDataOrder.ids.length > 1 ? 's' : ''}`}
+            {`Order item${dataOrder.ids.length > 1 ? 's' : ''}`}
           </Text>
           <Text
             style={{
               ...TextFont.SRegular,
               ...TextStyle.Base,
               color: '#CCCBD3',
-            }}>{`${selectDataOrder.ids.length} item${
-            selectDataOrder.ids.length > 1 ? 's' : ''
+            }}>{`${dataOrder.ids.length} item${
+            dataOrder.ids.length > 1 ? 's' : ''
           }`}</Text>
         </View>
         <View
           style={{
             marginTop: HeightSize(12),
-            height: WidthSize(250),
+            height: WidthSize(282),
+            paddingBottom: HeightSize(32),
           }}>
           <ScrollView
             horizontal
@@ -187,7 +206,7 @@ const ConfirmOrder = () => {
               gap: WidthSize(16),
               paddingHorizontal: WidthSize(32),
             }}>
-            {selectDataOrder.ids.map((item, index) => {
+            {dataOrder.ids.map((item, index) => {
               return (
                 <View
                   key={index}
@@ -196,9 +215,15 @@ const ConfirmOrder = () => {
                     height: WidthSize(250),
                     borderRadius: 16,
                     backgroundColor: '#F1EFE9',
+                    shadowColor: '#000',
+                    shadowOffset: {
+                      width: 0,
+                      height: 1,
+                    },
+                    shadowOpacity: 0.2,
                   }}>
                   <Image
-                    source={images.home.ImagePopular}
+                    source={getUrl(dataOrder.entities[item].image)}
                     style={{
                       width: WidthSize(148),
                       height: WidthSize(148),
@@ -218,7 +243,7 @@ const ConfirmOrder = () => {
                         ...TextStyle.Base,
                         color: '#3B3021',
                       }}>
-                      {selectDataOrder.entities[item].name}
+                      {dataOrder.entities[item].product.name}
                     </Text>
                     <Text
                       style={{
@@ -226,7 +251,7 @@ const ConfirmOrder = () => {
                         ...TextStyle.SM,
                         color: '#CCCBD3',
                       }}>
-                      {`${selectDataOrder.entities[item].size} - ${selectDataOrder.entities[item].color}`}
+                      {`${dataOrder.entities[item].size} - ${dataOrder.entities[item].color}`}
                     </Text>
                     <View
                       style={{
@@ -241,7 +266,7 @@ const ConfirmOrder = () => {
                           ...TextStyle.Base,
                           color: '#3B3021',
                         }}>
-                        ${selectDataOrder.entities[item].price}
+                        ${dataOrder.entities[item].price}
                       </Text>
                       <Text
                         style={{
@@ -249,7 +274,7 @@ const ConfirmOrder = () => {
                           ...TextStyle.SM,
                           color: '#CCCBD3',
                         }}>
-                        x{selectDataOrder.entities[item].quantity}
+                        x{dataOrder.entities[item].quantity}
                       </Text>
                     </View>
                   </View>
@@ -259,8 +284,7 @@ const ConfirmOrder = () => {
           </ScrollView>
         </View>
 
-        <View
-          style={{marginTop: HeightSize(32), paddingHorizontal: WidthSize(32)}}>
+        <View style={{paddingHorizontal: WidthSize(32)}}>
           <Text
             style={{
               ...TextFont.SMedium,
@@ -387,7 +411,14 @@ const ConfirmOrder = () => {
                   ...TextStyle.Base,
                   color: '#3B3021',
                 }}>
-                $0
+                $
+                {dataOrder.ids.reduce(
+                  (a, b) =>
+                    a +
+                    dataOrder.entities[b].price *
+                      dataOrder.entities[b].quantity,
+                  0,
+                )}
               </Text>
             </View>
             <View
@@ -411,7 +442,7 @@ const ConfirmOrder = () => {
                   ...TextStyle.Base,
                   color: '#3B3021',
                 }}>
-                $0
+                $15
               </Text>
             </View>
 
@@ -444,7 +475,14 @@ const ConfirmOrder = () => {
                   ...TextStyle.Base,
                   color: '#3B3021',
                 }}>
-                $0
+                $
+                {dataOrder.ids.reduce(
+                  (a, b) =>
+                    a +
+                    dataOrder.entities[b].price *
+                      dataOrder.entities[b].quantity,
+                  0,
+                ) + 15}
               </Text>
             </View>
           </View>
@@ -479,7 +517,17 @@ const ConfirmOrder = () => {
             marginBottom: HeightSize(32),
           }}
           title="Place Order"
-          handlePress={async () => {}}
+          handlePress={async () => {
+            let params: OrderParams = {
+              contact_id: dataAddress.id,
+              items: dataOrder.ids,
+            };
+            await orderService.makeOrder(params).then(res => {
+              console.log(res);
+              dispatch(SetDirectionBottomBar('up'));
+              rootNavigation.navigate('Home');
+            });
+          }}
         />
       </View>
     </ContainerImage>

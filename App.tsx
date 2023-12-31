@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {StatusBar} from 'react-native';
+import {LogBox, StatusBar} from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import RootNavigation from '~/navigation';
 import 'react-native-gesture-handler';
@@ -7,11 +7,12 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {AppProvider} from '~/app/appProvider';
 import axios from 'axios';
 import {
-  LocationVietNam,
   NormalizedDistricts,
   NormalizedLocationVietNam,
   NormalizedWards,
 } from '~/types/auth';
+import {AutocompleteDropdownContextProvider} from 'react-native-autocomplete-dropdown';
+LogBox.ignoreAllLogs(true);
 function App(): JSX.Element {
   useEffect(() => {
     const getLocation = async () => {
@@ -66,7 +67,9 @@ function App(): JSX.Element {
           backgroundColor={'transparent'}
           translucent={true}
         />
-        <RootNavigation />
+        <AutocompleteDropdownContextProvider>
+          <RootNavigation />
+        </AutocompleteDropdownContextProvider>
       </GestureHandlerRootView>
     </SafeAreaProvider>
   );

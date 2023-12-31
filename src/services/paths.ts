@@ -7,6 +7,7 @@ const Services = {
   product: '/product/',
   userInfo: '/user-info/',
   order: '/order/',
+  contact: '/contact/',
 };
 
 export const apiUrl = {
@@ -22,7 +23,13 @@ export const apiUrl = {
     `${baseUrl}${Services.product}?id=${productId}`,
 
   addProductToCart: () => `${baseUrl}${Services.order}cart`,
-  getCartUser: () => `${baseUrl}${Services.order}cart`,
+  getCartUser: () => `${baseUrl}${Services.product}cart`,
+  deleteItemCart: () => `${baseUrl}${Services.order}cart`,
+  makeOrder: () => `${baseUrl}${Services.product}order`,
+  getAllOrder: () => `${baseUrl}${Services.product}order/store`,
+  updateOrderStatus: (orderId: number) => `${baseUrl}/order?id=${orderId}`,
+
+  getAllUserAddress: () => `${baseUrl}${Services.contact}user`,
 
   profileImage: () => `${baseUrl}${Services.userInfo}profile-image`,
   getUserInfo: () => `${baseUrl}${Services.userInfo}`,

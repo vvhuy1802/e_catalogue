@@ -13,6 +13,8 @@ type Product = {
   image: string;
   type?: string;
   price?: number;
+  minPrice?: number;
+  maxPrice?: number;
 };
 
 export type ProductsByCategory = {

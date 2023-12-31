@@ -1,5 +1,4 @@
 import {
-  PanResponder,
   StyleSheet,
   Text,
   View,
@@ -11,6 +10,8 @@ import {
   TextInput,
   StatusBar,
   FlatList,
+  ScrollView,
+  TouchableOpacity,
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import {setDemoImage} from '~/redux/reducers/globalSlice';
@@ -23,7 +24,6 @@ import {
 } from 'react-native-image-picker';
 import {useDispatch} from 'react-redux';
 import {AppDispatch} from '~/app/store';
-import Svg, {Path} from 'react-native-svg';
 import ContainerView from '~/components/global/containerView';
 import {RouteProp, useNavigation} from '@react-navigation/native';
 import {StyleRoomStackParamList} from '~/types';
@@ -52,120 +52,171 @@ type AddStyleRoomProps = {
 const AddStyleRoom = ({route}: AddStyleRoomProps) => {
   const navigation =
     useNavigation<StackNavigationProp<StyleRoomStackParamList>>();
-  const [size, setSize] = useState({width: 0, height: 0});
+  const [size, setSize] = useState({
+    width: route.params.widthImgage,
+    height: route.params.heightImage,
+  });
   const [actualImage, setActualImage] = useState<actualImageProps>({
     image: route.params.imageAdding,
-    width: 0,
-    height: 0,
+    width: route.params.widthImgage,
+    height: route.params.heightImage,
     retangles: [],
   });
   const [modalVisible, setModalVisible] = useState(false);
   const [text, setText] = useState('');
+  const tabs = [
+    {
+      id: '1',
+      title: 'Popular',
+    },
+    {
+      id: '2',
+      title: 'Minimal',
+    },
+    {
+      id: '3',
+      title: 'Business',
+    },
+    {
+      id: '4',
+      title: 'Street',
+    },
+    {
+      id: '5',
+      title: 'Performance',
+    },
+    {
+      id: '6',
+      title: 'Unique',
+    },
+    {
+      id: '7',
+      title: 'Lovely',
+    },
+    {
+      id: '8',
+      title: 'Easy Casual',
+    },
+    {
+      id: '9',
+      title: 'American',
+    },
+    {
+      id: '10',
+      title: 'City Boy',
+    },
+    {
+      id: '11',
+      title: 'Sporty',
+    },
+    {
+      id: '12',
+      title: 'Retro',
+    },
+    {
+      id: '13',
+      title: 'Modern',
+    },
+  ];
+  const [category, setCategory] = useState<{id: string; title: string}>(
+    tabs[0],
+  );
   const dispatch = useDispatch<AppDispatch>();
 
-  const [currentPosition, setCurrentPosition] = useState<any>([]);
-  const [lines, setLines] = useState([]);
+  // const [currentPosition, setCurrentPosition] = useState<any>([]);
   const [retangles, setRetangles] = useState<Array<Retangle>>([]);
   const path = useRef('');
-  const pathRetange = useRef({
-    minX: 0,
-    minY: 0,
-    maxX: 0,
-    maxY: 0,
-  });
-  const panResponder = useRef(
-    PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
-      onPanResponderGrant: () => {
-        path.current = '';
-        pathRetange.current = {
-          minX: 0,
-          minY: 0,
-          maxX: 0,
-          maxY: 0,
-        };
-      },
-      onPanResponderMove: (e, gesture) => {
-        const newPoint = {
-          x: e.nativeEvent.locationX,
-          y: e.nativeEvent.locationY,
-        };
-        setCurrentPosition([...currentPosition, newPoint]);
-        if (path.current === '') {
-          path.current = `M${newPoint.x},${newPoint.y}`;
-        } else {
-          path.current += ` L ${newPoint.x},${newPoint.y}`;
-        }
-        if (
-          pathRetange.current.minX === 0 &&
-          pathRetange.current.minY === 0 &&
-          pathRetange.current.maxX === 0 &&
-          pathRetange.current.maxY === 0
-        ) {
-          pathRetange.current.minX = newPoint.x;
-          pathRetange.current.minY = newPoint.y;
-          pathRetange.current.maxX = newPoint.x;
-          pathRetange.current.maxY = newPoint.y;
-        } else {
-          if (newPoint.x < pathRetange.current.minX) {
-            pathRetange.current.minX = newPoint.x;
-          }
-          if (newPoint.y < pathRetange.current.minY) {
-            pathRetange.current.minY = newPoint.y;
-          }
-          if (newPoint.x > pathRetange.current.maxX) {
-            pathRetange.current.maxX = newPoint.x;
-          }
-          if (newPoint.y > pathRetange.current.maxY) {
-            pathRetange.current.maxY = newPoint.y;
-          }
-        }
-      },
-      onPanResponderRelease: (e, gesture) => {
-        // if area is too small, it is not a retangle
-        if (
-          pathRetange.current.maxX - pathRetange.current.minX < 10 ||
-          pathRetange.current.maxY - pathRetange.current.minY < 10
-        ) {
-          pathRetange.current = {
-            minX: 0,
-            minY: 0,
-            maxX: 0,
-            maxY: 0,
-          };
-          return;
-        }
-        setLines((lines): any => [...lines, path.current]);
-        setRetangles(retangles => [
-          ...retangles,
-          {
-            minX: pathRetange.current.minX,
-            minY: pathRetange.current.minY,
-            maxX: pathRetange.current.maxX,
-            maxY: pathRetange.current.maxY,
-          },
-        ]);
-        setModalVisible(true);
-        setCurrentPosition([]);
-      },
-    }),
-  ).current;
+  // const pathRetange = useRef({
+  //   minX: 0,
+  //   minY: 0,
+  //   maxX: 0,
+  //   maxY: 0,
+  // });
+  // const panResponder = useRef(
+  //   PanResponder.create({
+  //     onStartShouldSetPanResponder: () => true,
+  //     onPanResponderGrant: () => {
+  //       path.current = '';
+  //       pathRetange.current = {
+  //         minX: 0,
+  //         minY: 0,
+  //         maxX: 0,
+  //         maxY: 0,
+  //       };
+  //     },
+  //     onPanResponderMove: (e, gesture) => {
+  //       const newPoint = {
+  //         x: e.nativeEvent.locationX,
+  //         y:
+  //           e.nativeEvent.locationY > size.height
+  //             ? size.height
+  //             : e.nativeEvent.locationY < 0
+  //             ? 0
+  //             : e.nativeEvent.locationY,
+  //       };
+  //       setCurrentPosition([...currentPosition, newPoint]);
+  //       if (path.current === '') {
+  //         path.current = `M${newPoint.x},${newPoint.y}`;
+  //       } else {
+  //         path.current += ` L ${newPoint.x},${newPoint.y}`;
+  //       }
+  //       if (
+  //         pathRetange.current.minX === 0 &&
+  //         pathRetange.current.minY === 0 &&
+  //         pathRetange.current.maxX === 0 &&
+  //         pathRetange.current.maxY === 0
+  //       ) {
+  //         pathRetange.current.minX = newPoint.x;
+  //         pathRetange.current.minY = newPoint.y;
+  //         pathRetange.current.maxX = newPoint.x;
+  //         pathRetange.current.maxY = newPoint.y;
+  //       } else {
+  //         if (newPoint.x < pathRetange.current.minX) {
+  //           pathRetange.current.minX = newPoint.x;
+  //         }
+  //         if (newPoint.y < pathRetange.current.minY) {
+  //           pathRetange.current.minY = newPoint.y;
+  //         }
+  //         if (newPoint.x > pathRetange.current.maxX) {
+  //           pathRetange.current.maxX = newPoint.x;
+  //         }
+  //         if (newPoint.y > pathRetange.current.maxY) {
+  //           pathRetange.current.maxY = newPoint.y;
+  //         }
+  //       }
+  //     },
+  //     onPanResponderRelease: (e, gesture) => {
+  //       if (
+  //         pathRetange.current.maxX - pathRetange.current.minX < 10 ||
+  //         pathRetange.current.maxY - pathRetange.current.minY < 10
+  //       ) {
+  //         pathRetange.current = {
+  //           minX: 0,
+  //           minY: 0,
+  //           maxX: 0,
+  //           maxY: 0,
+  //         };
+  //         return;
+  //       }
+  //       console.log(pathRetange.current);
+  //       setRetangles(retangles => [
+  //         ...retangles,
+  //         {
+  //           minX: pathRetange.current.minX > 0 ? pathRetange.current.minX : 0,
+  //           minY: pathRetange.current.minY > 0 ? pathRetange.current.minY : 0,
+  //           maxX: pathRetange.current.maxX > 0 ? pathRetange.current.maxX : 0,
+  //           maxY: pathRetange.current.maxY > 0 ? pathRetange.current.maxY : 0,
+  //         },
+  //       ]);
+  //       setModalVisible(true);
+  //       setCurrentPosition([]);
+  //     },
+  //   }),
+  // ).current;
   useEffect(() => {
     StatusBar.setBarStyle('light-content');
-    if (actualImage?.image?.assets[0].uri) {
-      Image.getSize(actualImage?.image?.assets[0].uri, (w, h) => {
-        const widthImg = width;
-        const heightImg = WidthSize((width * h) / w);
-        setSize({width: widthImg, height: heightImg});
-        setActualImage({
-          image: actualImage?.image,
-          width: widthImg,
-          height: heightImg,
-          retangles: retangles,
-        });
-      });
-    }
-  }, [actualImage?.image?.assets[0].uri]);
+  }, []);
+
   const insets = useSafeAreaInsets();
   const [isDraw, setIsDraw] = useState(false);
   const [listImageMore, setListImageMore] = useState<Array<Asset>>([]);
@@ -195,6 +246,126 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
       }
     });
   };
+
+  const renderTriangle = (top: number, left: number, rotate: string) => {
+    return (
+      <View
+        style={{
+          position: 'absolute',
+          top: top,
+          left: left,
+          width: 0,
+          height: 0,
+          backgroundColor: 'transparent',
+          borderStyle: 'solid',
+          borderLeftWidth: 10,
+          borderRightWidth: 10,
+          borderBottomWidth: 10,
+          borderLeftColor: 'transparent',
+          borderRightColor: 'transparent',
+          borderBottomColor: '#ffffffB3',
+          transform: [{rotate: rotate}],
+        }}
+      />
+    );
+  };
+
+  const renderInfoBox = (retangle: {
+    minX: number;
+    minY: number;
+    maxX: number;
+    maxY: number;
+    info?: string;
+  }) => {
+    let left = 0;
+    let top = 0;
+    let topTriangle = 0;
+    let leftTriangle = 0;
+    let rotate = '0deg';
+    if (retangle.minX > size.width / 2) {
+      left = WidthSize((retangle.maxX - retangle.minX) / 2 + 15);
+      top = WidthSize(-(HeightSize(60) - WidthSize(20)));
+      topTriangle = (HeightSize(60) + WidthSize(20)) / 2 - 5;
+      leftTriangle = -15;
+      rotate = '-90deg';
+    } else {
+      left = WidthSize(-WidthSize(100) - 15);
+      top = WidthSize(-(HeightSize(60) - WidthSize(20)));
+      topTriangle = (HeightSize(60) + WidthSize(20)) / 2 - 5;
+      leftTriangle = WidthSize(100) - 5;
+      rotate = '90deg';
+    }
+
+    return retangle.info ? (
+      <View
+        style={{
+          backgroundColor: '#ffffffB3',
+          position: 'absolute',
+          width: WidthSize(100),
+          height: HeightSize(60) + WidthSize(20),
+          left: left,
+          top: top,
+          borderRadius: 8,
+        }}>
+        {renderTriangle(topTriangle, leftTriangle, rotate)}
+        <View
+          style={{
+            padding: WidthSize(10),
+            borderRadius: 8,
+          }}>
+          <Text
+            numberOfLines={1}
+            style={{
+              color: '#3B3021',
+              ...TextFont.SMedium,
+              ...TextStyle.SM,
+              width: WidthSize(80),
+            }}>
+            {retangle.info}
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={{
+              color: '#3B3021',
+              ...TextFont.SMedium,
+              ...TextStyle.SM,
+              width: WidthSize(80),
+            }}>
+            Price
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={{
+              color: '#3B3021',
+              ...TextFont.SMedium,
+              ...TextStyle.SM,
+              width: WidthSize(80),
+            }}>
+            Size
+          </Text>
+        </View>
+      </View>
+    ) : null;
+  };
+
+  const handlePressImage = (e: any) => {
+    const {locationX, locationY} = e.nativeEvent;
+    setRetangles(retangles => [
+      ...retangles,
+      {
+        minX: locationX,
+        minY: locationY,
+        maxX: locationX,
+        maxY: locationY,
+      },
+    ]);
+    setModalVisible(true);
+  };
+
+  const [modalPost, setModalPost] = useState(false);
+  const queryText = (text: string) => {
+    return text;
+  };
   return (
     <ContainerView
       style={{
@@ -221,7 +392,6 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
             {retangles.length > 0 ? (
               <Text
                 onPress={() => {
-                  setLines(lines => lines.slice(0, lines.length - 1));
                   setRetangles(retangles =>
                     retangles.slice(0, retangles.length - 1),
                   );
@@ -371,7 +541,10 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
               icon="IconDrawWhite"
             />
           </View>
-          <View
+          <Pressable
+            onPress={() => {
+              setModalPost(true);
+            }}
             style={{
               position: 'absolute',
               bottom: WidthSize(16),
@@ -397,34 +570,56 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
               }}
               icon="IconSendWhite"
             />
-          </View>
+          </Pressable>
         </View>
       )}
-      <View
-        // onLayout={onLayout}
+      <Pressable
+        onPress={handlePressImage}
         style={{
           width: width,
           height: size.height,
           alignItems: 'center',
           justifyContent: 'center',
-        }}
-        {...panResponder.panHandlers}>
-        <Svg
+        }}>
+        {retangles.map(
+          (
+            retangle: {
+              minX: any;
+              minY: any;
+              maxX: any;
+              maxY: any;
+              info?: any;
+            },
+            index: React.Key | null | undefined,
+          ) => (
+            <Pressable
+              key={index}
+              onPress={() => {
+                console.log(
+                  retangle,
+                  (retangle.maxX + retangle.minX) / 2,
+                  (retangle.maxY + retangle.minY) / 2,
+                );
+              }}
+              style={{
+                position: 'absolute',
+                zIndex: 1,
+                width: WidthSize(retangle.maxX - retangle.minX),
+                height: WidthSize(retangle.maxY - retangle.minY),
+                left: WidthSize(retangle.minX),
+                top: WidthSize(retangle.minY),
+              }}>
+              {renderInfoBox(retangle)}
+            </Pressable>
+          ),
+        )}
+        {/* <Svg
           style={{
             position: 'absolute',
             zIndex: 1,
             width: size.width,
             height: size.height,
           }}>
-          {/* {lines.map((line, index) => (
-            <Path
-              key={index}
-              d={line}
-              stroke="#EF6556"
-              strokeWidth={4}
-              fill={'none'}
-            />
-          ))} */}
           {retangles.map(
             (
               retangle: {
@@ -438,21 +633,14 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
             ) => (
               <Path
                 key={index}
-                d={`M${WidthSize(retangle.minX)},${WidthSize(
-                  retangle.minY,
-                )} L ${WidthSize(retangle.maxX)},${WidthSize(
-                  retangle.minY,
-                )} L ${WidthSize(retangle.maxX)},${WidthSize(
-                  retangle.maxY,
-                )} L ${WidthSize(retangle.minX)},${WidthSize(
-                  retangle.maxY,
-                )} L ${WidthSize(retangle.minX)},${WidthSize(retangle.minY)}`}
+                d={`M${retangle.minX},${retangle.minY} L ${retangle.maxX},${retangle.minY} L ${retangle.maxX},${retangle.maxY} L ${retangle.minX},${retangle.maxY} L ${retangle.minX},${retangle.minY}`}
                 stroke="#EF6556"
                 strokeWidth={4}
                 fill={'none'}
               />
             ),
           )}
+
           {currentPosition.length > 0 && (
             <Path
               d={path.current}
@@ -461,7 +649,7 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
               fill={'none'}
             />
           )}
-        </Svg>
+        </Svg> */}
         <ImageBackground
           style={{
             width: size.width,
@@ -470,62 +658,19 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
           resizeMode="contain"
           source={{uri: actualImage?.image?.assets[0].uri}}
         />
-      </View>
+      </Pressable>
 
-      {/* <View
-        style={{
-          width: '100%',
-          flexDirection: 'row',
-          justifyContent: 'space-around',
-        }}>
-        <Pressable
-          // onPress={openImagePicker}
-          style={{
-            width: '40%',
-            height: 50,
-            backgroundColor: 'blue',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Text style={{color: 'white'}}>Open Image Picker</Text>
-        </Pressable>
-        <Pressable
-          onPress={() => {
-            //undo previous line
-            setLines(lines => lines.slice(0, lines.length - 1));
-            setRetangles(retangles => retangles.slice(0, retangles.length - 1));
-            setActualImage({
-              image: actualImage?.image,
-              width: size.width,
-              height: size.height,
-              retangles: retangles,
-            });
-
-            // console.log('actualImage', JSON.stringify(actualImage, null, 2));
-          }}
-          style={{
-            width: '40%',
-            height: 50,
-            backgroundColor: 'blue',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Text style={{color: 'white'}}>{size.height}</Text>
-        </Pressable>
-      </View> */}
       <Modal
         animationType="fade"
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
-          setLines(lines => lines.slice(0, lines.length - 1));
           setRetangles(retangles => retangles.slice(0, retangles.length - 1));
           setModalVisible(false);
           setText('');
         }}>
         <Pressable
           onPress={() => {
-            setLines(lines => lines.slice(0, lines.length - 1));
             setRetangles(retangles => retangles.slice(0, retangles.length - 1));
             setModalVisible(false);
             setText('');
@@ -603,7 +748,6 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
                 <Pressable
                   onPress={() => {
                     //undo previous line
-                    setLines(lines => lines.slice(0, lines.length - 1));
                     setRetangles(retangles =>
                       retangles.slice(0, retangles.length - 1),
                     );
@@ -624,6 +768,400 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
             </View>
           </Pressable>
         </Pressable>
+      </Modal>
+
+      <Modal
+        visible={modalPost}
+        // transparent={true}
+        presentationStyle="pageSheet"
+        animationType="slide"
+        onRequestClose={() => {
+          setModalPost(false);
+        }}>
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: 'white',
+            padding: HeightSize(16),
+          }}>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{
+              paddingBottom: HeightSize(100),
+            }}>
+            <Text
+              style={{
+                ...TextFont.SBold,
+                ...TextStyle.Title,
+                color: '#3B3021',
+                textAlign: 'center',
+              }}>
+              Review your post
+            </Text>
+            <View
+              style={{
+                marginTop: HeightSize(16),
+              }}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                <Text
+                  style={{
+                    ...TextFont.SBold,
+                    ...TextStyle.XL,
+                    color: '#3B3021',
+                  }}>
+                  Main image
+                </Text>
+                <Text
+                  style={{
+                    ...TextFont.SBold,
+                    ...TextStyle.XL,
+                    color: '#3B3021',
+                    position: 'absolute',
+                    left: width - WidthSize(248),
+                  }}>
+                  {`Variant: ${retangles.length}`}
+                </Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  marginTop: HeightSize(16),
+                }}>
+                <Image
+                  style={{
+                    width: WidthSize(164),
+                    height: WidthSize(164),
+                    borderRadius: 10,
+                  }}
+                  source={{uri: actualImage?.image?.assets[0].uri}}
+                />
+                <View
+                  style={{
+                    marginLeft: WidthSize(8),
+                    gap: HeightSize(8),
+                  }}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                    }}>
+                    <Image
+                      style={{
+                        width: WidthSize(50),
+                        height: WidthSize(50),
+                        borderRadius: 10,
+                      }}
+                      source={{uri: actualImage?.image?.assets[0].uri}}
+                    />
+                    <View
+                      style={{
+                        marginLeft: WidthSize(8),
+                        justifyContent: 'space-between',
+                      }}>
+                      <Text
+                        numberOfLines={1}
+                        style={{
+                          ...TextFont.SBold,
+                          ...TextStyle.SM,
+                          color: '#3B3021',
+                          width: width - WidthSize(240),
+                        }}>
+                        Product name
+                      </Text>
+                      <Text
+                        numberOfLines={1}
+                        style={{
+                          ...TextFont.SBold,
+                          ...TextStyle.SM,
+                          color: '#3B3021',
+                          width: width - WidthSize(240),
+                        }}>
+                        Price
+                      </Text>
+                      <Text
+                        numberOfLines={1}
+                        style={{
+                          ...TextFont.SBold,
+                          ...TextStyle.SM,
+                          color: '#3B3021',
+                          width: width - WidthSize(240),
+                        }}>
+                        Size
+                      </Text>
+                    </View>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                    }}>
+                    <Image
+                      style={{
+                        width: WidthSize(50),
+                        height: WidthSize(50),
+                        borderRadius: 10,
+                      }}
+                      source={{uri: actualImage?.image?.assets[0].uri}}
+                    />
+                    <View
+                      style={{
+                        marginLeft: WidthSize(8),
+                        justifyContent: 'space-between',
+                      }}>
+                      <Text
+                        numberOfLines={1}
+                        style={{
+                          ...TextFont.SBold,
+                          ...TextStyle.SM,
+                          color: '#3B3021',
+                          width: width - WidthSize(256),
+                        }}>
+                        Product name
+                      </Text>
+                      <Text
+                        numberOfLines={1}
+                        style={{
+                          ...TextFont.SBold,
+                          ...TextStyle.SM,
+                          color: '#3B3021',
+                          width: width - WidthSize(256),
+                        }}>
+                        Price
+                      </Text>
+                      <Text
+                        numberOfLines={1}
+                        style={{
+                          ...TextFont.SBold,
+                          ...TextStyle.SM,
+                          color: '#3B3021',
+                          width: width - WidthSize(256),
+                        }}>
+                        Size
+                      </Text>
+                    </View>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                    }}>
+                    <Image
+                      style={{
+                        width: WidthSize(50),
+                        height: WidthSize(50),
+                        borderRadius: 10,
+                      }}
+                      source={{uri: actualImage?.image?.assets[0].uri}}
+                    />
+                    <View
+                      style={{
+                        marginLeft: WidthSize(8),
+                        justifyContent: 'space-between',
+                      }}>
+                      <Text
+                        numberOfLines={1}
+                        style={{
+                          ...TextFont.SBold,
+                          ...TextStyle.SM,
+                          color: '#3B3021',
+                          width: width - WidthSize(256),
+                        }}>
+                        Product name
+                      </Text>
+                      <Text
+                        numberOfLines={1}
+                        style={{
+                          ...TextFont.SBold,
+                          ...TextStyle.SM,
+                          color: '#3B3021',
+                          width: width - WidthSize(256),
+                        }}>
+                        Price
+                      </Text>
+                      <Text
+                        numberOfLines={1}
+                        style={{
+                          ...TextFont.SBold,
+                          ...TextStyle.SM,
+                          color: '#3B3021',
+                          width: width - WidthSize(256),
+                        }}>
+                        Size
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </View>
+            <View
+              style={{
+                marginTop: HeightSize(16),
+              }}>
+              <Text
+                style={{
+                  ...TextFont.SBold,
+                  ...TextStyle.XL,
+                  color: '#3B3021',
+                }}>
+                More images
+              </Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                <View
+                  style={{
+                    width: WidthSize(70),
+                    height: WidthSize(70),
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundColor: '#836E44',
+                    borderRadius: 10,
+                  }}>
+                  <Pressable
+                    onPress={openImagePicker}
+                    style={{
+                      width: WidthSize(50),
+                      height: WidthSize(50),
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      borderRadius: 10,
+                      borderStyle: 'dashed',
+                      borderWidth: 1,
+                      borderColor: 'white',
+                    }}>
+                    <IconSvg
+                      icon="IconGalleryAddWhite"
+                      width={WidthSize(30)}
+                      height={WidthSize(30)}
+                    />
+                  </Pressable>
+                </View>
+                <FlatList
+                  showsHorizontalScrollIndicator={false}
+                  data={listImageMore}
+                  horizontal={true}
+                  style={{
+                    marginLeft: WidthSize(16),
+                  }}
+                  contentContainerStyle={{
+                    gap: WidthSize(16),
+                  }}
+                  renderItem={({item, index}) => {
+                    return (
+                      <ImageBackground
+                        key={index}
+                        style={{
+                          width: WidthSize(70),
+                          height: WidthSize(70),
+                          position: 'relative',
+                          zIndex: 0,
+                        }}
+                        imageStyle={{
+                          borderRadius: 10,
+                        }}
+                        source={{uri: item.uri}}>
+                        <IconSvg
+                          onPress={() => {
+                            const newList = listImageMore.filter(
+                              (item, i) => i !== index,
+                            );
+                            setListImageMore(newList);
+                          }}
+                          style={{
+                            position: 'absolute',
+                            top: WidthSize(4),
+                            right: WidthSize(4),
+                            zIndex: 2,
+                            backgroundColor: '#EF6556',
+                            borderRadius: 10,
+                          }}
+                          icon="IconCloseBoldWhite"
+                          width={HeightSize(20)}
+                          height={HeightSize(20)}
+                        />
+                      </ImageBackground>
+                    );
+                  }}
+                />
+              </View>
+            </View>
+            <View
+              style={{
+                marginTop: HeightSize(16),
+              }}>
+              <Text
+                style={{
+                  ...TextFont.SBold,
+                  ...TextStyle.XL,
+                  color: '#3B3021',
+                }}>
+                Category
+              </Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  marginTop: HeightSize(16),
+                  flexWrap: 'wrap',
+                  gap: HeightSize(16),
+                }}>
+                {tabs.map((item, index) => {
+                  return (
+                    <Pressable
+                      key={index}
+                      onPress={() => {
+                        setCategory(item);
+                      }}
+                      style={{
+                        paddingHorizontal: WidthSize(16),
+                        paddingVertical: HeightSize(8),
+                        borderRadius: 10,
+                        borderWidth: 1,
+                        borderColor: '#836E44',
+                        backgroundColor:
+                          category?.id === item.id ? '#836E44' : 'transparent',
+                      }}>
+                      <Text
+                        style={{
+                          ...TextFont.SBold,
+                          ...TextStyle.SM,
+                          color: category?.id === item.id ? 'white' : '#3B3021',
+                        }}>
+                        {item.title}
+                      </Text>
+                    </Pressable>
+                  );
+                })}
+              </View>
+            </View>
+          </ScrollView>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            style={{
+              marginTop: HeightSize(16),
+              marginBottom: HeightSize(16),
+              backgroundColor: '#836E44',
+              borderRadius: 10,
+              paddingVertical: HeightSize(16),
+              position: 'absolute',
+              bottom: 0,
+              left: WidthSize(16),
+              width: width - WidthSize(32),
+            }}>
+            <Text
+              style={{
+                ...TextFont.SBold,
+                ...TextStyle.XL,
+                color: 'white',
+                textAlign: 'center',
+              }}>
+              Post
+            </Text>
+          </TouchableOpacity>
+        </View>
       </Modal>
     </ContainerView>
   );

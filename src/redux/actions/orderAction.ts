@@ -16,3 +16,11 @@ export const addProductToCart = createAsyncThunk(
     return {data: res};
   },
 );
+
+export const getAllOrder = createAsyncThunk(
+  'product/getAllOrder Action',
+  async () => {
+    const res = await orderService.getAllOrder();
+    return {data: res};
+  },
+);

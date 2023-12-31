@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   HOME_SCREEN_ADMIN_STORE,
   ORDER_SCREEN_ADMIN_STORE,
+  ORDER_STACK_ADMIN_STORE_PARAMS_LIST,
   PRODUCT_SCREEN_ADMIN_STORE,
   STYLE_ROOM_STACK_PARAMS_LIST,
 } from '~/constants/routeNames';
@@ -30,6 +31,8 @@ import {
   SetUserInforLogin,
 } from '~/redux/reducers/authSlice';
 import StyleRoomtack from './styleRoom';
+import {getAllOrder} from '~/redux/actions/orderAction';
+import OrderAdminStoreStack from './orderScreen';
 
 const Drawer = createDrawerNavigator<AdminStoreStackParamList>();
 const AdminStoreStack = () => {
@@ -47,6 +50,11 @@ const AdminStoreStack = () => {
     AppProvider.setTokenUser('', '');
     AppProvider.setAccountInfo(null as any);
   };
+
+  useEffect(() => {
+    dispatch(getAllOrder());
+  }, []);
+
   const CustomDrawer = (props: any) => {
     return (
       <FastImage
@@ -152,8 +160,8 @@ const AdminStoreStack = () => {
         }}
       />
       <Drawer.Screen
-        name={ORDER_SCREEN_ADMIN_STORE}
-        component={OrderScreen}
+        name={ORDER_STACK_ADMIN_STORE_PARAMS_LIST}
+        component={OrderAdminStoreStack}
         options={{
           title: 'Order Screen',
         }}

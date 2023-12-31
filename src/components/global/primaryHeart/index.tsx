@@ -54,6 +54,10 @@ const PrimaryHeart = ({
           height: HeightSize(44),
           alignItems: 'center',
           justifyContent: 'center',
+          shadowColor: '#000',
+          shadowOffset: {width: 1, height: 1},
+          shadowOpacity: 0.1,
+          elevation: 5,
         },
         styleView,
       ]}>

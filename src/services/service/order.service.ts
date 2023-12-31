@@ -1,7 +1,14 @@
 import {apiUrl} from '../paths';
 import {request} from '../axiosClient';
 import {Methods} from '../method';
-import {AddProductToCartParams, CartUser} from '~/types/order';
+import {
+  AddProductToCartParams,
+  CartResponse,
+  CartUser,
+  OrderAdminStore,
+  OrderParams,
+  OrderResponse,
+} from '~/types/order';
 
 export const orderService = {
   addProductToCart: (params: AddProductToCartParams) => {
@@ -9,6 +16,31 @@ export const orderService = {
   },
 
   getCartUser: () => {
-    return request<CartUser>(apiUrl.getCartUser(), Methods.get, '');
+    return request<CartResponse>(apiUrl.getCartUser(), Methods.get, '');
+  },
+
+  deleteItemCart: (params: any) => {
+    return request<CartUser>(apiUrl.deleteItemCart(), Methods.delete, params);
+  },
+
+  makeOrder: (params: OrderParams) => {
+    return request<OrderResponse>(apiUrl.makeOrder(), Methods.post, params);
+  },
+
+  getAllOrder: () => {
+    return request<Array<OrderAdminStore>>(
+      apiUrl.getAllOrder(),
+      Methods.get,
+      '',
+    );
+  },
+
+  updateStatusOrder: (
+    orderId: number,
+    params: {
+      status: 'pending' | 'delivering' | 'delivered' | 'cancelled';
+    },
+  ) => {
+    return request<any>(apiUrl.updateOrderStatus(orderId), Methods.put, params);
   },
 };

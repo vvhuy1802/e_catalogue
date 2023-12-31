@@ -17,7 +17,11 @@ import {RouteProp, useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {useDispatch} from 'react-redux';
 import {AppDispatch} from '~/app/store';
-import {CategoryStackParamList, ProductDetailStackParamList} from '~/types';
+import {
+  CategoryStackParamList,
+  Normalized,
+  ProductDetailStackParamList,
+} from '~/types';
 import {SetDirectionBottomBar} from '~/redux/reducers/globalSlice';
 import {HeightSize, WidthSize, width} from '~/theme/size';
 import {IconSvg} from '~/components/global/iconSvg';
@@ -33,8 +37,8 @@ import {productService} from '~/services/service/product.service';
 import {getUrl} from '~/utils';
 import {NormalizeColor} from '~/types/color';
 import FastImage from 'react-native-fast-image';
-import {orderService} from '~/services/service/order.service';
-import {addProductToCart} from '~/redux/actions/orderAction';
+import {addProductToCart, getCartUser} from '~/redux/actions/orderAction';
+import {NormalizeSize} from '~/types/size';
 
 type Props = {
   route: RouteProp<ProductDetailStackParamList, 'ProductDetailScreen'>;
@@ -53,8 +57,9 @@ const ProductDetail = ({route}: Props) => {
   const [dataProduct, setDataProduct] = React.useState<ProductById>();
   const [loading, setLoading] = React.useState(false);
   const [currentVariant, setCurrentVariant] = useState<Variant>();
+  const [normalizeVariant, setNormalizeVariant] =
+    useState<Normalized<string, Array<Variant>>>();
   const [variantAddToCart, setVariantAddToCart] = useState<Variant>();
-  const [quantity, setQuantity] = useState(1);
 
   const [listImage, setListImage] = useState<any>([]);
   const [isShowModal, setIsShowModal] = useState(false);
@@ -63,6 +68,7 @@ const ProductDetail = ({route}: Props) => {
       setLoading(true);
       await productService.getProductById(Number(productId)).then(res => {
         setLoading(false);
+        console.log(res.data);
         setDataProduct(res.data);
       });
     };
@@ -72,17 +78,42 @@ const ProductDetail = ({route}: Props) => {
   useEffect(() => {
     if (dataProduct) {
       const imgs = [];
+      const normalizeVariant: Normalized<string, Array<Variant>> = {
+        ids: [],
+        entities: {},
+      };
+      imgs.push(dataProduct.image);
       Promise.all([
         dataProduct.variants.map((item: Variant) => {
           imgs.push(item.image);
+          if (!normalizeVariant.ids.includes(item.color)) {
+            normalizeVariant.ids.push(item.color);
+            normalizeVariant.entities[item.color] = [];
+          }
+          normalizeVariant.entities[item.color].push(item);
         }),
         imgs.push(...dataProduct.images),
       ]);
       setListImage(imgs);
-      setCurrentVariant(dataProduct.variants[0]);
-      setVariantAddToCart(dataProduct.variants[0]);
+      setNormalizeVariant(normalizeVariant);
     }
   }, [dataProduct]);
+
+  const [quantity, setQuantity] = useState(1);
+  const [color, setColor] = useState('');
+  const [size, setSize] = useState('');
+
+  useEffect(() => {
+    if (size !== '' && color !== '') {
+      setVariantAddToCart(
+        normalizeVariant?.entities[color].find(
+          (item: Variant) => item.size.toLocaleLowerCase() === size,
+        ),
+      );
+    } else {
+      setVariantAddToCart(undefined);
+    }
+  }, [size, color]);
 
   const imageRef = useRef<ScrollView>();
   useEffect(() => {
@@ -108,9 +139,22 @@ const ProductDetail = ({route}: Props) => {
   };
 
   useEffect(() => {
-    if (currentImageIndex <= listImage.length - 1) {
-      setCurrentVariant(dataProduct?.variants[currentImageIndex]);
-      setVariantAddToCart(dataProduct?.variants[currentImageIndex]);
+    if (normalizeVariant && currentImageIndex !== 0) {
+      normalizeVariant.ids.map((item: string) => {
+        if (
+          normalizeVariant.entities[item].filter(
+            (item: Variant) => item.image === listImage[currentImageIndex],
+          ).length > 0
+        ) {
+          setCurrentVariant(
+            normalizeVariant.entities[item].filter(
+              (item: Variant) => item.image === listImage[currentImageIndex],
+            )[0],
+          );
+        }
+      });
+    } else {
+      setCurrentVariant(undefined);
     }
   }, [currentImageIndex]);
 
@@ -125,7 +169,7 @@ const ProductDetail = ({route}: Props) => {
     imageRef.current?.scrollTo({
       x: 0,
       y: index * WidthSize(456),
-      animated: true,
+      animated: false,
     });
   };
 
@@ -140,6 +184,8 @@ const ProductDetail = ({route}: Props) => {
       product_variant: variantAddToCart?.id!,
       quantity: quantity,
     };
+    dispatch(addProductToCart(param));
+
     Animated.timing(addToBagRef.current, {
       toValue: 1,
       duration: 900,
@@ -152,9 +198,10 @@ const ProductDetail = ({route}: Props) => {
           useNativeDriver: false,
         }).start(() => {
           setIsAddToBag(false);
-          dispatch(addProductToCart(param));
+          dispatch(getCartUser());
           addToBagRef.current.setValue(0);
           moveTopRef.current.setValue(0);
+          setQuantity(1);
         });
       }, 300);
       Animated.timing(moveTopRef.current, {
@@ -195,7 +242,7 @@ const ProductDetail = ({route}: Props) => {
         })}
       </View>
     );
-  }, [currentImageIndex]);
+  }, [currentImageIndex, listImage]);
 
   const handleHideModal = () => {
     setIsShowModal(false);
@@ -341,26 +388,30 @@ const ProductDetail = ({route}: Props) => {
                   style={{
                     width: HeightSize(188),
                     height: HeightSize(60),
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
                     paddingHorizontal: HeightSize(22),
                   }}>
                   <FlatList
-                    data={dataProduct?.variants}
+                    data={normalizeVariant?.ids}
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
                     contentContainerStyle={{
                       alignItems: 'center',
+                      justifyContent: 'center',
                       gap: HeightSize(20),
+                    }}
+                    style={{
+                      maxWidth: HeightSize(188),
+                      maxHeight: HeightSize(60),
                     }}
                     keyExtractor={(item, index) => index.toString()}
                     pagingEnabled
-                    scrollEnabled={dataProduct?.variants.length! > 3}
                     renderItem={({item, index}) => {
                       return (
                         <View key={index}>
-                          {currentVariant?.id === item.id ? (
+                          {normalizeVariant?.entities[item].filter(
+                            (item: Variant) =>
+                              item.color === currentVariant?.color,
+                          ).length! > 0 ? (
                             <View
                               style={{
                                 width: HeightSize(48),
@@ -371,7 +422,7 @@ const ProductDetail = ({route}: Props) => {
                                 borderWidth: 2,
                                 borderColor:
                                   NormalizeColor.entities[
-                                    item.color.toLocaleLowerCase()
+                                    item.toLocaleLowerCase()
                                   ],
                               }}>
                               <View
@@ -380,7 +431,7 @@ const ProductDetail = ({route}: Props) => {
                                   height: HeightSize(36),
                                   backgroundColor:
                                     NormalizeColor.entities[
-                                      item.color.toLocaleLowerCase()
+                                      item.toLocaleLowerCase()
                                     ],
                                   borderRadius: 100,
                                 }}
@@ -389,14 +440,20 @@ const ProductDetail = ({route}: Props) => {
                           ) : (
                             <Pressable
                               onPress={() => {
-                                setCurrentVariant(item), scrollToIndex(index);
+                                scrollToIndex(
+                                  listImage.findIndex(
+                                    (img: any) =>
+                                      img ===
+                                      normalizeVariant?.entities[item][0].image,
+                                  ),
+                                );
                               }}
                               style={{
                                 width: HeightSize(24),
                                 height: HeightSize(24),
                                 backgroundColor:
                                   NormalizeColor.entities[
-                                    item.color.toLocaleLowerCase()
+                                    item.toLocaleLowerCase()
                                   ],
                                 borderRadius: 100,
                               }}
@@ -596,7 +653,13 @@ const ProductDetail = ({route}: Props) => {
                 paddingBottom: HeightSize(16),
               }}>
               <FastImage
-                source={getUrl(variantAddToCart?.image as any) as any}
+                source={
+                  getUrl(
+                    variantAddToCart?.image
+                      ? variantAddToCart?.image
+                      : (dataProduct?.image as any),
+                  ) as any
+                }
                 style={{
                   width: WidthSize(150),
                   height: WidthSize(150),
@@ -607,7 +670,7 @@ const ProductDetail = ({route}: Props) => {
               <View
                 style={{
                   marginLeft: WidthSize(16),
-                  justifyContent: 'flex-end',
+                  justifyContent: 'space-between',
                   flex: 1,
                 }}>
                 <Text
@@ -651,11 +714,24 @@ const ProductDetail = ({route}: Props) => {
                   marginTop: HeightSize(12),
                   gap: WidthSize(12),
                 }}>
-                {dataProduct?.variants.map((item: Variant, index: number) => {
+                {normalizeVariant?.ids.map((item: string, index: number) => {
                   return (
                     <Pressable
+                      disabled={
+                        normalizeVariant?.entities[item]?.find(
+                          (v: Variant) => v.size.toLocaleLowerCase() === size,
+                        )?.quantity! > 0
+                          ? false
+                          : size !== ''
+                          ? true
+                          : false
+                      }
                       onPress={() => {
-                        setVariantAddToCart(item);
+                        if (color !== item) {
+                          setColor(item);
+                        } else {
+                          setColor('');
+                        }
                       }}
                       key={index}
                       style={{
@@ -663,21 +739,24 @@ const ProductDetail = ({route}: Props) => {
                         alignItems: 'center',
                         gap: WidthSize(8),
                         borderWidth: 1,
-                        borderColor:
-                          item.id === variantAddToCart?.id
-                            ? '#3B3021'
-                            : '#EFEFE8',
+                        borderColor: item === color ? '#3B3021' : '#EFEFE8',
                         borderRadius: 8,
                         padding: HeightSize(8),
+                        backgroundColor:
+                          normalizeVariant?.entities[item]?.find(
+                            (v: Variant) => v.size.toLocaleLowerCase() === size,
+                          )?.quantity! > 0
+                            ? 'white'
+                            : size !== ''
+                            ? '#EFEFE8'
+                            : 'white',
                       }}>
                       <View
                         style={{
                           width: WidthSize(20),
                           height: WidthSize(20),
                           backgroundColor:
-                            NormalizeColor.entities[
-                              item.color.toLocaleLowerCase()
-                            ],
+                            NormalizeColor.entities[item.toLocaleLowerCase()],
                           borderRadius: 100,
                           elevation: 10,
                           shadowColor: '#000',
@@ -692,9 +771,17 @@ const ProductDetail = ({route}: Props) => {
                         style={{
                           ...TextFont.SRegular,
                           ...TextStyle.Base,
-                          color: '#3B3021',
+                          color:
+                            normalizeVariant?.entities[item]?.find(
+                              (v: Variant) =>
+                                v.size.toLocaleLowerCase() === size,
+                            )?.quantity! > 0
+                              ? '#3B3021'
+                              : size !== ''
+                              ? 'gray'
+                              : '#3B3021',
                         }}>
-                        {item.color}
+                        {item}
                       </Text>
                     </Pressable>
                   );
@@ -723,37 +810,69 @@ const ProductDetail = ({route}: Props) => {
                   marginTop: HeightSize(12),
                   gap: WidthSize(12),
                 }}>
-                {dataProduct?.variants.map((item: Variant, index: number) => {
-                  return (
-                    <Pressable
-                      onPress={() => {
-                        setVariantAddToCart(item);
-                      }}
-                      key={index}
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        gap: WidthSize(8),
-                        borderWidth: 1,
-                        borderColor:
-                          item.id === variantAddToCart?.id
-                            ? '#3B3021'
-                            : '#EFEFE8',
-                        borderRadius: 8,
-                        paddingVertical: HeightSize(8),
-                        paddingHorizontal: WidthSize(24),
-                      }}>
-                      <Text
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: WidthSize(12),
+                    flexWrap: 'wrap',
+                  }}>
+                  {NormalizeSize.ids.map((item, index) => {
+                    return (
+                      <Pressable
+                        disabled={
+                          normalizeVariant?.entities[color]?.find(
+                            (v: Variant) => v.size.toLocaleLowerCase() === item,
+                          )?.quantity! > 0
+                            ? false
+                            : color !== ''
+                            ? true
+                            : false
+                        }
+                        onPress={() => {
+                          if (size !== item) {
+                            setSize(item);
+                          } else {
+                            setSize('');
+                          }
+                        }}
+                        key={index}
                         style={{
-                          ...TextFont.SRegular,
-                          ...TextStyle.Base,
-                          color: '#3B3021',
+                          borderWidth: 1,
+                          borderColor: item === size ? '#3B3021' : '#EFEFE8',
+                          borderRadius: 8,
+                          paddingVertical: HeightSize(8),
+                          paddingHorizontal: WidthSize(24),
+                          backgroundColor:
+                            normalizeVariant?.entities[color]?.find(
+                              (v: Variant) =>
+                                v.size.toLocaleLowerCase() === item,
+                            )?.quantity! > 0
+                              ? 'white'
+                              : color !== ''
+                              ? '#EFEFE8'
+                              : 'white',
                         }}>
-                        {item.size}
-                      </Text>
-                    </Pressable>
-                  );
-                })}
+                        <Text
+                          style={{
+                            ...TextFont.SRegular,
+                            ...TextStyle.Base,
+                            color:
+                              normalizeVariant?.entities[color]?.find(
+                                (v: Variant) =>
+                                  v.size.toLocaleLowerCase() === item,
+                              )?.quantity! > 0
+                                ? '#3B3021'
+                                : color !== ''
+                                ? 'gray'
+                                : '#3B3021',
+                          }}>
+                          {NormalizeSize.entities[item]}
+                        </Text>
+                      </Pressable>
+                    );
+                  })}
+                </View>
               </View>
             </View>
             <View
@@ -833,9 +952,11 @@ const ProductDetail = ({route}: Props) => {
               </View>
             </View>
             <TouchableOpacity
+              disabled={variantAddToCart?.quantity! > 0 ? false : true}
               activeOpacity={0.8}
               style={{
-                backgroundColor: '#836E44',
+                backgroundColor:
+                  variantAddToCart?.quantity! > 0 ? '#836E44' : 'gray',
                 paddingVertical: HeightSize(16),
                 borderRadius: 8,
                 alignItems: 'center',

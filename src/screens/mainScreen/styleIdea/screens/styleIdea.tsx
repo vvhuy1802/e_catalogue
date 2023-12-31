@@ -282,40 +282,6 @@ const StyleIdea = () => {
   const navigationStyleIdea =
     useNavigation<StackNavigationProp<StyleIdeaStackParamList, 'StyleIdea'>>();
 
-  // const onLayout = useCallback(
-  //   (event: any) => {
-  //     const containerWidth = event.nativeEvent.layout.width;
-  //     if (actualImage?.image?.assets[0].uri) {
-  //       Image.getSize(actualImage?.image?.assets[0].uri, (w, h) => {
-  //         const width = containerWidth;
-  //         setSize({width, height});
-  //         setActualImage({
-  //           image: actualImage?.image,
-  //           width: width,
-  //           height: height,
-  //           retangles: retangles,
-  //         });
-  //       });
-  //     }
-  //   },
-  //   [actualImage?.image?.assets[0].uri],
-  // );
-
-  // useEffect(() => {
-  //   if (actualImage?.image?.assets[0].uri) {
-  //     Image.getSize(actualImage?.image?.assets[0].uri, (w, h) => {
-  //       const widthImg = WidthSize(width);
-  //       const heightImg = WidthSize((width * h) / w);
-  //       setSize({width: widthImg, height: heightImg});
-  //       setActualImage({
-  //         image: actualImage?.image,
-  //         width: widthImg,
-  //         height: heightImg,
-  //         retangles: retangles,
-  //       });
-  //     });
-  //   }
-  // }, [actualImage?.image?.assets[0].uri]);
   return (
     <ContainerImage
       isOpacity={true}
@@ -416,54 +382,6 @@ const StyleIdea = () => {
             paddingHorizontal: WidthSize(32),
           }}
           showsVerticalScrollIndicator={false}>
-          {/* <View
-            style={{
-              marginTop: HeightSize(20),
-              flexDirection: 'row',
-              flexWrap: 'wrap',
-              justifyContent: 'space-between',
-              gap: WidthSize(20),
-              paddingHorizontal: WidthSize(20),
-            }}>
-            {stylelist.map((item, index) => (
-              <Pressable
-                onPress={() => {
-                  dispatch(SetDirectionBottomBar('down'));
-                  navigationStyleIdea.navigate('StyleDetail', {
-                    styleId: item.id.toString(),
-                  });
-                }}
-                key={index}
-                style={{
-                  width: width / 2 - WidthSize(30),
-                  height: HeightSize(200),
-                }}>
-                <ImageBackground
-                  style={{
-                    width: width / 2 - WidthSize(30),
-                    height: HeightSize(200),
-                  }}
-                  imageStyle={{
-                    borderRadius: 15,
-                  }}
-                  source={{
-                    uri: item.img,
-                  }}>
-                  <PrimaryHeart
-                    styleView={{
-                      position: 'absolute',
-                      bottom: HeightSize(12),
-                      right: HeightSize(16),
-                      width: WidthSize(36),
-                      height: WidthSize(36),
-                    }}
-                    widthIcon={WidthSize(16)}
-                    heightIcon={WidthSize(16)}
-                  />
-                </ImageBackground>
-              </Pressable>
-            ))}
-          </View> */}
           <CustomListView
             data={stylelist}
             widthView={width / 2 - WidthSize(38)}

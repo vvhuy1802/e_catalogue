@@ -1,4 +1,4 @@
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
 import React, {useState} from 'react';
 import {images} from '~/assets';
 import ContainerImage from '~/components/global/containerImage';
@@ -13,6 +13,7 @@ import {
 import {useNavigation} from '@react-navigation/native';
 import {StyleRoomStackParamList} from '~/types';
 import {StackNavigationProp} from '@react-navigation/stack';
+import HeaderAdmin from '~/components/global/headerAdmin';
 
 const StyleRoom = () => {
   const navigation =
@@ -35,8 +36,14 @@ const StyleRoom = () => {
       } else if (response.errorCode == 'others') {
         console.log(response.errorMessage);
       } else if (response.assets) {
-        navigation.navigate('AddStyleRoomScreenAdminStore', {
-          imageAdding: response,
+        Image.getSize(response?.assets[0].uri as any, (w, h) => {
+          const widthImg = width;
+          const heightImg = WidthSize((width * h) / w);
+          navigation.navigate('AddStyleRoomScreenAdminStore', {
+            imageAdding: response,
+            widthImgage: widthImg,
+            heightImage: heightImg,
+          });
         });
       } else {
         console.log('error');
@@ -76,6 +83,8 @@ const StyleRoom = () => {
       style={{flex: 1}}
       resizeMode="cover"
       source={images.home.BackgroundHome}>
+      <HeaderAdmin title="Style Room" />
+
       <View
         style={{
           paddingHorizontal: WidthSize(32),

@@ -13,6 +13,7 @@ import {StackNavigationProp} from '@react-navigation/stack';
 import {useNavigation} from '@react-navigation/native';
 import {AppDispatch} from '~/app/store';
 import {selectDataCart} from '~/redux/reducers/orderSlice';
+import {countTotalItemInCart} from '~/utils';
 
 type DropDownProps = {
   setIsShow: (isShow: boolean) => void;
@@ -110,11 +111,11 @@ const DropDown = ({setIsShow}: DropDownProps) => {
             justifyContent: 'center',
             alignItems: 'center',
             height:
-              (dataCart.items?.length as any) > 99
+              countTotalItemInCart(dataCart) > 99
                 ? WidthSize(24)
                 : WidthSize(20),
             width:
-              (dataCart.items?.length as any) > 99
+              countTotalItemInCart(dataCart) > 99
                 ? WidthSize(24)
                 : WidthSize(20),
             borderRadius: 100,
@@ -122,11 +123,11 @@ const DropDown = ({setIsShow}: DropDownProps) => {
             borderWidth: 2,
             borderColor: '#F9F6E8',
             top:
-              (dataCart.items?.length as any) > 99
+              countTotalItemInCart(dataCart) > 99
                 ? WidthSize(8)
                 : WidthSize(10),
             right:
-              (dataCart.items?.length as any) > 99
+              countTotalItemInCart(dataCart) > 99
                 ? WidthSize(8)
                 : WidthSize(10),
             elevation: 2,
@@ -143,9 +144,9 @@ const DropDown = ({setIsShow}: DropDownProps) => {
               ...TextStyle.XS,
               ...TextFont.SMedium,
             }}>
-            {(dataCart.items?.length as any) > 99
+            {countTotalItemInCart(dataCart) > 99
               ? `99+`
-              : dataCart.items?.length || 0}
+              : countTotalItemInCart(dataCart) || 0}
           </Text>
         </View>
       </Pressable>

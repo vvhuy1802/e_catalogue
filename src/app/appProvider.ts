@@ -6,6 +6,7 @@ import {
   NormalizedLocationVietNam,
   RegisterResponse,
 } from '~/types/auth';
+import {Contact} from '~/types/contact';
 
 let _isShowOnBoard: boolean = false;
 let _token: LoginResponse | null = null;
@@ -13,6 +14,7 @@ let _dataLogin: LoginParams | null = null;
 let _historySearch: string[] = [];
 let _locationVietNam: NormalizedLocationVietNam | null = null;
 let _dataAccount: RegisterResponse | null = null;
+let _currentContact: Contact | null = null;
 
 class AppProvider {
   static setIsShowOnBoard = async () => {
@@ -118,11 +120,33 @@ class AppProvider {
         const locationVietNam = await AsyncStorage.getItem(
           STORE_KEYS.LOCATION_VIETNAM,
         );
-        _locationVietNam = locationVietNam ? JSON.parse(locationVietNam) : [];
+        _locationVietNam = locationVietNam ? JSON.parse(locationVietNam) : null;
       } catch (error) {}
     }
     return _locationVietNam;
   };
+
+  // static getLocationUSer = async (
+  //   city: string,
+  //   province: string,
+  //   district: string,
+  // ) => {
+  //   if (!_locationVietNam) {
+  //     try {
+  //       const locationVietNam = await AsyncStorage.getItem(
+  //         STORE_KEYS.LOCATION_VIETNAM,
+  //       );
+  //       _locationVietNam = locationVietNam ? JSON.parse(locationVietNam) : null;
+
+  //       return {
+  //         city: _locationVietNam?.entities[city],
+  //         province: _locationVietNam?.entities[city].districts[district],
+
+  //       }
+
+  //     } catch (error) {}
+  //   }
+  // }
 
   static setAccountInfo = async (dataAccount: RegisterResponse) => {
     try {
@@ -142,6 +166,29 @@ class AppProvider {
       } catch (error) {}
     }
     return _dataAccount;
+  };
+
+  static setCurrentContact = async (currentContact: Contact) => {
+    try {
+      console.log('currentContact', currentContact);
+      AsyncStorage.setItem(
+        STORE_KEYS.CURRENT_ADDRESS,
+        JSON.stringify(currentContact),
+      );
+      _currentContact = currentContact;
+    } catch (error) {}
+  };
+
+  static getCurrentContact = async () => {
+    if (!_currentContact) {
+      try {
+        const currentContact = await AsyncStorage.getItem(
+          STORE_KEYS.CURRENT_ADDRESS,
+        );
+        _currentContact = currentContact ? JSON.parse(currentContact) : null;
+      } catch (error) {}
+    }
+    return _currentContact;
   };
 }
 

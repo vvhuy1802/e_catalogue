@@ -55,7 +55,7 @@ export const request = async <T extends {}>(
   };
 
   return new Promise(resolve => {
-    console.log('Calling API: ', config.url);
+    console.log(config.method.toUpperCase(), config.url);
     axios<APIResponse<T>>(config)
       .then(res => {
         resolve({

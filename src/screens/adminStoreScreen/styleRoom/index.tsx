@@ -12,37 +12,35 @@ import DetailStyleRoom from './screens/detailStyleRoom';
 const Stack = createNativeStackNavigator<StyleRoomStackParamList>();
 const StyleRoomtack = () => {
   return (
-    <>
-      <Stack.Navigator>
-        <Stack.Screen
-          name={'StyleRoomScreenAdminStore'}
-          component={StyleRoom}
-          options={{
-            headerShown: false,
-            gestureEnabled: false,
-            animation: 'fade',
-          }}
-        />
-        <Stack.Screen
-          name={ADD_STYLE_ROOM_SCREEN_ADMIN_STORE}
-          component={AddStyleRoom}
-          options={{
-            headerShown: false,
-            gestureEnabled: false,
-            animation: 'fade',
-          }}
-        />
-        <Stack.Screen
-          name={DETAIL_STYLE_ROOM_SCREEN_ADMIN_STORE}
-          component={DetailStyleRoom}
-          options={{
-            headerShown: false,
-            gestureEnabled: false,
-            animation: 'slide_from_left',
-          }}
-        />
-      </Stack.Navigator>
-    </>
+    <Stack.Navigator>
+      <Stack.Screen
+        name={'StyleRoomScreenAdminStore'}
+        component={StyleRoom}
+        options={{
+          headerShown: false,
+          gestureEnabled: false,
+          animation: 'fade',
+        }}
+      />
+      <Stack.Screen
+        name={ADD_STYLE_ROOM_SCREEN_ADMIN_STORE}
+        component={AddStyleRoom}
+        options={{
+          headerShown: false,
+          gestureEnabled: false,
+          animation: 'fade',
+        }}
+      />
+      <Stack.Screen
+        name={DETAIL_STYLE_ROOM_SCREEN_ADMIN_STORE}
+        component={DetailStyleRoom}
+        options={{
+          headerShown: false,
+          gestureEnabled: false,
+          animation: 'slide_from_left',
+        }}
+      />
+    </Stack.Navigator>
   );
 };
 

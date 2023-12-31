@@ -1,9 +1,15 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {Pressable, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {images} from '~/assets';
 import ContainerImage from '~/components/global/containerImage';
 import {HeightSize, WidthSize} from '~/theme/size';
 import {TextStyle, TextFont} from '~/theme/textStyle';
+import HeaderAdmin from '~/components/global/headerAdmin';
+import {useSelector} from 'react-redux';
+import {selectAllOrder} from '~/redux/reducers/orderSlice';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {AdminStoreStackParamList} from '~/types';
 
 const HomeScreen = () => {
   const shopInfo = [
@@ -32,12 +38,16 @@ const HomeScreen = () => {
     },
   ];
 
+  const allOrder = useSelector(selectAllOrder);
+  const navigation =
+    useNavigation<StackNavigationProp<AdminStoreStackParamList>>();
   return (
     <ContainerImage
       // isOpacity={true}
       style={{flex: 1}}
       resizeMode="cover"
       source={images.home.BackgroundHome}>
+      <HeaderAdmin title="Home Screen" />
       <View
         style={{
           paddingHorizontal: WidthSize(32),
@@ -140,9 +150,16 @@ const HomeScreen = () => {
                       ...TextFont.SMedium,
                       marginTop: HeightSize(16),
                     }}>
-                    0
+                    {allOrder
+                      ? allOrder?.filter(
+                          item => item.deliver_status === 'pending',
+                        ).length
+                      : 0}
                   </Text>
-                  <View
+                  <Pressable
+                    onPress={() => {
+                      navigation.navigate('OrderScreenAdminStore');
+                    }}
                     style={{
                       paddingVertical: HeightSize(10),
                       marginTop: HeightSize(16),
@@ -159,7 +176,7 @@ const HomeScreen = () => {
                       }}>
                       View
                     </Text>
-                  </View>
+                  </Pressable>
                 </View>
               );
             })}

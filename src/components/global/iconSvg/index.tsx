@@ -64,6 +64,8 @@ import IconGalleryWhite from '~/assets/icons/ic_gallery_white.svg';
 import IconGalleryAddWhite from '~/assets/icons/ic_gallery_add_white.svg';
 import IconAddBrown from '~/assets/icons/ic_add_brown.svg';
 import IconMinusBrown from '~/assets/icons/ic_minus_brown.svg';
+import IconShopBrown from '~/assets/icons/ic_shop_brown.svg';
+import IconInfoBoxWhite from '~/assets/icons/ic_info_box_white.svg';
 
 interface IconSvgProps {
   icon:
@@ -128,7 +130,9 @@ interface IconSvgProps {
     | 'IconGalleryAddWhite'
     | 'IconCloseBoldWhite'
     | 'IconAddBrown'
-    | 'IconMinusBrown';
+    | 'IconMinusBrown'
+    | 'IconShopBrown'
+    | 'IconInfoBoxWhite';
 
   width?: number;
   height?: number;
@@ -201,6 +205,8 @@ const svgComponents: Record<string, React.ComponentType> = {
   IconCloseBoldWhite,
   IconAddBrown,
   IconMinusBrown,
+  IconShopBrown,
+  IconInfoBoxWhite,
 };
 
 interface Svg {

@@ -11,6 +11,7 @@ import {HomeStackParamList} from '~/types';
 import {AppDispatch} from '~/app/store';
 import {useDispatch, useSelector} from 'react-redux';
 import {selectDataCart} from '~/redux/reducers/orderSlice';
+import {countTotalItemInCart} from '~/utils';
 
 type Props = {
   onPressBack: () => void;
@@ -111,6 +112,11 @@ const HeaderProduct = ({
           alignItems: 'center',
           marginRight: WidthSize(20),
           zIndex: 99,
+          elevation: 10,
+          shadowColor: '#000',
+          shadowOffset: {width: 0, height: 2},
+          shadowOpacity: 0.25,
+          backgroundColor: 'transparent',
         }}>
         <IconSvg
           onPress={() => {
@@ -147,7 +153,7 @@ const HeaderProduct = ({
                   ...TextFont.SLight,
                   textAlign: 'center',
                 }}>
-                {dataCart.items?.length || 0}
+                {countTotalItemInCart(dataCart)}
               </Text>
             </View>
           </Pressable>

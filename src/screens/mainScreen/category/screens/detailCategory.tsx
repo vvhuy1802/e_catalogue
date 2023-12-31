@@ -45,8 +45,6 @@ const DetailCategory = ({route}: Props) => {
 
   const products = useSelector(selectProductsByCategory);
 
-  const loadingGetProduct = useSelector(selectLoadingGetProductsByCategory);
-
   const dispatch = useDispatch<AppDispatch>();
   const [currentTab, setCurrentTab] = useState(
     category?.children.length === 0 ? 0 : category?.children[0].id,
@@ -361,7 +359,7 @@ const DetailCategory = ({route}: Props) => {
                     marginTop: HeightSize(16),
                     marginBottom: HeightSize(15),
                   }}>
-                  {item?.price ? '$' + item?.price : 'No price'}
+                  {item?.minPrice ? '$' + item?.minPrice : 'No price'}
                 </Text>
                 <PrimaryHeart
                   styleView={{
