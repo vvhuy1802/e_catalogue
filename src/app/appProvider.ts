@@ -6,7 +6,7 @@ import {
   NormalizedLocationVietNam,
   RegisterResponse,
 } from '~/types/auth';
-import {Contact} from '~/types/contact';
+import {Contact, addressTree} from '~/types/contact';
 
 let _isShowOnBoard: boolean = false;
 let _token: LoginResponse | null = null;

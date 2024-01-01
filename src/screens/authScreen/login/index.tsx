@@ -2,13 +2,12 @@ import {
   Animated,
   Image,
   Keyboard,
-  KeyboardAvoidingView,
   Pressable,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
-import React, {useCallback} from 'react';
+import React from 'react';
 import ContainerImage from '~/components/global/containerImage';
 import {images} from '~/assets';
 import {TextFont, TextStyle} from '~/theme/textStyle';
@@ -18,7 +17,6 @@ import PrimaryButton from '~/components/global/primaryButton';
 import ToggleSwitch from 'toggle-switch-react-native';
 import {useLogin} from './useLogin';
 import {IconSvg} from '~/components/global/iconSvg';
-import {isIOS} from '~/constants/global';
 const Login = () => {
   const {
     toggle,
@@ -42,6 +40,10 @@ const Login = () => {
     setEmailSignUp,
     passwordSignUp,
     setPasswordSignUp,
+    isUsernameAvailable,
+    onUserNameBlur,
+    isEmailAvailable,
+    onEmailBlur,
   } = useLogin();
 
   return (
@@ -217,7 +219,7 @@ const Login = () => {
                 height: HeightSize(64),
               }}
             />
-            <Text
+            {/* <Text
               style={{
                 marginTop: HeightSize(20),
                 textAlign: 'center',
@@ -256,7 +258,7 @@ const Login = () => {
                   source={images.login.LogoFacebook}
                 />
               </TouchableOpacity>
-            </View>
+            </View> */}
             <View
               style={{
                 flexDirection: 'row',
@@ -306,14 +308,20 @@ const Login = () => {
               }),
             }}>
             <View>
-              <Text style={styles.title}>Full name</Text>
+              <Text style={styles.title}>Username</Text>
               <TextInput
                 style={styles.txtInput}
                 placeholderTextColor={'#A5ABB9'}
-                placeholder="Enter your full name"
+                placeholder="Enter your username"
                 value={fullNameSignUp}
                 onChangeText={text => setFullNameSignUp(text)}
+                onBlur={e => {
+                  onUserNameBlur(e.nativeEvent.text);
+                }}
               />
+              {!isUsernameAvailable ? (
+                <Text style={styles.error}>Username is not available.</Text>
+              ) : null}
             </View>
             <View style={{marginTop: HeightSize(24)}}>
               <Text style={styles.title}>Email</Text>
@@ -323,7 +331,13 @@ const Login = () => {
                 placeholder="Enter your registered email"
                 value={emailSignUp}
                 onChangeText={text => setEmailSignUp(text)}
+                onBlur={e => {
+                  onEmailBlur(e.nativeEvent.text);
+                }}
               />
+              {!isEmailAvailable ? (
+                <Text style={styles.error}>Email is not available.</Text>
+              ) : null}
             </View>
             <View style={{marginTop: HeightSize(24)}}>
               <Text style={styles.title}>Password</Text>
@@ -350,6 +364,13 @@ const Login = () => {
               </View>
             </View>
             <PrimaryButton
+              enable={
+                fullNameSignUp != '' &&
+                isUsernameAvailable &&
+                emailSignUp != '' &&
+                isEmailAvailable &&
+                passwordSignUp != ''
+              }
               title={'Create account'}
               handlePress={handleRegister}
               style={{
@@ -357,46 +378,6 @@ const Login = () => {
                 height: HeightSize(64),
               }}
             />
-            <Text
-              style={{
-                marginTop: HeightSize(20),
-                textAlign: 'center',
-                width: '100%',
-                color: '#C1C1CB',
-                ...TextStyle.XS,
-                ...TextFont.SRegular,
-              }}>
-              Or continue with
-            </Text>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginTop: HeightSize(20),
-                justifyContent: 'center',
-                gap: WidthSize(20),
-              }}>
-              <TouchableOpacity>
-                <Image
-                  style={{
-                    width: HeightSize(40),
-                    height: HeightSize(40),
-                    borderRadius: 15,
-                  }}
-                  source={images.login.LogoGoogle}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <Image
-                  style={{
-                    width: HeightSize(40),
-                    height: HeightSize(40),
-                    borderRadius: 15,
-                  }}
-                  source={images.login.LogoFacebook}
-                />
-              </TouchableOpacity>
-            </View>
             <View
               style={{
                 flexDirection: 'row',
@@ -442,6 +423,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: HeightSize(5),
     color: '#525A7F',
+  },
+  error: {
+    ...TextStyle.Base,
+    ...TextFont.SMedium,
+    fontWeight: 'bold',
+    marginBottom: HeightSize(5),
+    color: '#BC2424',
   },
   txtInput: {
     ...TextFont.SRegular,

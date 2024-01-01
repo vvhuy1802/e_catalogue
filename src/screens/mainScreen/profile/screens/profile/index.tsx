@@ -10,8 +10,8 @@ import {AppDispatch} from '~/app/store';
 import {SetDirectionBottomBar} from '~/redux/reducers/globalSlice';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {HomeStackParamList, ProfileStackParamList} from '~/types';
-import {ORDERSTACK} from '~/constants/routeNames';
-import {useNavigation} from '@react-navigation/native';
+import {ADDRESS_BOOK, ORDERSTACK} from '~/constants/routeNames';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import HeaderSearch from '~/components/global/headerSearch';
 import {IconSvg} from '~/components/global/iconSvg';
 import {TextStyle, TextFont} from '~/theme/textStyle';
@@ -23,16 +23,25 @@ import LottieView from 'lottie-react-native';
 import {URL_GET_FILE} from '~/constants/global';
 import {SetIsAuthorized, SetUserInforLogin} from '~/redux/reducers/authSlice';
 import {AppProvider} from '~/app/appProvider';
+import {useSetting} from './hooks/useSetting';
+import {getAllUserContact} from '~/redux/actions/contact';
 
 type ProfileProps = {
   navigation: StackNavigationProp<ProfileStackParamList, 'Profile'>;
 };
 
 const Profile: React.FC<ProfileProps> = ({navigation}) => {
+  const isFocused = useIsFocused();
+  useEffect(() => {
+    if (isFocused) {
+      dispatch(SetDirectionBottomBar('up'));
+    }
+  }, [isFocused]);
   const {handlePressCart} = useCart();
   const dispatch = useDispatch<AppDispatch>();
 
   const {onPressCamera, image, loadingSetProfileImage} = useImagePicker();
+  const {onPressSetting} = useSetting({navigation});
 
   const handleLogout = () => {
     dispatch(
@@ -40,6 +49,7 @@ const Profile: React.FC<ProfileProps> = ({navigation}) => {
         id: 0,
         username: '',
         role: '',
+        email: '',
       }),
     );
     dispatch(SetIsAuthorized(''));
@@ -63,7 +73,7 @@ const Profile: React.FC<ProfileProps> = ({navigation}) => {
         </View>
       );
     }
-    if (image !== undefined) {
+    if (image !== undefined && image !== null) {
       return (
         <FastImage
           source={{uri: `${URL_GET_FILE}${image}`}}
@@ -98,7 +108,7 @@ const Profile: React.FC<ProfileProps> = ({navigation}) => {
         style={{
           flex: 1,
         }}>
-        <CustomScrollView
+        <View
           style={{
             marginTop: HeightSize(10),
           }}>
@@ -111,7 +121,7 @@ const Profile: React.FC<ProfileProps> = ({navigation}) => {
             </View>
             <View style={styles.borderAvatar}>{renderAvatar()}</View>
             <View style={styles.containerIcon}>
-              <IconSvg icon={'IconSetting'} />
+              <IconSvg icon={'IconSetting'} onPress={onPressSetting} />
             </View>
           </View>
 
@@ -122,15 +132,20 @@ const Profile: React.FC<ProfileProps> = ({navigation}) => {
             <Text style={styles.textOption}>My purchases</Text>
           </View>
 
-          <View style={styles.containerOption}>
+          <Pressable
+            onPress={() => {
+              navigation.navigate(ADDRESS_BOOK);
+              dispatch(getAllUserContact());
+            }}
+            style={styles.containerOption}>
             <IconSvg icon={'IconMarker'} style={styles.iconOption} />
             <Text style={styles.textOption}>Address book</Text>
-          </View>
+          </Pressable>
 
-          <View style={styles.containerOption}>
+          {/* <View style={styles.containerOption}>
             <IconSvg icon={'IconCreditCard'} style={styles.iconOption} />
             <Text style={styles.textOption}>My wallet</Text>
-          </View>
+          </View> */}
 
           <View style={styles.containerSignOutPart}>
             <Pressable
@@ -146,7 +161,7 @@ const Profile: React.FC<ProfileProps> = ({navigation}) => {
             </Pressable>
             <Text style={styles.textOption}>Sign out</Text>
           </View>
-        </CustomScrollView>
+        </View>
       </View>
     </ContainerImage>
   );

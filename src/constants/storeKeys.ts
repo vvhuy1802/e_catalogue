@@ -4,6 +4,6 @@ export const STORE_KEYS = {
   IS_SHOW_ONBOARD: 'isShowOnboarding',
   HISTORY_SEARCH: 'historySearch',
   LOCATION_VIETNAM: 'locationVietNam',
-  ACCOUNT_INFO: 'accountnInfo',
+  ACCOUNT_INFO: 'accountInfo',
   CURRENT_ADDRESS: 'currentAddress',
 };

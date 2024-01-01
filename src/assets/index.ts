@@ -1,6 +1,8 @@
 export const animations = {
   Splash: require('~/assets/animations/splash.json'),
   CircleLoading: require('~/assets/animations/circle_loading.json'),
+  Success: require('./animations/animation_success.json'),
+  Warning: require('./animations/animation_warning.json'),
 };
 
 export const images = {

@@ -26,7 +26,7 @@ import {
   STYLEDETAIL,
   STYLEIDEASTACK,
   ALLIMAGE,
-  ACCOUNT_DETAIL,
+  EDIT_ACCOUNT,
   ADDRESS_BOOK,
   MY_PURCHASES,
   MY_WALLET,
@@ -49,6 +49,7 @@ import {
   REVENUE_SCREEN_ADMIN_SYSTEM,
   REVENUE_SCREEN_ADMIN_STORE,
   EDIT_STYLE_ROOM_SCREEN_ADMIN_STORE,
+  EDIT_PROFILE,
 } from '~/constants/routeNames';
 import {ProductCategoryResponse, StoreProduct, Variant} from './product';
 import {ImagePickerResponse} from 'react-native-image-picker';
@@ -152,7 +153,8 @@ export type OrderStackParamList = {
 
 export type ProfileStackParamList = {
   [PROFILE]: undefined;
-  [ACCOUNT_DETAIL]: undefined;
+  [EDIT_ACCOUNT]: undefined;
+  [EDIT_PROFILE]: undefined;
   [MY_PURCHASES]: undefined;
   [ADDRESS_BOOK]: undefined;
   [MY_WALLET]: undefined;
