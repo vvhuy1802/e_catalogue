@@ -31,6 +31,7 @@ import IconArrowDownBlack from '~/assets/icons/ic_arrow_down_black.svg';
 import IconUnCheckBlack from '~/assets/icons/ic_uncheck_black.svg';
 import IconCheckedBlack from '~/assets/icons/ic_checked_black.svg';
 import IconCloseBoldBrown from '~/assets/icons/ic_close_bold_brown.svg';
+import IconCloseBoldWhite from '~/assets/icons/ic_close_bold_white.svg';
 import IconStarYellow from '~/assets/icons/ic_star_yellow.svg';
 import IconStarBrown from '~/assets/icons/ic_star_brown.svg';
 import IconPlusBrown from '~/assets/icons/ic_plus_brown.svg';
@@ -55,6 +56,16 @@ import IconMarker from '~/assets/icons/ic_marker.svg';
 import IconCreditCard from '~/assets/icons/ic_credit_card.svg';
 import IconSignOut from '~/assets/icons/ic_sign_out.svg';
 import IconDrawerBrown from '~/assets/icons/ic_drawer_brown.svg';
+import IconBrushBrown from '~/assets/icons/ic_brush_brown.svg';
+import IconArrowLeftWhite from '~/assets/icons/ic_arrow_left_white.svg';
+import IconDrawWhite from '~/assets/icons/ic_draw_white.svg';
+import IconSendWhite from '~/assets/icons/ic_send_white.svg';
+import IconGalleryWhite from '~/assets/icons/ic_gallery_white.svg';
+import IconGalleryAddWhite from '~/assets/icons/ic_gallery_add_white.svg';
+import IconAddBrown from '~/assets/icons/ic_add_brown.svg';
+import IconMinusBrown from '~/assets/icons/ic_minus_brown.svg';
+import IconShopBrown from '~/assets/icons/ic_shop_brown.svg';
+import IconInfoBoxWhite from '~/assets/icons/ic_info_box_white.svg';
 
 interface IconSvgProps {
   icon:
@@ -110,7 +121,18 @@ interface IconSvgProps {
     | 'IconCreditCard'
     | 'IconUser'
     | 'IconSignOut'
-    | 'IconDrawerBrown';
+    | 'IconDrawerBrown'
+    | 'IconBrushBrown'
+    | 'IconArrowLeftWhite'
+    | 'IconDrawWhite'
+    | 'IconSendWhite'
+    | 'IconGalleryWhite'
+    | 'IconGalleryAddWhite'
+    | 'IconCloseBoldWhite'
+    | 'IconAddBrown'
+    | 'IconMinusBrown'
+    | 'IconShopBrown'
+    | 'IconInfoBoxWhite';
 
   width?: number;
   height?: number;
@@ -174,6 +196,17 @@ const svgComponents: Record<string, React.ComponentType> = {
   IconUser,
   IconSignOut,
   IconDrawerBrown,
+  IconBrushBrown,
+  IconArrowLeftWhite,
+  IconDrawWhite,
+  IconSendWhite,
+  IconGalleryWhite,
+  IconGalleryAddWhite,
+  IconCloseBoldWhite,
+  IconAddBrown,
+  IconMinusBrown,
+  IconShopBrown,
+  IconInfoBoxWhite,
 };
 
 interface Svg {

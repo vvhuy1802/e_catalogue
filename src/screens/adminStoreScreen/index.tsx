@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   HOME_SCREEN_ADMIN_STORE,
   ORDER_SCREEN_ADMIN_STORE,
+  ORDER_STACK_ADMIN_STORE_PARAMS_LIST,
   PRODUCT_SCREEN_ADMIN_STORE,
-  STYLE_ROOM_SCREEN_ADMIN_STORE,
+  STYLE_ROOM_STACK_PARAMS_LIST,
 } from '~/constants/routeNames';
 import {AdminStoreStackParamList} from '~/types';
 import HomeScreen from './homeScreen';
@@ -15,7 +16,7 @@ import {
   DrawerContentScrollView,
   DrawerItemList,
 } from '@react-navigation/drawer';
-import {Image, Pressable, Text, View} from 'react-native';
+import {Pressable, Text, View} from 'react-native';
 import {images} from '~/assets';
 import {HeightSize, WidthSize} from '~/theme/size';
 import {TextFont, TextStyle} from '~/theme/textStyle';
@@ -29,7 +30,9 @@ import {
   SetIsAuthorized,
   SetUserInforLogin,
 } from '~/redux/reducers/authSlice';
-import StyleRoom from './styleRoom';
+import StyleRoomtack from './styleRoom';
+import {getAllOrder} from '~/redux/actions/orderAction';
+import OrderAdminStoreStack from './orderScreen';
 
 const Drawer = createDrawerNavigator<AdminStoreStackParamList>();
 const AdminStoreStack = () => {
@@ -47,6 +50,11 @@ const AdminStoreStack = () => {
     AppProvider.setTokenUser('', '');
     AppProvider.setAccountInfo(null as any);
   };
+
+  useEffect(() => {
+    dispatch(getAllOrder());
+  }, []);
+
   const CustomDrawer = (props: any) => {
     return (
       <FastImage
@@ -152,8 +160,8 @@ const AdminStoreStack = () => {
         }}
       />
       <Drawer.Screen
-        name={ORDER_SCREEN_ADMIN_STORE}
-        component={OrderScreen}
+        name={ORDER_STACK_ADMIN_STORE_PARAMS_LIST}
+        component={OrderAdminStoreStack}
         options={{
           title: 'Order Screen',
         }}
@@ -166,8 +174,8 @@ const AdminStoreStack = () => {
         }}
       />
       <Drawer.Screen
-        name={STYLE_ROOM_SCREEN_ADMIN_STORE}
-        component={StyleRoom}
+        name={STYLE_ROOM_STACK_PARAMS_LIST}
+        component={StyleRoomtack}
         options={{
           title: 'Style Room',
         }}

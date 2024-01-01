@@ -10,7 +10,10 @@ import {
 } from '~/redux/reducers/productSlice';
 import {getUrl} from '~/utils';
 import navigation from '~/navigation';
-import {SetDirectionBottomBar} from '~/redux/reducers/globalSlice';
+import {
+  SetDirectionBottomBar,
+  selectCurrentDropDown,
+} from '~/redux/reducers/globalSlice';
 import {ProductCategoryResponse} from '~/types/product';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
@@ -21,13 +24,13 @@ import {CATEGORY, CATEGORYSCREEN} from '~/constants/routeNames';
 
 const CardCategorySlide = () => {
   const allCategories = useSelector(selectAllCategories);
+  const currentDropDown = useSelector(selectCurrentDropDown);
   const loadingGetCategories = useSelector(selectLoadingGetAllCategories);
   const dispatch = useDispatch<AppDispatch>();
   const navigation = useNavigation<StackNavigationProp<HomeStackParamList>>();
 
   const handleNavigate = (category: ProductCategoryResponse) => {
     dispatch(SetDirectionBottomBar('down'));
-    dispatch(getProductsByCategory(category.id));
     navigation.navigate('Category', {
       screen: 'DetailCategoryScreen',
       params: {
@@ -62,7 +65,13 @@ const CardCategorySlide = () => {
           paddingRight: HeightSize(20),
           height: WidthSize(200),
         }}
-        data={loadingGetCategories === 'fulfilled' ? allCategories : []}
+        data={
+          loadingGetCategories === 'fulfilled'
+            ? allCategories.filter(
+                item => item.name === currentDropDown.title,
+              )[0].children
+            : []
+        }
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{
@@ -100,7 +109,7 @@ const CardCategorySlide = () => {
                 <Text
                   style={{
                     color: '#3B3021',
-                    marginLeft: WidthSize(16),
+                    marginHorizontal: WidthSize(16),
                     ...TextFont.SMedium,
                     ...TextStyle.LG,
                   }}>

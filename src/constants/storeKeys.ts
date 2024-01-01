@@ -5,4 +5,5 @@ export const STORE_KEYS = {
   HISTORY_SEARCH: 'historySearch',
   LOCATION_VIETNAM: 'locationVietNam',
   ACCOUNT_INFO: 'accountInfo',
+  CURRENT_ADDRESS: 'currentAddress',
 };

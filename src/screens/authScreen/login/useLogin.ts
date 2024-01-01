@@ -111,6 +111,7 @@ export const useLogin = () => {
             });
           }
           authService.me().then(res => {
+            console.log('res me', res);
             dispatch(SetIsAuthorized(checkRole(res.data.role)));
             dispatch(
               SetUserInforLogin({

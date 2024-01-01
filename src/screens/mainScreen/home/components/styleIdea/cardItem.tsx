@@ -34,18 +34,18 @@ const CardItem = ({item, index, scrollX, onPress}: CardItemProps) => {
         style={[
           {
             width: HeightSize(256),
-            backgroundColor: 'white',
+            backgroundColor: 'transparent',
             borderRadius: 24,
             elevation: 10,
             shadowColor: '#D8D2C499',
             shadowOffset: {
               width: scrollX.interpolate({
                 inputRange,
-                outputRange: [0, WidthSize(10), 0],
+                outputRange: [0, WidthSize(5), 0],
               }),
               height: scrollX.interpolate({
                 inputRange,
-                outputRange: [0, HeightSize(10), 0],
+                outputRange: [0, HeightSize(5), 0],
               }),
             },
             shadowOpacity: 1,
@@ -76,7 +76,7 @@ const CardItem = ({item, index, scrollX, onPress}: CardItemProps) => {
               inputRange,
               outputRange: [0, 0, -cardWidth / 4],
             }),
-            height: HeightSize(380),
+            height: HeightSize(400),
             justifyContent: 'center',
           },
         ]}>
@@ -92,13 +92,13 @@ const CardItem = ({item, index, scrollX, onPress}: CardItemProps) => {
         <PrimaryHeart
           styleView={{
             position: 'absolute',
-            width: WidthSize(44),
-            height: WidthSize(44),
-            bottom: WidthSize(20),
-            right: WidthSize(20),
+            width: HeightSize(50),
+            height: HeightSize(50),
+            bottom: HeightSize(30),
+            right: HeightSize(20),
           }}
-          widthIcon={WidthSize(20)}
-          heightIcon={WidthSize(20)}
+          widthIcon={HeightSize(24)}
+          heightIcon={HeightSize(24)}
         />
       </Animated.View>
     </Pressable>

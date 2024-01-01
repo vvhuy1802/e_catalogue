@@ -46,6 +46,40 @@ const CardSlide = () => {
       img: 'https://api.bplusfurniture.com.vn/admin/uploads/273bdf3fe66849ac9e622f8a0dfb0b33.jpg',
     },
   ];
+  const dataItem = [
+    {
+      id: 1,
+      img: 'https://www.binhthuan.city/wp-content/uploads/2021/09/cac-style-thoi-trang-nu-5.jpg',
+    },
+    {
+      id: 2,
+      img: 'https://www.binhthuan.city/wp-content/uploads/2021/09/cac-style-thoi-trang-nu-5.jpg',
+    },
+    {
+      id: 3,
+      img: 'https://www.binhthuan.city/wp-content/uploads/2021/09/cac-style-thoi-trang-nu-5.jpg',
+    },
+    {
+      id: 4,
+      img: 'https://www.binhthuan.city/wp-content/uploads/2021/09/cac-style-thoi-trang-nu-5.jpg',
+    },
+    {
+      id: 5,
+      img: 'https://www.binhthuan.city/wp-content/uploads/2021/09/cac-style-thoi-trang-nu-5.jpg',
+    },
+    {
+      id: 6,
+      img: 'https://www.binhthuan.city/wp-content/uploads/2021/09/cac-style-thoi-trang-nu-5.jpg',
+    },
+    {
+      id: 7,
+      img: 'https://www.binhthuan.city/wp-content/uploads/2021/09/cac-style-thoi-trang-nu-5.jpg',
+    },
+    {
+      id: 8,
+      img: 'https://www.binhthuan.city/wp-content/uploads/2021/09/cac-style-thoi-trang-nu-5.jpg',
+    },
+  ];
   const scrollX = React.useRef(new Animated.Value(0)).current;
   const flatListRef: any = useRef(null);
   const [visibleIndex, setVisibleIndex] = useState(0);
@@ -57,8 +91,8 @@ const CardSlide = () => {
   const handleChangeTab = (tab: number) => () => {
     setCurrentTab(tab);
     Animated.timing(moveTabRef.current, {
-      toValue: tab,
-      duration: 300,
+      toValue: tab === 0 ? 1 : 0,
+      duration: 600,
       useNativeDriver: false,
     }).start();
   };
@@ -131,55 +165,125 @@ const CardSlide = () => {
             }}
           />
         </View>
-        <FlatList
-          ref={flatListRef}
+
+        <Animated.View
           style={{
-            paddingLeft: WidthSize(30),
-            paddingTop: HeightSize(35),
-          }}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          pagingEnabled
-          bounces={false}
-          nestedScrollEnabled
-          data={data}
-          renderItem={({item, index}) => (
-            <CardItem
-              onPress={handlePressItem(item, index)}
-              index={index}
-              item={item}
-              scrollX={scrollX}
-            />
-          )}
-          onScroll={Animated.event(
-            [
-              {
-                nativeEvent: {
-                  contentOffset: {
-                    x: scrollX,
+            display: currentTab === 0 ? 'flex' : 'none',
+            opacity: moveTabRef.current.interpolate({
+              inputRange: [0, 1],
+              outputRange: [0, 1],
+            }),
+            position: 'absolute',
+          }}>
+          <FlatList
+            ref={flatListRef}
+            style={{
+              paddingLeft: WidthSize(30),
+              paddingTop: HeightSize(35),
+            }}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            pagingEnabled
+            bounces={false}
+            nestedScrollEnabled
+            data={dataItem}
+            renderItem={({item, index}) => (
+              <CardItem
+                onPress={handlePressItem(item, index)}
+                index={index}
+                item={item}
+                scrollX={scrollX}
+              />
+            )}
+            onScroll={Animated.event(
+              [
+                {
+                  nativeEvent: {
+                    contentOffset: {
+                      x: scrollX,
+                    },
                   },
                 },
+              ],
+              {
+                useNativeDriver: false,
+                listener: (event: any) => {
+                  const offsetX = event.nativeEvent.contentOffset.x;
+                  const index = Math.round(offsetX / width);
+                  setVisibleIndex(index);
+                },
               },
-            ],
-            {
-              useNativeDriver: false,
-              listener: (event: any) => {
-                const offsetX = event.nativeEvent.contentOffset.x;
-                const index = Math.round(offsetX / width);
-                setVisibleIndex(index);
+            )}
+            contentContainerStyle={{
+              marginLeft: width / 2 - (cardWidth * 2) / 3,
+              paddingRight: width / 2,
+            }}
+            initialScrollIndex={visibleIndex}
+            snapToInterval={cardWidth}
+            viewabilityConfig={viewConfig}
+            //each scroll only scroll 1 item
+            decelerationRate={0}
+          />
+        </Animated.View>
+        <Animated.View
+          style={{
+            display: currentTab === 1 ? 'flex' : 'none',
+            opacity: moveTabRef.current.interpolate({
+              inputRange: [0, 1],
+              outputRange: [1, 0],
+            }),
+            position: 'absolute',
+          }}>
+          <FlatList
+            ref={flatListRef}
+            style={{
+              paddingLeft: WidthSize(30),
+              paddingTop: HeightSize(35),
+            }}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            pagingEnabled
+            bounces={false}
+            nestedScrollEnabled
+            data={data}
+            renderItem={({item, index}) => (
+              <CardItem
+                onPress={handlePressItem(item, index)}
+                index={index}
+                item={item}
+                scrollX={scrollX}
+              />
+            )}
+            onScroll={Animated.event(
+              [
+                {
+                  nativeEvent: {
+                    contentOffset: {
+                      x: scrollX,
+                    },
+                  },
+                },
+              ],
+              {
+                useNativeDriver: false,
+                listener: (event: any) => {
+                  const offsetX = event.nativeEvent.contentOffset.x;
+                  const index = Math.round(offsetX / width);
+                  setVisibleIndex(index);
+                },
               },
-            },
-          )}
-          contentContainerStyle={{
-            marginLeft: width / 2 - (cardWidth * 2) / 3,
-            paddingRight: width / 2,
-          }}
-          initialScrollIndex={visibleIndex}
-          snapToInterval={cardWidth}
-          viewabilityConfig={viewConfig}
-          //each scroll only scroll 1 item
-          decelerationRate={0}
-        />
+            )}
+            contentContainerStyle={{
+              marginLeft: width / 2 - (cardWidth * 2) / 3,
+              paddingRight: width / 2,
+            }}
+            initialScrollIndex={visibleIndex}
+            snapToInterval={cardWidth}
+            viewabilityConfig={viewConfig}
+            //each scroll only scroll 1 item
+            decelerationRate={0}
+          />
+        </Animated.View>
       </View>
     </View>
   );

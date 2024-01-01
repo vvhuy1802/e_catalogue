@@ -5,6 +5,13 @@ import {SetDirectionBottomBar} from '~/redux/reducers/globalSlice';
 import {HeightSize, WidthSize} from '~/theme/size';
 import {TextStyle, TextFont} from '~/theme/textStyle';
 import {IconSvg, IconSvgType} from '../iconSvg';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {HomeStackParamList} from '~/types';
+import {AppDispatch} from '~/app/store';
+import {useDispatch, useSelector} from 'react-redux';
+import {selectDataCart} from '~/redux/reducers/orderSlice';
+import {countTotalItemInCart} from '~/utils';
 
 type Props = {
   onPressBack: () => void;
@@ -13,6 +20,7 @@ type Props = {
   showBag?: boolean;
   typeRightIcon?: IconSvgType;
   children?: React.ReactNode;
+  isShowBottomBarWhenBack?: boolean;
 };
 const HeaderProduct = ({
   onPressBack,
@@ -21,7 +29,21 @@ const HeaderProduct = ({
   showBag = true,
   typeRightIcon = 'IconBagBlack',
   children,
+  isShowBottomBarWhenBack = true,
 }: Props) => {
+  const navigationCart =
+    useNavigation<StackNavigationProp<HomeStackParamList>>();
+  const dispatch = useDispatch<AppDispatch>();
+  const dataCart = useSelector(selectDataCart);
+  const handleNavigateToCart = () => {
+    dispatch(SetDirectionBottomBar('down'));
+    navigationCart.navigate('OrderStack', {
+      screen: 'MyBag',
+      params: {
+        isShowBottomBarWhenBack: isShowBottomBarWhenBack,
+      },
+    });
+  };
   return (
     <View
       style={{
@@ -90,10 +112,21 @@ const HeaderProduct = ({
           alignItems: 'center',
           marginRight: WidthSize(20),
           zIndex: 99,
+          elevation: 10,
+          shadowColor: '#000',
+          shadowOffset: {width: 0, height: 2},
+          shadowOpacity: 0.25,
+          backgroundColor: 'transparent',
         }}>
-        <IconSvg onPress={onPressRightIcon} icon={typeRightIcon} />
+        <IconSvg
+          onPress={() => {
+            handleNavigateToCart(), onPressRightIcon && onPressRightIcon();
+          }}
+          icon={typeRightIcon}
+        />
         {typeRightIcon === 'IconBagBlack' && (
-          <View
+          <Pressable
+            onPress={handleNavigateToCart}
             style={{
               position: 'absolute',
               top: 0,
@@ -120,10 +153,10 @@ const HeaderProduct = ({
                   ...TextFont.SLight,
                   textAlign: 'center',
                 }}>
-                2
+                {countTotalItemInCart(dataCart)}
               </Text>
             </View>
-          </View>
+          </Pressable>
         )}
       </View>
     </View>

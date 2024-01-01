@@ -20,7 +20,10 @@ const Category = () => {
   const dispatch = useDispatch<AppDispatch>();
   const handlePressCart = () => {
     dispatch(SetDirectionBottomBar('down'));
-    navigation.navigate('OrderStack', {screen: 'MyBag'});
+    navigation.navigate('OrderStack', {
+      screen: 'MyBag',
+      params: {isShowBottomBarWhenBack: true},
+    });
   };
   return (
     <ContainerImage

@@ -12,6 +12,8 @@ import {HomeStackParamList} from '~/types';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {useNavigation} from '@react-navigation/native';
 import {AppDispatch} from '~/app/store';
+import {selectDataCart} from '~/redux/reducers/orderSlice';
+import {countTotalItemInCart} from '~/utils';
 
 type DropDownProps = {
   setIsShow: (isShow: boolean) => void;
@@ -21,6 +23,7 @@ const DropDown = ({setIsShow}: DropDownProps) => {
   const navigationCategory =
     useNavigation<StackNavigationProp<HomeStackParamList>>();
   const dispatch = useDispatch<AppDispatch>();
+  const dataCart = useSelector(selectDataCart);
   return (
     <View
       style={{
@@ -76,31 +79,64 @@ const DropDown = ({setIsShow}: DropDownProps) => {
           dispatch(SetDirectionBottomBar('down'));
           navigationCategory.navigate('OrderStack', {
             screen: 'MyBag',
+            params: {isShowBottomBarWhenBack: true},
           });
         }}
         style={{
-          width: HeightSize(76),
-          height: HeightSize(76),
+          width: WidthSize(64),
+          height: WidthSize(64),
           borderRadius: 40,
           backgroundColor: '#F1EFE9',
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        <IconSvg icon="IconBagBlack" />
+        <IconSvg
+          style={{
+            elevation: 10,
+            shadowColor: '#000',
+            shadowOffset: {
+              width: 0,
+              height: 2,
+            },
+            shadowOpacity: 0.25,
+          }}
+          width={WidthSize(24)}
+          height={WidthSize(24)}
+          icon="IconBagBlack"
+        />
 
         <View
           style={{
             position: 'absolute',
             justifyContent: 'center',
             alignItems: 'center',
-            width: WidthSize(16),
-            height: WidthSize(16),
+            height:
+              countTotalItemInCart(dataCart) > 99
+                ? WidthSize(24)
+                : WidthSize(20),
+            width:
+              countTotalItemInCart(dataCart) > 99
+                ? WidthSize(24)
+                : WidthSize(20),
             borderRadius: 100,
             backgroundColor: '#433229',
             borderWidth: 2,
-            borderColor: 'F9F6E8',
-            top: HeightSize(15),
-            right: HeightSize(20),
+            borderColor: '#F9F6E8',
+            top:
+              countTotalItemInCart(dataCart) > 99
+                ? WidthSize(8)
+                : WidthSize(10),
+            right:
+              countTotalItemInCart(dataCart) > 99
+                ? WidthSize(8)
+                : WidthSize(10),
+            elevation: 2,
+            shadowColor: '#000',
+            shadowOffset: {
+              width: 0,
+              height: 2,
+            },
+            shadowOpacity: 0.25,
           }}>
           <Text
             style={{
@@ -108,7 +144,9 @@ const DropDown = ({setIsShow}: DropDownProps) => {
               ...TextStyle.XS,
               ...TextFont.SMedium,
             }}>
-            2
+            {countTotalItemInCart(dataCart) > 99
+              ? `99+`
+              : countTotalItemInCart(dataCart) || 0}
           </Text>
         </View>
       </Pressable>

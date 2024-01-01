@@ -124,7 +124,12 @@ const ReviewDetail = () => {
       style={{flex: 1}}
       resizeMode="cover"
       source={images.home.BackgroundHome}>
-      <HeaderProduct title="Reviews" onPressBack={onGoBack} showBag={false} />
+      <HeaderProduct
+        isShowBottomBarWhenBack={false}
+        title="Reviews"
+        onPressBack={onGoBack}
+        showBag={false}
+      />
       <View
         style={{
           paddingTop: HeightSize(32),

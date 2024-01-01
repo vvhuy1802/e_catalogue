@@ -42,4 +42,14 @@ export const ADMIN_STORE_STACK = 'AdminStoreStack';
 export const HOME_SCREEN_ADMIN_STORE = 'HomeScreenAdminStore';
 export const ORDER_SCREEN_ADMIN_STORE = 'OrderScreenAdminStore';
 export const PRODUCT_SCREEN_ADMIN_STORE = 'ProductScreenAdminStore';
+export const STYLE_ROOM_STACK_PARAMS_LIST = 'StyleRoomStackParamsList';
 export const STYLE_ROOM_SCREEN_ADMIN_STORE = 'StyleRoomScreenAdminStore';
+export const ADD_STYLE_ROOM_SCREEN_ADMIN_STORE = 'AddStyleRoomScreenAdminStore';
+export const DETAIL_STYLE_ROOM_SCREEN_ADMIN_STORE =
+  'DetailStyleRoomScreenAdminStore';
+export const POST_STYLE_ROOM_SCREEN_ADMIN_STORE =
+  'PostStyleRoomScreenAdminStore';
+
+export const ORDER_STACK_ADMIN_STORE_PARAMS_LIST =
+  'OrderStackAdminStoreParamsList';
+export const DETAIL_ORDER_SCREEN_ADMIN_STORE = 'DetailOrderScreenAdminStore';

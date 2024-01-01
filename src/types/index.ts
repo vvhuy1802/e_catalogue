@@ -36,9 +36,17 @@ import {
   PRODUCT_SCREEN_ADMIN_STORE,
   ADMIN_STORE_STACK,
   STYLE_ROOM_SCREEN_ADMIN_STORE,
+  ADD_STYLE_ROOM_SCREEN_ADMIN_STORE,
+  DETAIL_STYLE_ROOM_SCREEN_ADMIN_STORE,
+  STYLE_ROOM_STACK_PARAMS_LIST,
+  DETAIL_ORDER_SCREEN_ADMIN_STORE,
+  ORDER_STACK_ADMIN_STORE_PARAMS_LIST,
   EDIT_PROFILE,
 } from '~/constants/routeNames';
 import {ProductCategoryResponse} from './product';
+import {ImagePickerResponse} from 'react-native-image-picker';
+import {CartVariant, NormalizeCartVariant, OrderAdminStore} from './order';
+import {ContactAddress} from './contact';
 
 export type LoadingState = 'idle' | 'pending' | 'fulfilled' | 'rejected';
 
@@ -46,7 +54,7 @@ export type Normalized<T, B> = {
   //normalize data
   ids: T[];
   entities: {
-    [key: number]: B;
+    [key: string]: B;
   };
 };
 
@@ -117,8 +125,12 @@ export type ProductDetailStackParamList = {
 };
 
 export type OrderStackParamList = {
-  [MYBAG]: undefined;
-  [CONFIRMORDER]: undefined;
+  [MYBAG]: {
+    isShowBottomBarWhenBack?: boolean;
+  };
+  [CONFIRMORDER]: {
+    dataOrder?: NormalizeCartVariant;
+  };
   [EDITADDRESS]: undefined;
   [ADDADDRESS]: undefined;
 };
@@ -135,6 +147,23 @@ export type ProfileStackParamList = {
 export type AdminStoreStackParamList = {
   [HOME_SCREEN_ADMIN_STORE]: undefined;
   [PRODUCT_SCREEN_ADMIN_STORE]: undefined;
-  [ORDER_SCREEN_ADMIN_STORE]: undefined;
+  [ORDER_STACK_ADMIN_STORE_PARAMS_LIST]: undefined;
+  [STYLE_ROOM_STACK_PARAMS_LIST]: NavigatorScreenParams<StyleRoomStackParamList>;
+};
+
+export type StyleRoomStackParamList = {
   [STYLE_ROOM_SCREEN_ADMIN_STORE]: undefined;
+  [ADD_STYLE_ROOM_SCREEN_ADMIN_STORE]: {
+    imageAdding: ImagePickerResponse;
+    widthImgage: number;
+    heightImage: number;
+  };
+  [DETAIL_STYLE_ROOM_SCREEN_ADMIN_STORE]: undefined;
+};
+
+export type OrderStackAdminStoreParamList = {
+  [ORDER_SCREEN_ADMIN_STORE]: undefined;
+  [DETAIL_ORDER_SCREEN_ADMIN_STORE]: {
+    order: OrderAdminStore;
+  };
 };

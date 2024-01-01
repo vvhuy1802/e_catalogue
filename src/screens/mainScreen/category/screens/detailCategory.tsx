@@ -32,6 +32,7 @@ import {
   selectProductsByCategory,
 } from '~/redux/reducers/productSlice';
 import {getUrl} from '~/utils';
+import {getProductsByCategory} from '~/redux/actions/productAction';
 
 type Props = {
   route: RouteProp<CategoryStackParamList, 'DetailCategoryScreen'>;
@@ -43,13 +44,15 @@ const DetailCategory = ({route}: Props) => {
   const category = route.params.category;
 
   const products = useSelector(selectProductsByCategory);
-  const loadingGetProduct = useSelector(selectLoadingGetProductsByCategory);
 
   const dispatch = useDispatch<AppDispatch>();
-  console.log(category?.children.length);
   const [currentTab, setCurrentTab] = useState(
     category?.children.length === 0 ? 0 : category?.children[0].id,
   );
+
+  useEffect(() => {
+    dispatch(getProductsByCategory(currentTab as number));
+  }, [currentTab]);
 
   const [filter, setFilter] = useState<Normalized<string, any>>({
     ids: [],
@@ -183,7 +186,7 @@ const DetailCategory = ({route}: Props) => {
       style={{flex: 1}}
       resizeMode="cover"
       source={images.home.BackgroundHome}>
-      <HeaderProduct onPressBack={onGoBack} />
+      <HeaderProduct isShowBottomBarWhenBack={true} onPressBack={onGoBack} />
 
       <CategoryFilter
         navigation={navigation}
@@ -356,7 +359,7 @@ const DetailCategory = ({route}: Props) => {
                     marginTop: HeightSize(16),
                     marginBottom: HeightSize(15),
                   }}>
-                  {item?.price ? '$' + item?.price : 'No price'}
+                  {item?.minPrice ? '$' + item?.minPrice : 'No price'}
                 </Text>
                 <PrimaryHeart
                   styleView={{

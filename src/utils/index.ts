@@ -4,6 +4,9 @@ import {LoginParams} from '~/types/auth';
 import {ImageSourcePropType, ImageURISource} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {AppDispatch} from '~/app/store';
+import {createContext} from 'react';
+import {CartResponse} from '~/types/order';
+import {ContactAddress} from '~/types/contact';
 
 type decodedToken = {
   exp: number;
@@ -41,7 +44,6 @@ export const checkAccessTokens = async () => {
 export const getUrl = (image: string) => {
   const imageUri: ImageSourcePropType = {
     uri: `https://e-catalogue.abcdavid.top/file-server/get/${image}`,
-    // uri: `https://e-catalogue.abcdavid.top/file-server/get/5f58ae36-9e85-11ee-a738-a2e28baa03ba.png`,
   };
   return imageUri;
 };
@@ -51,11 +53,58 @@ export const checkRole = (role: string) => {
   switch (role) {
     case 'customer':
       return 'CUSTOMER';
-    case 'store':
+    case 'shop_owner':
       return 'STORE';
     case 'admin':
       return 'ADMIN';
     default:
       return 'CUSTOMER';
   }
+};
+
+export const countTotalItemInCart = (dataCart: CartResponse) => {
+  let totalItem = 0;
+  dataCart?.stores?.ids.forEach(storeId => {
+    totalItem += dataCart.stores.entities[storeId].items.ids.length;
+  });
+  return totalItem;
+};
+
+export const getAddressFromServer = async (address: ContactAddress) => {
+  const location = await AppProvider.getLocationVietNam();
+
+  return {
+    province: location?.entities[address.province].name,
+    district:
+      location?.entities[address.province].districts.entities[address.district]
+        .name,
+    ward: location?.entities[address.province].districts.entities[
+      address.district
+    ].wards.entities[address.ward].name,
+    details: address.details,
+  };
+};
+
+export const formatDate = (date: string) => {
+  const dateArr = date.split('/');
+  const month = dateArr[1];
+  const day = dateArr[0];
+  const year = dateArr[2];
+
+  const months = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'June',
+    'July',
+    'Aug',
+    'Sept',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
+
+  return `${months[month - 1]} ${day}, ${year}`;
 };
