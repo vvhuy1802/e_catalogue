@@ -30,7 +30,6 @@ function App(): JSX.Element {
       await axios
         .get('https://provinces.open-api.vn/api/?depth=3')
         .then(async res => {
-          console.log('Data address: ', JSON.stringify(res.data), null, 2);
           const dataProvinces: NormalizedLocationVietNam = {
             ids: [],
             entities: {},

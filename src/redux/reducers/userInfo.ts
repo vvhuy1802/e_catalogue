@@ -1,26 +1,42 @@
 import {PayloadAction, createSlice} from '@reduxjs/toolkit';
 import {RootState} from '../../app/store';
 import {register} from '../actions/authAction';
-import {LoadingState} from '~/types';
+import {LoadingState, Normalized} from '~/types';
 import {RegisterResponse} from '~/types/auth';
 import {UserInfo} from '~/types/userInfo';
 import {
+  getAllCollection,
   getUserInfo,
   setUserInfo,
   uploadProfileImage,
 } from '../actions/userInfoAction';
+import {CollectionResponse} from '~/types/favorite';
 
 interface UserInfoState {
   userInfo: UserInfo;
   loadingUserInfo: LoadingState;
   loadingProfileImage: LoadingState;
+  allCollection: Array<CollectionResponse>;
+  allItem: Array<{
+    id: string;
+    contentId: string;
+    contentType: string;
+  }>;
+  allIdea: Array<{
+    id: string;
+    contentId: string;
+    contentType: string;
+  }>;
 }
 
 const initialState = {
   userInfo: {},
   loadingUserInfo: 'idle',
   loadingProfileImage: 'idle',
-} as UserInfoState;
+  allCollection: [],
+  allItem: [],
+  allIdea: [],
+} as unknown as UserInfoState;
 
 const userInfoSlice = createSlice({
   name: 'userInfo',
@@ -70,6 +86,40 @@ const userInfoSlice = createSlice({
     builder.addCase(setUserInfo.rejected, (state, action) => {
       state.loadingUserInfo = 'rejected';
     });
+    builder.addCase(getAllCollection.fulfilled, (state, action) => {
+      console.log(
+        'Data get all colection: ',
+        JSON.stringify(action.payload.data.data),
+      );
+      if (action.payload.data.status === 200) {
+        const resData: Array<CollectionResponse> = action.payload.data
+          .data as unknown as Array<CollectionResponse>;
+        state.allCollection = resData;
+        let items: Array<{
+          id: string;
+          contentId: string;
+          contentType: string;
+        }> = [];
+        let ideas: Array<{
+          id: string;
+          contentId: string;
+          contentType: string;
+        }> = [];
+        resData.forEach(collection => {
+          if (collection.favorites.length != 0) {
+            collection.favorites.forEach(item => {
+              if (item.contentType == 'product') {
+                items.push(item);
+              } else {
+                ideas.push(item);
+              }
+            });
+          }
+        });
+        state.allItem = items;
+        state.allIdea = ideas;
+      }
+    });
   },
 });
 
@@ -79,3 +129,7 @@ export const selectLoadingUserInfoState = (state: RootState) =>
 export const selectLoadingProfileImageState = (state: RootState) =>
   state.userInfo.loadingProfileImage;
 export const selectUserInfo = (state: RootState) => state.userInfo.userInfo;
+export const selectAllCollection = (state: RootState) =>
+  state.userInfo.allCollection;
+export const selectAllItem = (state: RootState) => state.userInfo.allItem;
+export const selectAllIdea = (state: RootState) => state.userInfo.allIdea;

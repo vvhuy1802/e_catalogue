@@ -16,6 +16,7 @@ type Props = {
   heightIcon?: number;
   onPress?: () => void;
   styleView?: StyleProp<ViewStyle>;
+  isLiked?: boolean;
 };
 
 const PrimaryHeart = ({
@@ -23,9 +24,10 @@ const PrimaryHeart = ({
   heightIcon = HeightSize(20),
   styleView,
   onPress,
+  isLiked = false,
 }: Props) => {
   const scaleRef = React.useRef(new Animated.Value(0)).current;
-  const [isLike, setIsLike] = React.useState(false);
+  const [isLike, setIsLike] = React.useState(isLiked);
 
   return (
     <Pressable

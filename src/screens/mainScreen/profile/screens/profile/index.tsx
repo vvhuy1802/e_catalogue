@@ -11,7 +11,7 @@ import {SetDirectionBottomBar} from '~/redux/reducers/globalSlice';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {HomeStackParamList, ProfileStackParamList} from '~/types';
 import {ADDRESS_BOOK, ORDERSTACK} from '~/constants/routeNames';
-import {useNavigation} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import HeaderSearch from '~/components/global/headerSearch';
 import {IconSvg} from '~/components/global/iconSvg';
 import {TextStyle, TextFont} from '~/theme/textStyle';
@@ -31,6 +31,12 @@ type ProfileProps = {
 };
 
 const Profile: React.FC<ProfileProps> = ({navigation}) => {
+  const isFocused = useIsFocused();
+  useEffect(() => {
+    if (isFocused) {
+      dispatch(SetDirectionBottomBar('up'));
+    }
+  }, [isFocused]);
   const {handlePressCart} = useCart();
   const dispatch = useDispatch<AppDispatch>();
 
@@ -102,7 +108,7 @@ const Profile: React.FC<ProfileProps> = ({navigation}) => {
         style={{
           flex: 1,
         }}>
-        <CustomScrollView
+        <View
           style={{
             marginTop: HeightSize(10),
           }}>
@@ -155,7 +161,7 @@ const Profile: React.FC<ProfileProps> = ({navigation}) => {
             </Pressable>
             <Text style={styles.textOption}>Sign out</Text>
           </View>
-        </CustomScrollView>
+        </View>
       </View>
     </ContainerImage>
   );

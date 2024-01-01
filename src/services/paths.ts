@@ -50,4 +50,11 @@ export const apiUrl = {
     `${baseUrl}${Services.product}category?id=${categoryId}`,
   addNewCategory: () => `${baseUrl}${Services.product}category`,
   setUserInfo: () => `${baseUrl}${Services.userInfo}`,
+
+  addFavorite: () => `${baseUrl}${Services.userInfo}favorite`,
+  removeFavorite: () => `${baseUrl}${Services.userInfo}favorite`,
+  createNewCollection: () => `${baseUrl}${Services.userInfo}collection`,
+  updateCollection: () => `${baseUrl}${Services.userInfo}collection`,
+  removeCollection: () => `${baseUrl}${Services.userInfo}collection`,
+  getAllCollection: () => `${baseUrl}${Services.userInfo}collections`,
 };

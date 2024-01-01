@@ -56,3 +56,11 @@ export const setUserInfo = createAsyncThunk(
     return {data: res};
   },
 );
+
+export const getAllCollection = createAsyncThunk(
+  'userInfo/get all collection',
+  async () => {
+    const res = await userInfoService.getAllCollection();
+    return {data: res};
+  },
+);
