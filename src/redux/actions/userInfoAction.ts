@@ -50,7 +50,7 @@ export const setUserInfo = createAsyncThunk(
       sex?: string;
       dob?: string;
       profile_image?: string;
-    } = {...params, id: account?.id || '0'};
+    } = {...params, id: account?.id?.toString() || '0'};
     // console.log('Data set user info params: ', JSON.stringify(params, null, 2));
     const res = await userInfoService.setUserInfo(param);
     return {data: res};
