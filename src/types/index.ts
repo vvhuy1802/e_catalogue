@@ -41,12 +41,19 @@ import {
   STYLE_ROOM_STACK_PARAMS_LIST,
   DETAIL_ORDER_SCREEN_ADMIN_STORE,
   ORDER_STACK_ADMIN_STORE_PARAMS_LIST,
+  STORESCREEN,
+  HOME_SCREEN_ADMIN_SYSTEM,
+  ADMIN_SYSTEM_STACK,
+  APPROVE_STORE_SCREEN_ADMIN_SYSTEM,
+  CATEGORY_SCREEN_ADMIN_SYSTEM,
+  REVENUE_SCREEN_ADMIN_SYSTEM,
   EDIT_PROFILE,
 } from '~/constants/routeNames';
 import {ProductCategoryResponse} from './product';
 import {ImagePickerResponse} from 'react-native-image-picker';
 import {CartVariant, NormalizeCartVariant, OrderAdminStore} from './order';
 import {ContactAddress} from './contact';
+import {StoreResponse} from '~/screens/mainScreen/category/components/productDetail/Seller';
 
 export type LoadingState = 'idle' | 'pending' | 'fulfilled' | 'rejected';
 
@@ -72,6 +79,9 @@ export type MainStackParamList = {
 
 export type AdminStoreStackScreen = {
   [ADMIN_STORE_STACK]: undefined;
+};
+export type AdminSystemStackScreen = {
+  [ADMIN_SYSTEM_STACK]: undefined;
 };
 
 export type AuthenticationStackParamList = {
@@ -122,6 +132,9 @@ export type ProductDetailStackParamList = {
     productId?: string;
   };
   [REVIEWDETAIL]: undefined;
+  [STORESCREEN]: {
+    store: StoreResponse;
+  };
 };
 
 export type OrderStackParamList = {
@@ -166,4 +179,11 @@ export type OrderStackAdminStoreParamList = {
   [DETAIL_ORDER_SCREEN_ADMIN_STORE]: {
     order: OrderAdminStore;
   };
+};
+
+export type AdminSystemStackParamList = {
+  [HOME_SCREEN_ADMIN_SYSTEM]: undefined;
+  [CATEGORY_SCREEN_ADMIN_SYSTEM]: undefined;
+  [APPROVE_STORE_SCREEN_ADMIN_SYSTEM]: undefined;
+  [REVENUE_SCREEN_ADMIN_SYSTEM]: undefined;
 };

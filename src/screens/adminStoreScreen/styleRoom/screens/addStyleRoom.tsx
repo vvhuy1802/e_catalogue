@@ -729,7 +729,6 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
                       height: size.height,
                       retangles: retangles,
                     };
-                    console.log('data', JSON.stringify(data));
                     dispatch(setDemoImage(data));
                     setActualImage(data);
                     setModalVisible(false);
@@ -1139,6 +1138,17 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
             </View>
           </ScrollView>
           <TouchableOpacity
+            onPress={() => {
+              const params = {
+                mainImage: actualImage?.image,
+                width: size.width,
+                height: size.height,
+                retangles: retangles,
+                images: listImageMore,
+                category: category,
+              };
+              console.log(JSON.stringify(params, null, 2));
+            }}
             activeOpacity={0.8}
             style={{
               marginTop: HeightSize(16),

@@ -1,63 +1,49 @@
 import {FlatList, Image, Pressable, StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {HeightSize, WidthSize, width} from '~/theme/size';
 import {TextFont, TextStyle} from '~/theme/textStyle';
 import {images} from '~/assets';
-import {IconSvg} from '~/components/global/iconSvg';
 import PrimaryHeart from '~/components/global/primaryHeart';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {ProductDetailStackParamList} from '~/types';
+import axios from 'axios';
+import {getUrl} from '~/utils';
 
-const Seller = () => {
-  const dataListItems = [
-    {
-      id: 1,
-      title: 'T-shirt Ahweh Yer',
-      type: 'Coats',
-      price: '$180',
-      image: images.home.ImagePopular,
-    },
-    {
-      id: 2,
-      title: 'T-shirt Ahweh Yer',
-      type: 'Coats',
-      price: '$180',
-      image: images.home.ImagePopular,
-    },
-    {
-      id: 3,
-      title: 'T-shirt Ahweh Yer',
-      type: 'Coats',
-      price: '$180',
-      image: images.home.ImagePopular,
-    },
-    {
-      id: 4,
-      title: 'T-shirt Ahweh Yer',
-      type: 'Coats',
-      price: '$180',
-      image: images.home.ImagePopular,
-    },
-    {
-      id: 5,
-      title: 'T-shirt Ahweh Yer',
-      type: 'Coats',
-      price: '$180',
-      image: images.home.ImagePopular,
-    },
-    {
-      id: 6,
-      title: 'T-shirt Ahweh Yer',
-      type: 'Coats',
-      price: '$180',
-      image: images.home.ImagePopular,
-    },
-    {
-      id: 7,
-      title: 'T-shirt Ahweh Yer',
-      type: 'Coats',
-      price: '$180',
-      image: images.home.ImagePopular,
-    },
-  ];
+type Props = {
+  store: StoreResponse;
+  currentProduct: string;
+};
+export type StoreResponse = {
+  id: number;
+  name: string;
+  description: string;
+  address: number;
+  logo_image: string;
+  cover_image: string;
+  approved: boolean;
+  products: Array<{
+    id: number;
+    name: string;
+    description: string;
+    image: string;
+    minPrice: number;
+    maxPrice: number;
+    category: {
+      id: number;
+      name: string;
+      description: string;
+      image: string;
+    };
+  }>;
+  followers: [];
+};
+const Seller = ({store, currentProduct}: Props) => {
+  const navigation =
+    useNavigation<
+      StackNavigationProp<ProductDetailStackParamList, 'ProductDetailScreen'>
+    >();
+
   return (
     <View
       style={{
@@ -77,13 +63,20 @@ const Seller = () => {
           }}>
           Sellers
         </Text>
-        <Text
-          style={{
-            ...TextFont.SBold,
-            color: '#3B3021',
+        <Pressable
+          onPress={() => {
+            navigation.navigate('StoreScreen', {
+              store: store as StoreResponse,
+            });
           }}>
-          View info
-        </Text>
+          <Text
+            style={{
+              ...TextFont.SBold,
+              color: '#3B3021',
+            }}>
+            View info
+          </Text>
+        </Pressable>
       </View>
       <View style={{marginTop: HeightSize(23), alignItems: 'center'}}>
         <Image
@@ -92,7 +85,7 @@ const Seller = () => {
             height: WidthSize(80),
             borderRadius: 100,
           }}
-          source={images.home.CategoryMen}
+          source={getUrl(store?.logo_image || '')}
         />
         <Text
           style={{
@@ -101,7 +94,7 @@ const Seller = () => {
             color: '#3B3021',
             marginTop: HeightSize(16),
           }}>
-          Ahweh Yerth
+          {store?.name}
         </Text>
         <Text
           style={{
@@ -109,7 +102,7 @@ const Seller = () => {
             color: '#C3C3C3',
             marginTop: HeightSize(8),
           }}>
-          Las Vegas Neveda
+          {store?.description}
         </Text>
         <View
           style={{
@@ -136,7 +129,7 @@ const Seller = () => {
               ...TextFont.SRegular,
               color: '#836E44',
             }}>
-            200{' '}
+            {store?.products?.length}{' '}
             <Text
               style={{
                 ...TextStyle.SM,
@@ -150,7 +143,7 @@ const Seller = () => {
               ...TextFont.SRegular,
               color: '#836E44',
             }}>
-            1.5M{' '}
+            {store?.followers?.length}{' '}
             <Text
               style={{
                 ...TextStyle.SM,
@@ -175,7 +168,9 @@ const Seller = () => {
         </Text>
 
         <FlatList
-          data={dataListItems}
+          data={store?.products
+            ?.slice(0, 4)
+            ?.filter(item => item.id !== parseInt(currentProduct))}
           nestedScrollEnabled={true}
           horizontal={true}
           contentContainerStyle={{
@@ -188,10 +183,9 @@ const Seller = () => {
             return (
               <Pressable
                 onPress={() => {
-                  //   dispatch(SetDirectionBottomBar('down'));
-                  //   navigation.navigate('ProductDetailScreen', {
-                  //     productId: item.id.toString(),
-                  //   });
+                  navigation.push('ProductDetailScreen', {
+                    productId: item.id.toString(),
+                  });
                 }}
                 key={index}
                 style={{
@@ -202,7 +196,7 @@ const Seller = () => {
                   paddingTop: HeightSize(10),
                 }}>
                 <Image
-                  source={item.image}
+                  source={getUrl(item.image)}
                   style={{
                     width: width / 2 - WidthSize(60),
                     height: width / 2 - WidthSize(60),
@@ -218,7 +212,7 @@ const Seller = () => {
                     ...TextStyle.Base,
                     ...TextFont.SMedium,
                   }}>
-                  {item.title}
+                  {item.name}
                 </Text>
                 <Text
                   style={{
@@ -226,7 +220,7 @@ const Seller = () => {
                     ...TextStyle.SM,
                     ...TextFont.SMedium,
                   }}>
-                  {item.type}
+                  {item.category.name}
                 </Text>
                 <Text
                   style={{
@@ -236,7 +230,7 @@ const Seller = () => {
                     marginTop: HeightSize(16),
                     marginBottom: HeightSize(15),
                   }}>
-                  {item.price}
+                  {item.minPrice}
                 </Text>
 
                 <PrimaryHeart

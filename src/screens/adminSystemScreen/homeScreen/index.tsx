@@ -15,15 +15,15 @@ const HomeScreen = () => {
   const shopInfo = [
     {
       id: 1,
-      title: 'Visitors',
+      title: 'Stores',
     },
     {
       id: 2,
-      title: 'Followers',
+      title: 'Income',
     },
     {
       id: 3,
-      title: 'Income',
+      title: '',
     },
     {
       id: 4,
@@ -59,7 +59,7 @@ const HomeScreen = () => {
             ...TextStyle.XXXL,
             ...TextFont.GRegular,
           }}>
-          Shop Information
+          E-Catalogue
         </Text>
         <View
           style={{

@@ -15,4 +15,12 @@ export const userInfoService = {
   setUserInfo: (params: UserInfo | undefined) => {
     return request<UserInfo>(apiUrl.setUserInfo(), Methods.post, params);
   },
+  followStore: (params: {storeId: number; follow: boolean}) => {
+    return request<
+      Array<{
+        storeId: number;
+        userId: number;
+      }>
+    >(apiUrl.followStore(), Methods.post, params);
+  },
 };

@@ -25,6 +25,15 @@ export type ProductsByCategory = {
   products: Product[];
 };
 
+export type StoreProduct = {
+  id: number;
+  name: string;
+  description: string;
+  address: number;
+  logo_image: string;
+  cover_image: string;
+  approved: boolean;
+};
 export type Variant = {
   id: number;
   price: number;
@@ -45,5 +54,10 @@ export type ProductById = {
     image: string;
   };
   variants: Array<Variant>;
-  images: Array<string>;
+  images: Array<{
+    id: number;
+    image: string;
+  }>;
+  store: StoreProduct;
+  ratings: Array<{}>;
 };

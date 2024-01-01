@@ -11,6 +11,7 @@ import {
   selectIsShowSplash,
 } from '~/redux/reducers/authSlice';
 import AdminStore from './adminStoreStack';
+import AdminSystem from './adminSystemStack';
 
 const RootNavigation = () => {
   const isAuthorized = useSelector(selectIsAuthorized);
@@ -29,6 +30,8 @@ const RootNavigation = () => {
             <AppStack />
           ) : isAuthorized === 'STORE' ? (
             <AdminStore />
+          ) : isAuthorized === 'ADMIN' ? (
+            <AdminSystem />
           ) : (
             <AuthStack />
           )}

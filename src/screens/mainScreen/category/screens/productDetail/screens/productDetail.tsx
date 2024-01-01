@@ -9,7 +9,13 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import {images} from '~/assets';
 import ContainerImage from '~/components/global/containerImage';
 import HeaderProduct from '~/components/global/headerProduct';
@@ -28,8 +34,7 @@ import {IconSvg} from '~/components/global/iconSvg';
 import BlurBackground from '~/components/global/blurBackground';
 import {TextFont, TextStyle} from '~/theme/textStyle';
 import Review from '../../../components/productDetail/Review';
-import Seller from '../../../components/productDetail/Seller';
-import MayULike from '../../../components/productDetail/MayULike';
+import Seller, {StoreResponse} from '../../../components/productDetail/Seller';
 import PrimaryHeart from '~/components/global/primaryHeart';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {ProductById, Variant} from '~/types/product';
@@ -39,6 +44,8 @@ import {NormalizeColor} from '~/types/color';
 import FastImage from 'react-native-fast-image';
 import {addProductToCart, getCartUser} from '~/redux/actions/orderAction';
 import {NormalizeSize} from '~/types/size';
+import axios from 'axios';
+import {ProductStackContext} from '~/utils/context';
 
 type Props = {
   route: RouteProp<ProductDetailStackParamList, 'ProductDetailScreen'>;
@@ -68,12 +75,21 @@ const ProductDetail = ({route}: Props) => {
       setLoading(true);
       await productService.getProductById(Number(productId)).then(res => {
         setLoading(false);
-        console.log(res.data);
         setDataProduct(res.data);
       });
     };
     fetchData();
   }, []);
+  const {store, setStore} = useContext(ProductStackContext);
+  useEffect(() => {
+    axios
+      .get(
+        `https://e-catalogue.abcdavid.top/product/store?id=${dataProduct?.store.id}}`,
+      )
+      .then(res => {
+        setStore(res.data);
+      });
+  }, [dataProduct]);
 
   useEffect(() => {
     if (dataProduct) {
@@ -247,6 +263,10 @@ const ProductDetail = ({route}: Props) => {
   const handleHideModal = () => {
     setIsShowModal(false);
     setQuantity(1);
+  };
+
+  const calculatorRating = (ratings: Array<number>) => {
+    return 0;
   };
 
   return (
@@ -501,51 +521,10 @@ const ProductDetail = ({route}: Props) => {
                   ...TextFont.SBold,
                   marginLeft: WidthSize(4),
                 }}>
-                4.5
+                {calculatorRating(dataProduct?.ratings as Array<number>)}
               </Text>
             </View>
           </View>
-
-          {/* <View style={{marginTop: HeightSize(20)}}>
-            <FlatList
-              data={dataProduct?.variants}
-              contentContainerStyle={{
-                gap: WidthSize(12),
-              }}
-              renderItem={({item, index}) => {
-                return (
-                  <Pressable
-                    onPress={() => {
-                      item.id === currentVariant?.id
-                        ? null
-                        : (setCurrentVariant(item), scrollToIndex(index));
-                    }}
-                    style={{
-                      width: WidthSize(65),
-                      height: HeightSize(57),
-                      borderRadius: 28,
-                      backgroundColor:
-                        currentVariant?.id === item.id ? '#836E44' : '#EFEFE8',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}>
-                    <Text
-                      style={{
-                        color:
-                          currentVariant?.id === item.id ? 'white' : '#3B3021',
-                        ...TextStyle.Base,
-                        ...TextFont.SRegular,
-                      }}>
-                      {item.size}
-                    </Text>
-                  </Pressable>
-                );
-              }}
-              keyExtractor={(item, index) => index.toString()}
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-            />
-          </View> */}
 
           <View style={{marginTop: HeightSize(20)}}>
             <Text>
@@ -563,8 +542,11 @@ const ProductDetail = ({route}: Props) => {
             </Text>
           </View>
           <Review />
-          <Seller />
-          <MayULike />
+          <Seller
+            store={store as StoreResponse}
+            currentProduct={productId as string}
+          />
+          {/* <MayULike /> */}
         </View>
       </ScrollView>
       <View

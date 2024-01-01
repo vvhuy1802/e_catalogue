@@ -70,7 +70,13 @@ const DetailOrderScreen = ({route}: Props) => {
     const day = time.getDate();
     const month = time.getMonth() + 1;
     const year = time.getFullYear();
-    return `${hour}:${minute}:${second}, ${day}/${month}/${year}`;
+    const formatHour = hour < 10 ? `0${hour}` : hour;
+    const formatMinute = minute < 10 ? `0${minute}` : minute;
+    const formatSecond = second < 10 ? `0${second}` : second;
+    const formatDay = day < 10 ? `0${day}` : day;
+    const formatMonth = month < 10 ? `0${month}` : month;
+    const formatYear = year < 10 ? `0${year}` : year;
+    return `${formatHour}:${formatMinute}:${formatSecond}, ${formatDay}/${formatMonth}/${formatYear}`;
   };
 
   const orderStatusAdapter = (status: string) => {

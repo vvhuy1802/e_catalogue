@@ -21,6 +21,7 @@ export const apiUrl = {
     `${baseUrl}${Services.product}category/?id=${categoryId}`,
   getProductById: (productId: number) =>
     `${baseUrl}${Services.product}?id=${productId}`,
+  followStore: () => `${baseUrl}${Services.userInfo}store/follow`,
 
   addProductToCart: () => `${baseUrl}${Services.order}cart`,
   getCartUser: () => `${baseUrl}${Services.product}cart`,
