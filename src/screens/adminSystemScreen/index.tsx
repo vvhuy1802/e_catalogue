@@ -22,7 +22,7 @@ import {AppDispatch} from '~/app/store';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppProvider} from '~/app/appProvider';
 import {
-  selectUserInfo,
+  selectAccountInfo,
   SetIsAuthorized,
   SetUserInforLogin,
 } from '~/redux/reducers/authSlice';
@@ -34,7 +34,7 @@ import Category from './category';
 const Drawer = createDrawerNavigator<AdminSystemStackParamList>();
 const AdminSystemStack = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const currentAccount = useSelector(selectUserInfo);
+  const currentAccount = useSelector(selectAccountInfo);
   const handleLogout = () => {
     dispatch(
       SetUserInforLogin({

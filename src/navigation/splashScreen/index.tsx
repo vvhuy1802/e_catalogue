@@ -16,6 +16,7 @@ import {TextFont, TextStyle} from '~/theme/textStyle';
 import {AppProvider} from '~/app/appProvider';
 import {checkAccessTokens, checkRole} from '~/utils';
 import {authService} from '~/services/service/auth.service';
+import {getUserById} from '~/redux/actions/authAction';
 
 const SplashScreen = () => {
   const AnimatedLottieView = Animated.createAnimatedComponent(LottieView);
@@ -61,17 +62,13 @@ const SplashScreen = () => {
     const getAuth = await checkAccessTokens();
     if (getAuth.isRefreshTokenValid) {
       authService.me().then(res => {
-        AppProvider.setAccountInfo({
-          id: res.data.id,
-          username: res.data.username,
-          role: res.data.role,
-          email: res.data.email,
-        });
+        dispatch(getUserById({id: res.data.id.toString()}));
         dispatch(
           SetUserInforLogin({
             id: res.data.id,
             username: res.data.username,
             role: res.data.role,
+            email: res.data.email,
           }),
         );
         dispatch(SetIsAuthorized(checkRole(res.data.role)));

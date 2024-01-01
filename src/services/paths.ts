@@ -15,6 +15,14 @@ export const apiUrl = {
   register: () => `${baseUrl}${Services.user}createuser`,
   refreshToken: () => `${baseUrl}${Services.auth}refresh`,
   me: () => `${baseUrl}${Services.auth}me`,
+  getUserById: () => `${baseUrl}${Services.user}`,
+  setNewUsername: () => `${baseUrl}${Services.user}username`,
+  setNewEmail: () => `${baseUrl}${Services.user}email`,
+  setNewPassword: () => `${baseUrl}${Services.user}password`,
+
+  username_availability: () =>
+    `${baseUrl}${Services.user}username_availability`,
+  email_availability: () => `${baseUrl}${Services.user}email_availability`,
 
   getAllCategories: () => `${baseUrl}${Services.product}category/all`,
   getProductsByCategory: (categoryId: number) =>

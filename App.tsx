@@ -12,6 +12,9 @@ import {
   NormalizedWards,
 } from '~/types/auth';
 import {AutocompleteDropdownContextProvider} from 'react-native-autocomplete-dropdown';
+import {useSelector} from 'react-redux';
+import {selectPopupState} from '~/redux/reducers/popupMessageSlice';
+import PopupMessage from '~/components/global/popupMessage';
 LogBox.ignoreAllLogs(true);
 function App(): JSX.Element {
   useEffect(() => {
@@ -59,6 +62,7 @@ function App(): JSX.Element {
     getLocation();
   }, []);
 
+  const popupMessageState = useSelector(selectPopupState);
   return (
     <SafeAreaProvider>
       <GestureHandlerRootView style={{flex: 1}}>
@@ -70,6 +74,9 @@ function App(): JSX.Element {
         <AutocompleteDropdownContextProvider>
           <RootNavigation />
         </AutocompleteDropdownContextProvider>
+        {popupMessageState.loadingState === 'pending' && (
+          <PopupMessage {...popupMessageState.currentState} />
+        )}
       </GestureHandlerRootView>
     </SafeAreaProvider>
   );

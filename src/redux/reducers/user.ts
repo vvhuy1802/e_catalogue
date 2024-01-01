@@ -10,7 +10,7 @@ import {
   uploadProfileImage,
 } from '../actions/userInfoAction';
 
-interface UserInfoState {
+interface UserState {
   userInfo: UserInfo;
   loadingUserInfo: LoadingState;
   loadingProfileImage: LoadingState;
@@ -20,10 +20,10 @@ const initialState = {
   userInfo: {},
   loadingUserInfo: 'idle',
   loadingProfileImage: 'idle',
-} as UserInfoState;
+} as UserState;
 
-const userInfoSlice = createSlice({
-  name: 'userInfo',
+const userSlice = createSlice({
+  name: 'user',
   initialState: initialState,
   reducers: {},
   extraReducers: builder => {
@@ -49,11 +49,8 @@ const userInfoSlice = createSlice({
     builder.addCase(getUserInfo.fulfilled, (state, action) => {
       state.loadingUserInfo = 'fulfilled';
       console.log('Data get user info: ', JSON.stringify(action.payload.data));
-      if (action.payload.data.status === 200) {
-        const resData: UserInfo = action.payload.data
-          .data as unknown as UserInfo;
-        state.userInfo = resData;
-      }
+      const resData: UserInfo = action.payload.data.data as unknown as UserInfo;
+      state.userInfo = resData;
     });
     builder.addCase(getUserInfo.rejected, (state, action) => {
       state.loadingUserInfo = 'rejected';
@@ -73,7 +70,7 @@ const userInfoSlice = createSlice({
   },
 });
 
-export default userInfoSlice.reducer;
+export default userSlice.reducer;
 export const selectLoadingUserInfoState = (state: RootState) =>
   state.userInfo.loadingUserInfo;
 export const selectLoadingProfileImageState = (state: RootState) =>

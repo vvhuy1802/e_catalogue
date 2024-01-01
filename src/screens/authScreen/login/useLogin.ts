@@ -11,13 +11,16 @@ import {
 import {AuthenticationStackParamList} from '~/types';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {LoginParams, RegisterParams} from '~/types/auth';
-import {register} from '~/redux/actions/authAction';
+import {getUserById, register} from '~/redux/actions/authAction';
 import axios from 'axios';
 import {apiUrl} from '~/services/paths';
 import {Methods} from '~/services/method';
 import {authService} from '~/services/service/auth.service';
 import {AppProvider} from '~/app/appProvider';
 import {checkRole} from '~/utils';
+import {setUserInfo} from '~/redux/actions/userInfoAction';
+import {AddPopupMessage} from '~/redux/reducers/popupMessageSlice';
+import {userService} from '~/services/service/user.service';
 
 export const useLogin = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -47,20 +50,29 @@ export const useLogin = () => {
           username: fullNameSignUp,
           password: passwordSignUp,
         } as LoginParams)
-        .then(res => {
+        .then(async res => {
           if (res.status === 201) {
-            AppProvider.setTokenUser(
+            await AppProvider.setTokenUser(
               res.data.access_token,
               res.data.refresh_token,
             );
-            authService.me().then(res => {
+            authService.me().then(async res => {
               console.log('res me', res);
-              AppProvider.setAccountInfo({
+              await AppProvider.setAccountInfo({
                 id: res.data.id,
                 username: res.data.username,
                 role: res.data.role,
                 email: res.data.email,
               });
+              dispatch(getUserById({id: res.data.id.toString()}));
+              dispatch(
+                SetUserInforLogin({
+                  id: res.data.id,
+                  username: res.data.username,
+                  role: res.data.role,
+                  email: res.data.email,
+                }),
+              );
             });
           }
         });
@@ -98,7 +110,7 @@ export const useLogin = () => {
         password: passwordSignIn,
       } as LoginParams)
       .then(res => {
-        console.log('res', res);
+        console.log('res Login', res);
         if (res.status === 201) {
           AppProvider.setTokenUser(
             res.data.access_token,
@@ -118,15 +130,21 @@ export const useLogin = () => {
                 id: res.data.id,
                 username: res.data.username,
                 role: res.data.role,
+                email: res.data.email,
               }),
             );
-            AppProvider.setAccountInfo({
-              id: res.data.id,
-              username: res.data.username,
-              role: res.data.role,
-              email: res.data.email,
-            });
+            dispatch(getUserById({id: res.data.id.toString()}));
           });
+        } else {
+          dispatch(
+            AddPopupMessage({
+              title: 'Error!',
+              type: 'warning',
+              message: res.data.message,
+              size: 'small',
+              time: 'long',
+            }),
+          );
         }
       });
   }, [userNameSignIn, passwordSignIn, toggle]);
@@ -136,8 +154,46 @@ export const useLogin = () => {
       email: emailSignUp,
       password: passwordSignUp,
     };
+    console.log('Params create user : ', JSON.stringify(dataRegister, null, 2));
     dispatch(register(dataRegister));
   }, [fullNameSignUp, emailSignUp, passwordSignUp]);
+
+  const [isUsernameAvailable, setIsUsernameAvailable] = useState<boolean>(true);
+  const [isEmailAvailable, setIsEmailAvailable] = useState<boolean>(true);
+  const onSetIsUsernameAvailable = (i: boolean) => {
+    setIsUsernameAvailable(i);
+  };
+  const onSetIsEmailAvailable = (i: boolean) => {
+    setIsEmailAvailable(i);
+  };
+  const onUserNameBlur = (text: string) => {
+    if (text == '') {
+      onSetIsUsernameAvailable(true);
+      return;
+    }
+    userService.checkUsername({username: text}).then(res => {
+      console.log('res check: ', JSON.stringify(res));
+      if (res.data) {
+        onSetIsUsernameAvailable(true);
+      } else {
+        onSetIsUsernameAvailable(false);
+      }
+    });
+  };
+  const onEmailBlur = (text: string) => {
+    if (text == '') {
+      onSetIsEmailAvailable(true);
+      return;
+    }
+    userService.checkEmail({email: text}).then(res => {
+      console.log('res check email: ', JSON.stringify(res));
+      if (res.data) {
+        onSetIsEmailAvailable(true);
+      } else {
+        onSetIsEmailAvailable(false);
+      }
+    });
+  };
 
   return {
     toggle,
@@ -161,5 +217,9 @@ export const useLogin = () => {
     setEmailSignUp,
     passwordSignUp,
     setPasswordSignUp,
+    isUsernameAvailable,
+    isEmailAvailable,
+    onUserNameBlur,
+    onEmailBlur,
   };
 };

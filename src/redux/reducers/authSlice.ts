@@ -1,8 +1,14 @@
 import {createSlice} from '@reduxjs/toolkit';
 import {RootState} from '../../app/store';
-import {register} from '../actions/authAction';
+import {
+  getUserById,
+  register,
+  setNewEmail,
+  setNewUsername,
+} from '../actions/authAction';
 import {LoadingState} from '~/types';
 import {RegisterResponse} from '~/types/auth';
+import {AppProvider} from '~/app/appProvider';
 
 enum Role {
   'ADMIN' = 'ADMIN',
@@ -13,10 +19,11 @@ interface AuthState {
   isAuthorized?: Role;
   isShowSplash: boolean;
   isShowOnBoard: boolean;
-  useInfo: {
+  accountInfo: {
     id: number;
     username: string;
     role: string;
+    email: string;
   };
 
   authLoadingState: LoadingState;
@@ -27,7 +34,7 @@ const initialState = {
   isAuthorized: undefined,
   isShowSplash: true,
   isShowOnBoard: true,
-  useInfo: {
+  accountInfo: {
     id: 0,
     username: '',
     role: '',
@@ -51,7 +58,7 @@ const authSlice = createSlice({
       state.isShowOnBoard = action.payload;
     },
     SetUserInforLogin: (state, action) => {
-      state.useInfo = action.payload;
+      state.accountInfo = action.payload;
     },
   },
   extraReducers: builder => {
@@ -64,6 +71,27 @@ const authSlice = createSlice({
     });
     builder.addCase(register.rejected, (state, action) => {
       state.authLoadingState = 'rejected';
+    });
+    builder.addCase(getUserById.fulfilled, (state, action) => {
+      console.log('Data get user: ', JSON.stringify(action.payload.data));
+      const resData: RegisterResponse = action.payload.data
+        .data as unknown as RegisterResponse;
+      state.accountInfo = resData;
+      AppProvider.setAccountInfo(resData);
+    });
+    builder.addCase(setNewUsername.fulfilled, (state, action) => {
+      console.log('set username', JSON.stringify(action.payload.data));
+      const resData: RegisterResponse = action.payload.data
+        .data as unknown as RegisterResponse;
+      state.accountInfo = resData;
+      AppProvider.setAccountInfo(resData);
+    });
+    builder.addCase(setNewEmail.fulfilled, (state, action) => {
+      console.log('set email', JSON.stringify(action.payload.data));
+      const resData: RegisterResponse = action.payload.data
+        .data as unknown as RegisterResponse;
+      state.accountInfo = resData;
+      AppProvider.setAccountInfo(resData);
     });
   },
 });
@@ -83,4 +111,4 @@ export const selectIsShowOnBoard = (state: RootState) =>
 export const selectAuthLoadingState = (state: RootState) =>
   state.auth.authLoadingState;
 export const selectDataRegister = (state: RootState) => state.auth.dataRegister;
-export const selectUserInfo = (state: RootState) => state.auth.useInfo;
+export const selectAccountInfo = (state: RootState) => state.auth.accountInfo;

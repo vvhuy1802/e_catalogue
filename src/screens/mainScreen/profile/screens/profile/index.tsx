@@ -42,6 +42,7 @@ const Profile: React.FC<ProfileProps> = ({navigation}) => {
         id: 0,
         username: '',
         role: '',
+        email: '',
       }),
     );
     dispatch(SetIsAuthorized(''));
@@ -65,7 +66,7 @@ const Profile: React.FC<ProfileProps> = ({navigation}) => {
         </View>
       );
     }
-    if (image !== undefined) {
+    if (image !== undefined && image !== null) {
       return (
         <FastImage
           source={{uri: `${URL_GET_FILE}${image}`}}

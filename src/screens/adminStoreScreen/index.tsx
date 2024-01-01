@@ -26,7 +26,7 @@ import {AppDispatch} from '~/app/store';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppProvider} from '~/app/appProvider';
 import {
-  selectUserInfo,
+  selectAccountInfo,
   SetIsAuthorized,
   SetUserInforLogin,
 } from '~/redux/reducers/authSlice';
@@ -37,13 +37,14 @@ import OrderAdminStoreStack from './orderScreen';
 const Drawer = createDrawerNavigator<AdminStoreStackParamList>();
 const AdminStoreStack = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const currentAccount = useSelector(selectUserInfo);
+  const currentAccount = useSelector(selectAccountInfo);
   const handleLogout = () => {
     dispatch(
       SetUserInforLogin({
         id: 0,
         username: '',
         role: '',
+        email: '',
       }),
     );
     dispatch(SetIsAuthorized(''));
