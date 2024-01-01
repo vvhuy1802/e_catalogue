@@ -15,7 +15,8 @@ export const apiUrl = {
   register: () => `${baseUrl}${Services.user}createuser`,
   refreshToken: () => `${baseUrl}${Services.auth}refresh`,
   me: () => `${baseUrl}${Services.auth}me`,
-  createStyle: () => 'https://e-catalogue.abcdavid.top/product/style',  getUserById: () => `${baseUrl}${Services.user}`,
+  createStyle: () => 'https://e-catalogue.abcdavid.top/product/style',
+  getUserById: () => `${baseUrl}${Services.user}`,
   setNewUsername: () => `${baseUrl}${Services.user}username`,
   setNewEmail: () => `${baseUrl}${Services.user}email`,
   setNewPassword: () => `${baseUrl}${Services.user}password`,
@@ -57,4 +58,6 @@ export const apiUrl = {
   updateCollection: () => `${baseUrl}${Services.userInfo}collection`,
   removeCollection: () => `${baseUrl}${Services.userInfo}collection`,
   getAllCollection: () => `${baseUrl}${Services.userInfo}collections`,
+
+  createNewProduct: () => `${baseUrl}${Services.product}`,
 };

@@ -40,4 +40,18 @@ export const productService = {
       '',
     );
   },
+
+  createNewProduct: (params: {
+    name: string;
+    description: string;
+    category: number;
+    image: FormData;
+  }) => {
+    return request<StoreResponse>(
+      apiUrl.createNewProduct(),
+      Methods.post,
+      params,
+      true,
+    );
+  },
 };
