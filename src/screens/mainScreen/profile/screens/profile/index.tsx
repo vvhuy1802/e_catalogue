@@ -23,6 +23,7 @@ import LottieView from 'lottie-react-native';
 import {URL_GET_FILE} from '~/constants/global';
 import {SetIsAuthorized, SetUserInforLogin} from '~/redux/reducers/authSlice';
 import {AppProvider} from '~/app/appProvider';
+import {useSetting} from './hooks/useSetting';
 
 type ProfileProps = {
   navigation: StackNavigationProp<ProfileStackParamList, 'Profile'>;
@@ -33,6 +34,7 @@ const Profile: React.FC<ProfileProps> = ({navigation}) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const {onPressCamera, image, loadingSetProfileImage} = useImagePicker();
+  const {onPressSetting} = useSetting({navigation});
 
   const handleLogout = () => {
     dispatch(
@@ -111,7 +113,7 @@ const Profile: React.FC<ProfileProps> = ({navigation}) => {
             </View>
             <View style={styles.borderAvatar}>{renderAvatar()}</View>
             <View style={styles.containerIcon}>
-              <IconSvg icon={'IconSetting'} />
+              <IconSvg icon={'IconSetting'} onPress={onPressSetting} />
             </View>
           </View>
 

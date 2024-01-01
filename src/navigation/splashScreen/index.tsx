@@ -61,6 +61,12 @@ const SplashScreen = () => {
     const getAuth = await checkAccessTokens();
     if (getAuth.isRefreshTokenValid) {
       authService.me().then(res => {
+        AppProvider.setAccountInfo({
+          id: res.data.id,
+          username: res.data.username,
+          role: res.data.role,
+          email: res.data.email,
+        });
         dispatch(
           SetUserInforLogin({
             id: res.data.id,

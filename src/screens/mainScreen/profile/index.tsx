@@ -1,7 +1,7 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {
-  ACCOUNT_DETAIL,
+  EDIT_ACCOUNT,
   ADDRESS_BOOK,
   CATEGORYSCREEN,
   DETAILCATEGORYSCREEN,
@@ -9,13 +9,15 @@ import {
   MY_WALLET,
   PRODUCTSTACK,
   PROFILE,
+  EDIT_PROFILE,
 } from '~/constants/routeNames';
 import {CategoryStackParamList, ProfileStackParamList} from '~/types';
-import AccountDetail from './screens/accountDetail';
+import EditAccount from './screens/editAccount';
 import MyPurchases from './screens/myPurchases';
 import AddressBook from './screens/addressBook';
 import MyWallet from './screens/myWallet';
 import Profile from './screens/profile';
+import EditProfile from './screens/editProfile';
 
 const Stack = createNativeStackNavigator<ProfileStackParamList>();
 const ProfileStack = () => {
@@ -32,8 +34,17 @@ const ProfileStack = () => {
           }}
         />
         <Stack.Screen
-          name={ACCOUNT_DETAIL}
-          component={AccountDetail}
+          name={EDIT_ACCOUNT}
+          component={EditAccount}
+          options={{
+            headerShown: false,
+            gestureEnabled: false,
+            animation: 'fade',
+          }}
+        />
+        <Stack.Screen
+          name={EDIT_PROFILE}
+          component={EditProfile}
           options={{
             headerShown: false,
             gestureEnabled: false,

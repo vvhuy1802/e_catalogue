@@ -18,4 +18,5 @@ export const apiUrl = {
     `${baseUrl}${Services.product}category/?id=${categoryId}`,
   profileImage: () => `${baseUrl}${Services.userInfo}profile-image`,
   getUserInfo: () => `${baseUrl}${Services.userInfo}`,
+  setUserInfo: () => `${baseUrl}${Services.userInfo}`,
 };

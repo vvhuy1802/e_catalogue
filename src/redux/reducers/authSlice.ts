@@ -10,7 +10,7 @@ enum Role {
   'CUSTOMER' = 'CUSTOMER',
 }
 interface AuthState {
-  isAuthorized: Role;
+  isAuthorized?: Role;
   isShowSplash: boolean;
   isShowOnBoard: boolean;
   useInfo: {
@@ -24,7 +24,7 @@ interface AuthState {
 }
 
 const initialState = {
-  isAuthorized: 'CUSTOMER',
+  isAuthorized: undefined,
   isShowSplash: true,
   isShowOnBoard: true,
   useInfo: {

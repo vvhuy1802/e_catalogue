@@ -26,7 +26,7 @@ import {
   STYLEDETAIL,
   STYLEIDEASTACK,
   ALLIMAGE,
-  ACCOUNT_DETAIL,
+  EDIT_ACCOUNT,
   ADDRESS_BOOK,
   MY_PURCHASES,
   MY_WALLET,
@@ -36,6 +36,7 @@ import {
   PRODUCT_SCREEN_ADMIN_STORE,
   ADMIN_STORE_STACK,
   STYLE_ROOM_SCREEN_ADMIN_STORE,
+  EDIT_PROFILE,
 } from '~/constants/routeNames';
 import {ProductCategoryResponse} from './product';
 
@@ -124,7 +125,8 @@ export type OrderStackParamList = {
 
 export type ProfileStackParamList = {
   [PROFILE]: undefined;
-  [ACCOUNT_DETAIL]: undefined;
+  [EDIT_ACCOUNT]: undefined;
+  [EDIT_PROFILE]: undefined;
   [MY_PURCHASES]: undefined;
   [ADDRESS_BOOK]: undefined;
   [MY_WALLET]: undefined;
