@@ -39,6 +39,7 @@ export const apiUrl = {
   updateOrderStatus: (orderId: number) => `${baseUrl}/order?id=${orderId}`,
 
   getAllUserAddress: () => `${baseUrl}${Services.contact}user`,
+  setFullContact: () => `${baseUrl}${Services.contact}full`,
 
   profileImage: () => `${baseUrl}${Services.userInfo}profile-image`,
   getUserInfo: () => `${baseUrl}${Services.userInfo}`,

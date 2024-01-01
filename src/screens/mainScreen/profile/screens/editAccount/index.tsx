@@ -1,5 +1,5 @@
 import {View, Text, StyleSheet, TextInput, Pressable} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {ProfileStackParamList} from '~/types';
 import HeaderProduct from '~/components/global/headerProduct';
@@ -15,6 +15,9 @@ import DateTimePicker, {
 } from '@react-native-community/datetimepicker';
 import PrimaryButton from '~/components/global/primaryButton';
 import {useEditAccount} from './hooks/useEditAccount';
+import {useDispatch} from 'react-redux';
+import {AppDispatch} from '~/app/store';
+import {SetDirectionBottomBar} from '~/redux/reducers/globalSlice';
 
 type EditAccountProps = {
   navigation: StackNavigationProp<ProfileStackParamList, 'EditProfile'>;
@@ -34,6 +37,11 @@ const EditAccount: React.FC<EditAccountProps> = ({navigation}) => {
     onSave,
     onReset,
   } = useEditAccount();
+
+  const dispatch = useDispatch<AppDispatch>();
+  useEffect(() => {
+    dispatch(SetDirectionBottomBar('down'));
+  }, []);
 
   return (
     <ContainerImage
@@ -60,7 +68,7 @@ const EditAccount: React.FC<EditAccountProps> = ({navigation}) => {
             </Text>
           }
         />
-        <CustomScrollView
+        <View
           style={{
             marginTop: HeightSize(10),
           }}>
@@ -214,7 +222,7 @@ const EditAccount: React.FC<EditAccountProps> = ({navigation}) => {
               {!isChangingPassword.value ? 'Change Password' : 'Change Info'}
             </Text>
           </Pressable>
-        </CustomScrollView>
+        </View>
       </View>
     </ContainerImage>
   );

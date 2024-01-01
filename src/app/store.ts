@@ -6,6 +6,7 @@ import orderSlice from '~/redux/reducers/orderSlice';
 import productSlice from '~/redux/reducers/productSlice';
 import userInfo from '~/redux/reducers/userInfo';
 import popupMessageSlice from '~/redux/reducers/popupMessageSlice';
+import contactSlice from '~/redux/reducers/contactSlice';
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ export const store = configureStore({
     product: productSlice,
     userInfo: userInfo,
     popupMeassage: popupMessageSlice,
+    contact: contactSlice,
   },
 });
 

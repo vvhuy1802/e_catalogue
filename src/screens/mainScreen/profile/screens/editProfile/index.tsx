@@ -1,5 +1,5 @@
 import {View, Text, StyleSheet, TextInput, Pressable} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {ProfileStackParamList} from '~/types';
 import HeaderProduct from '~/components/global/headerProduct';
@@ -15,6 +15,9 @@ import DateTimePicker, {
 } from '@react-native-community/datetimepicker';
 import {useEditProfile} from './hooks/useEditProfile';
 import PrimaryButton from '~/components/global/primaryButton';
+import {useDispatch} from 'react-redux';
+import {AppDispatch} from '~/app/store';
+import {SetDirectionBottomBar} from '~/redux/reducers/globalSlice';
 
 type EditProfileProps = {
   navigation: StackNavigationProp<ProfileStackParamList, 'EditProfile'>;
@@ -32,6 +35,10 @@ const EditProfile: React.FC<EditProfileProps> = ({navigation}) => {
     onSave,
   } = useEditProfile();
 
+  const dispatch = useDispatch<AppDispatch>();
+  useEffect(() => {
+    dispatch(SetDirectionBottomBar('down'));
+  }, []);
   return (
     <ContainerImage
       // isOpacity={true}
@@ -57,7 +64,7 @@ const EditProfile: React.FC<EditProfileProps> = ({navigation}) => {
             </Text>
           }
         />
-        <CustomScrollView
+        <View
           style={{
             marginTop: HeightSize(10),
           }}>
@@ -170,7 +177,7 @@ const EditProfile: React.FC<EditProfileProps> = ({navigation}) => {
               }}
             />
           </View>
-        </CustomScrollView>
+        </View>
         <View
           style={{
             position: 'absolute',

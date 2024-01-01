@@ -70,6 +70,7 @@ import IconFollowBrown from '~/assets/icons/ic_follow_brown.svg';
 import IconFollowedBrown from '~/assets/icons/ic_followed_brown.svg';
 import IconAddImageBrown from '~/assets/icons/ic_add_image_brown.svg';
 import IconCalendarEdit from '~/assets/icons/ic_calendar_edit.svg';
+import IconCircleSlice from '~/assets/icons/ic_circle_slice.svg';
 
 interface IconSvgProps {
   icon:
@@ -140,7 +141,8 @@ interface IconSvgProps {
     | 'IconFollowBrown'
     | 'IconFollowedBrown'
     | 'IconAddImageBrown'
-    | 'IconCalendarEdit';
+    | 'IconCalendarEdit'
+    | 'IconCircleSlice';
 
   width?: number;
   height?: number;
@@ -219,6 +221,7 @@ const svgComponents: Record<string, React.ComponentType> = {
   IconFollowedBrown,
   IconAddImageBrown,
   IconCalendarEdit,
+  IconCircleSlice,
 };
 
 interface Svg {
