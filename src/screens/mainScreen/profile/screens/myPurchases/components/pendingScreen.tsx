@@ -10,7 +10,7 @@ import React, {useEffect} from 'react';
 import {HeightSize, width} from '~/theme/size';
 import {TextFont, TextStyle} from '~/theme/textStyle';
 import {useDispatch, useSelector} from 'react-redux';
-import {selectAllOrder} from '~/redux/reducers/orderSlice';
+import {selectAllOrder, selectAllOrderUser} from '~/redux/reducers/orderSlice';
 import {Normalized, OrderStackAdminStoreParamList} from '~/types';
 import {NormalizeCartVariant, OrderAdminStore} from '~/types/order';
 import {formatDate, getUrl} from '~/utils';
@@ -21,9 +21,9 @@ import {getAllOrder} from '~/redux/actions/orderAction';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 
-const CancelledScreen = () => {
-  const allOrder = useSelector(selectAllOrder);
-  const [dataCancelled, setDataCancelled] =
+const PendingScreen = () => {
+  const allOrder = useSelector(selectAllOrderUser);
+  const [dataPending, setDataPending] =
     React.useState<Normalized<string, Array<OrderAdminStore>>>();
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
@@ -31,9 +31,9 @@ const CancelledScreen = () => {
       ids: [],
       entities: {},
     };
-    allOrder.length >= 0 &&
-      allOrder.forEach(item => {
-        if (item.deliver_status === 'canceled') {
+    allOrder?.length >= 0 &&
+      allOrder?.forEach(item => {
+        if (item.deliver_status === 'pending') {
           const date = new Date(item.order_date);
           const dateString = `${date.getDate()}/${
             date.getMonth() + 1
@@ -45,7 +45,8 @@ const CancelledScreen = () => {
           data.entities[dateString].push(item);
         }
       });
-    setDataCancelled(data);
+    console.log(JSON.stringify(data, null, 2));
+    setDataPending(data);
   }, [allOrder]);
 
   const totalOrder = (items: NormalizeCartVariant) => {
@@ -68,8 +69,7 @@ const CancelledScreen = () => {
         'OrderScreenAdminStore'
       >
     >();
-
-  return dataCancelled ? (
+  return dataPending ? (
     <View
       style={{
         flex: 1,
@@ -82,10 +82,10 @@ const CancelledScreen = () => {
         contentContainerStyle={{
           gap: HeightSize(32),
         }}
-        sections={dataCancelled.ids
+        sections={dataPending.ids
           .map(item => ({
             title: item,
-            data: dataCancelled.entities[item],
+            data: dataPending.entities[item],
           }))
           .reverse()}
         keyExtractor={(item, index) => item.id.toString()}
@@ -147,7 +147,7 @@ const CancelledScreen = () => {
                           color: '#3B3021',
                           width: width - HeightSize(154),
                         }}>
-                        {item.items.entities[variant].product.name}
+                        {item?.items?.entities[variant]?.product?.name}
                       </Text>
                       <View
                         style={{
@@ -175,7 +175,7 @@ const CancelledScreen = () => {
                               shadowOpacity: 0.1,
                               gap: HeightSize(8),
                             }}>
-                            {item.items.entities[variant].color && (
+                            {item?.items?.entities[variant]?.color && (
                               <View
                                 style={{
                                   flexDirection: 'row',
@@ -201,19 +201,19 @@ const CancelledScreen = () => {
                                     ...TextStyle.SM,
                                     color: '#3B3021',
                                   }}>
-                                  {item.items.entities[variant].color}
+                                  {item?.items?.entities[variant]?.color}
                                 </Text>
                               </View>
                             )}
 
-                            {item.items.entities[variant].size && (
+                            {item?.items?.entities[variant]?.size && (
                               <Text
                                 style={{
                                   ...TextFont.SRegular,
                                   ...TextStyle.SM,
                                   color: '#3B3021',
                                 }}>
-                                - {item.items.entities[variant].size}
+                                - {item?.items?.entities[variant]?.size}
                               </Text>
                             )}
                           </View>
@@ -224,7 +224,7 @@ const CancelledScreen = () => {
                             ...TextStyle.Base,
                             color: '#3B3021',
                           }}>
-                          x{item.items.entities[variant].quantity}
+                          x{item?.items?.entities[variant]?.quantity}
                         </Text>
                       </View>
                       <View
@@ -237,7 +237,7 @@ const CancelledScreen = () => {
                             ...TextStyle.Base,
                             color: 'red',
                           }}>
-                          ${item.items.entities[variant].price}
+                          ${item?.items?.entities[variant]?.price}
                         </Text>
                       </View>
                     </View>
@@ -291,10 +291,20 @@ const CancelledScreen = () => {
                 justifyContent: 'space-between',
                 gap: HeightSize(48),
               }}>
-              <View
+              <TouchableOpacity
+                onPress={() => {
+                  orderService
+                    .updateStatusOrder(item.id, {status: 'canceled'})
+                    .then(res => {
+                      console.log(res);
+                      res.status === 200 && dispatch(getAllOrder());
+                    });
+                }}
                 style={{
                   flex: 1,
-                  backgroundColor: 'red',
+                  backgroundColor: 'transparent',
+                  borderWidth: 1,
+                  borderColor: '#FF4D4F',
                   paddingVertical: HeightSize(8),
                   alignItems: 'center',
                   borderRadius: 10,
@@ -303,11 +313,11 @@ const CancelledScreen = () => {
                   style={{
                     ...TextFont.SRegular,
                     ...TextStyle.SM,
-                    color: 'white',
+                    color: '#FF4D4F',
                   }}>
-                  Cancelled
+                  Cancel
                 </Text>
-              </View>
+              </TouchableOpacity>
             </View>
           </Pressable>
         )}
@@ -329,4 +339,4 @@ const CancelledScreen = () => {
   ) : null;
 };
 
-export default CancelledScreen;
+export default PendingScreen;

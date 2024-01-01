@@ -10,6 +10,7 @@ import {
   PRODUCTSTACK,
   PROFILE,
   EDIT_PROFILE,
+  BECOME_SELLER,
 } from '~/constants/routeNames';
 import {CategoryStackParamList, ProfileStackParamList} from '~/types';
 import EditAccount from './screens/editAccount';
@@ -18,6 +19,8 @@ import AddressBook from './screens/addressBook';
 import MyWallet from './screens/myWallet';
 import Profile from './screens/profile';
 import EditProfile from './screens/editProfile';
+import MyPurchasStack from './screens/myPurchases';
+import Become from './screens/become';
 
 const Stack = createNativeStackNavigator<ProfileStackParamList>();
 const ProfileStack = () => {
@@ -53,7 +56,7 @@ const ProfileStack = () => {
         />
         <Stack.Screen
           name={MY_PURCHASES}
-          component={MyPurchases}
+          component={MyPurchasStack}
           options={{
             headerShown: false,
             gestureEnabled: false,
@@ -72,6 +75,15 @@ const ProfileStack = () => {
         <Stack.Screen
           name={MY_WALLET}
           component={MyWallet}
+          options={{
+            headerShown: false,
+            gestureEnabled: false,
+            // animation: 'fade',
+          }}
+        />
+        <Stack.Screen
+          name={BECOME_SELLER}
+          component={Become}
           options={{
             headerShown: false,
             gestureEnabled: false,

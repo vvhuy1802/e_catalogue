@@ -1,12 +1,41 @@
-import {View, Text} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {
+  MyPurchaseStackParamList,
+  OrderStackAdminStoreParamList,
+  StyleRoomStackParamList,
+} from '~/types';
+import {
+  ADD_STYLE_ROOM_SCREEN_ADMIN_STORE,
+  DETAIL_STYLE_ROOM_SCREEN_ADMIN_STORE,
+} from '~/constants/routeNames';
+import OrderScreen from './screens/orderScreen';
+import DetailOrderScreen from './screens/detailOrderScreen';
 
-const MyPurchases = () => {
+const Stack = createNativeStackNavigator<MyPurchaseStackParamList>();
+const MyPurchasStack = () => {
   return (
-    <View>
-      <Text>MyPurchases</Text>
-    </View>
+    <Stack.Navigator>
+      <Stack.Screen
+        name={'OrderScreenAdminStore'}
+        component={OrderScreen}
+        options={{
+          headerShown: false,
+          gestureEnabled: false,
+          animation: 'fade',
+        }}
+      />
+      <Stack.Screen
+        name={'DetailOrderScreenAdminStore'}
+        component={DetailOrderScreen}
+        options={{
+          headerShown: false,
+          gestureEnabled: false,
+          animation: 'slide_from_right',
+        }}
+      />
+    </Stack.Navigator>
   );
 };
 
-export default MyPurchases;
+export default MyPurchasStack;

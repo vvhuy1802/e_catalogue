@@ -38,6 +38,7 @@ export type StoreResponse = {
   approved: boolean;
   products: Array<StoreProduct>;
   followers: [];
+  visitors: number;
 };
 const Seller = ({store, currentProduct}: Props) => {
   const navigation =

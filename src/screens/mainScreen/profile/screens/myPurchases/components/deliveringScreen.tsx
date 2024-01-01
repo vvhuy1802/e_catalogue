@@ -10,22 +10,32 @@ import React, {useEffect} from 'react';
 import {HeightSize, width} from '~/theme/size';
 import {TextFont, TextStyle} from '~/theme/textStyle';
 import {useDispatch, useSelector} from 'react-redux';
-import {selectAllOrder} from '~/redux/reducers/orderSlice';
+import {selectAllOrder, selectAllOrderUser} from '~/redux/reducers/orderSlice';
 import {Normalized, OrderStackAdminStoreParamList} from '~/types';
 import {NormalizeCartVariant, OrderAdminStore} from '~/types/order';
 import {formatDate, getUrl} from '~/utils';
 import {NormalizeColor} from '~/types/color';
+import {getAllOrder} from '~/redux/actions/orderAction';
 import {orderService} from '~/services/service/order.service';
 import {AppDispatch} from '~/app/store';
-import {getAllOrder} from '~/redux/actions/orderAction';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 
-const CancelledScreen = () => {
-  const allOrder = useSelector(selectAllOrder);
-  const [dataCancelled, setDataCancelled] =
+const DeliveringScreen = () => {
+  const allOrder = useSelector(selectAllOrderUser);
+
+  const [dataDelivered, setDataDelivered] =
     React.useState<Normalized<string, Array<OrderAdminStore>>>();
   const dispatch = useDispatch<AppDispatch>();
+
+  const navigation =
+    useNavigation<
+      StackNavigationProp<
+        OrderStackAdminStoreParamList,
+        'OrderScreenAdminStore'
+      >
+    >();
+
   useEffect(() => {
     const data: Normalized<string, Array<OrderAdminStore>> = {
       ids: [],
@@ -33,7 +43,7 @@ const CancelledScreen = () => {
     };
     allOrder.length >= 0 &&
       allOrder.forEach(item => {
-        if (item.deliver_status === 'canceled') {
+        if (item.deliver_status === 'delivering') {
           const date = new Date(item.order_date);
           const dateString = `${date.getDate()}/${
             date.getMonth() + 1
@@ -45,7 +55,7 @@ const CancelledScreen = () => {
           data.entities[dateString].push(item);
         }
       });
-    setDataCancelled(data);
+    setDataDelivered(data);
   }, [allOrder]);
 
   const totalOrder = (items: NormalizeCartVariant) => {
@@ -61,15 +71,8 @@ const CancelledScreen = () => {
       totalItem,
     };
   };
-  const navigation =
-    useNavigation<
-      StackNavigationProp<
-        OrderStackAdminStoreParamList,
-        'OrderScreenAdminStore'
-      >
-    >();
 
-  return dataCancelled ? (
+  return dataDelivered ? (
     <View
       style={{
         flex: 1,
@@ -82,10 +85,10 @@ const CancelledScreen = () => {
         contentContainerStyle={{
           gap: HeightSize(32),
         }}
-        sections={dataCancelled.ids
+        sections={dataDelivered.ids
           .map(item => ({
             title: item,
-            data: dataCancelled.entities[item],
+            data: dataDelivered.entities[item],
           }))
           .reverse()}
         keyExtractor={(item, index) => item.id.toString()}
@@ -284,7 +287,15 @@ const CancelledScreen = () => {
                 width: '100%',
               }}
             />
-            <View
+            <TouchableOpacity
+              onPress={() => {
+                orderService
+                  .updateStatusOrder(item.id, {status: 'delivered'})
+                  .then(res => {
+                    console.log(res);
+                    res.status === 200 && dispatch(getAllOrder());
+                  });
+              }}
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
@@ -294,7 +305,7 @@ const CancelledScreen = () => {
               <View
                 style={{
                   flex: 1,
-                  backgroundColor: 'red',
+                  backgroundColor: '#836E44',
                   paddingVertical: HeightSize(8),
                   alignItems: 'center',
                   borderRadius: 10,
@@ -305,10 +316,10 @@ const CancelledScreen = () => {
                     ...TextStyle.SM,
                     color: 'white',
                   }}>
-                  Cancelled
+                  Delivering
                 </Text>
               </View>
-            </View>
+            </TouchableOpacity>
           </Pressable>
         )}
         renderSectionHeader={({section: {title}}) => (
@@ -329,4 +340,4 @@ const CancelledScreen = () => {
   ) : null;
 };
 
-export default CancelledScreen;
+export default DeliveringScreen;

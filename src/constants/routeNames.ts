@@ -64,3 +64,4 @@ export const APPROVE_STORE_SCREEN_ADMIN_SYSTEM =
   'ApproveStoreScreenAdminSystem';
 export const CATEGORY_SCREEN_ADMIN_SYSTEM = 'CategoryScreenAdminSystem';
 export const REVENUE_SCREEN_ADMIN_SYSTEM = 'RevenueScreenAdminSystem';
+export const BECOME_SELLER = 'BecomeSeller';

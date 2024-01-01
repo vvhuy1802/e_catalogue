@@ -424,7 +424,14 @@ const ConfirmOrder = ({route}: Props) => {
                   ...TextStyle.Base,
                   color: '#3B3021',
                 }}>
-                $15
+                ${' '}
+                {dataOrder.ids.reduce(
+                  (a, b) =>
+                    a +
+                    dataOrder.entities[b].price *
+                      dataOrder.entities[b].quantity,
+                  0,
+                ) * 0.05}
               </Text>
             </View>
 
@@ -464,7 +471,7 @@ const ConfirmOrder = ({route}: Props) => {
                     dataOrder.entities[b].price *
                       dataOrder.entities[b].quantity,
                   0,
-                ) + 15}
+                ) * 1.05}
               </Text>
             </View>
           </View>

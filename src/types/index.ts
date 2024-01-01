@@ -50,6 +50,7 @@ import {
   REVENUE_SCREEN_ADMIN_STORE,
   EDIT_STYLE_ROOM_SCREEN_ADMIN_STORE,
   EDIT_PROFILE,
+  BECOME_SELLER,
 } from '~/constants/routeNames';
 import {ProductCategoryResponse, StoreProduct, Variant} from './product';
 import {ImagePickerResponse} from 'react-native-image-picker';
@@ -158,6 +159,7 @@ export type ProfileStackParamList = {
   [MY_PURCHASES]: undefined;
   [ADDRESS_BOOK]: undefined;
   [MY_WALLET]: undefined;
+  [BECOME_SELLER]: undefined;
 };
 
 export type AdminStoreStackParamList = {
@@ -209,6 +211,12 @@ export type StyleRoomStackParamList = {
 };
 
 export type OrderStackAdminStoreParamList = {
+  [ORDER_SCREEN_ADMIN_STORE]: undefined;
+  [DETAIL_ORDER_SCREEN_ADMIN_STORE]: {
+    order: OrderAdminStore;
+  };
+};
+export type MyPurchaseStackParamList = {
   [ORDER_SCREEN_ADMIN_STORE]: undefined;
   [DETAIL_ORDER_SCREEN_ADMIN_STORE]: {
     order: OrderAdminStore;

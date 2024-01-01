@@ -33,6 +33,8 @@ import {
 } from '~/redux/reducers/productSlice';
 import {getUrl} from '~/utils';
 import {getProductsByCategory} from '~/redux/actions/productAction';
+import {ProductsByCategory} from '~/types/product';
+import axios from 'axios';
 
 type Props = {
   route: RouteProp<CategoryStackParamList, 'DetailCategoryScreen'>;
@@ -44,6 +46,7 @@ const DetailCategory = ({route}: Props) => {
   const category = route.params.category;
 
   const products = useSelector(selectProductsByCategory);
+  // const [products, setProducts] = useState<ProductsByCategory>(product);
 
   const dispatch = useDispatch<AppDispatch>();
   const [currentTab, setCurrentTab] = useState(
@@ -174,6 +177,39 @@ const DetailCategory = ({route}: Props) => {
         break;
     }
   };
+
+  // useEffect(() => {
+  //   let url = 'https://e-catalogue.abcdavid.top/product/filter?';
+  //   filter.ids.map((item, index) => {
+  //     if (item === 'color') {
+  //       filter?.entities[item as any].ids.map((color: any, index: number) => {
+  //         url += `color=${filter?.entities[item as any].entities[
+  //           color
+  //         ]?.name.toLowerCase()}&`;
+  //       });
+  //     } else if (item === 'size') {
+  //       filter?.entities[item as any].ids.map((size: any, index: number) => {
+  //         url += `size=${filter?.entities[item as any].entities[
+  //           size
+  //         ].size.toLowerCase()}&`;
+  //       });
+  //     } else if (item === 'price') {
+  //       url += `minPrice=${filter?.entities[item as any][0]}&maxPrice=${
+  //         filter?.entities[item as any][1]
+  //       }`;
+  //     }
+  //   });
+  //   console.log('url', url);
+  //   axios.get(url).then(res => {
+  //     const newProducts = {...products};
+  //     Promise.all([
+  //       newProducts.products.filter((item, index) => {
+  //         item.id === res.data.id;
+  //       }),
+  //       setProducts(newProducts),
+  //     ]);
+  //   });
+  // }, [filter]);
 
   const onGoBack = () => {
     dispatch(SetDirectionBottomBar('up'));

@@ -10,7 +10,7 @@ import React, {useEffect} from 'react';
 import {HeightSize, width} from '~/theme/size';
 import {TextFont, TextStyle} from '~/theme/textStyle';
 import {useDispatch, useSelector} from 'react-redux';
-import {selectAllOrder} from '~/redux/reducers/orderSlice';
+import {selectAllOrder, selectAllOrderUser} from '~/redux/reducers/orderSlice';
 import {Normalized, OrderStackAdminStoreParamList} from '~/types';
 import {NormalizeCartVariant, OrderAdminStore} from '~/types/order';
 import {formatDate, getUrl} from '~/utils';
@@ -22,7 +22,7 @@ import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 
 const CancelledScreen = () => {
-  const allOrder = useSelector(selectAllOrder);
+  const allOrder = useSelector(selectAllOrderUser);
   const [dataCancelled, setDataCancelled] =
     React.useState<Normalized<string, Array<OrderAdminStore>>>();
   const dispatch = useDispatch<AppDispatch>();
@@ -107,7 +107,7 @@ const CancelledScreen = () => {
               },
               shadowOpacity: 0.2,
             }}>
-            {item.items.ids.map((variant, index) => {
+            {item?.items?.ids?.map((variant, index) => {
               return (
                 <View
                   key={variant}
@@ -127,7 +127,7 @@ const CancelledScreen = () => {
                       flexDirection: 'row',
                     }}>
                     <Image
-                      source={getUrl(item.items.entities[variant].image)}
+                      source={getUrl(item?.items?.entities[variant]?.image)}
                       style={{
                         width: HeightSize(90),
                         height: HeightSize(90),
@@ -147,7 +147,7 @@ const CancelledScreen = () => {
                           color: '#3B3021',
                           width: width - HeightSize(154),
                         }}>
-                        {item.items.entities[variant].product.name}
+                        {item?.items?.entities[variant]?.product?.name}
                       </Text>
                       <View
                         style={{
@@ -175,7 +175,7 @@ const CancelledScreen = () => {
                               shadowOpacity: 0.1,
                               gap: HeightSize(8),
                             }}>
-                            {item.items.entities[variant].color && (
+                            {item?.items?.entities[variant]?.color && (
                               <View
                                 style={{
                                   flexDirection: 'row',
@@ -188,7 +188,7 @@ const CancelledScreen = () => {
                                     borderRadius: 6,
                                     backgroundColor:
                                       NormalizeColor.entities[
-                                        item.items.entities[
+                                        item?.items.entities[
                                           variant
                                         ].color.toLocaleLowerCase()
                                       ],
@@ -201,19 +201,19 @@ const CancelledScreen = () => {
                                     ...TextStyle.SM,
                                     color: '#3B3021',
                                   }}>
-                                  {item.items.entities[variant].color}
+                                  {item?.items?.entities[variant]?.color}
                                 </Text>
                               </View>
                             )}
 
-                            {item.items.entities[variant].size && (
+                            {item?.items?.entities[variant]?.size && (
                               <Text
                                 style={{
                                   ...TextFont.SRegular,
                                   ...TextStyle.SM,
                                   color: '#3B3021',
                                 }}>
-                                - {item.items.entities[variant].size}
+                                - {item?.items?.entities[variant]?.size}
                               </Text>
                             )}
                           </View>
@@ -224,7 +224,7 @@ const CancelledScreen = () => {
                             ...TextStyle.Base,
                             color: '#3B3021',
                           }}>
-                          x{item.items.entities[variant].quantity}
+                          x{item?.items.entities[variant]?.quantity}
                         </Text>
                       </View>
                       <View
@@ -237,7 +237,7 @@ const CancelledScreen = () => {
                             ...TextStyle.Base,
                             color: 'red',
                           }}>
-                          ${item.items.entities[variant].price}
+                          ${item?.items?.entities[variant]?.price}
                         </Text>
                       </View>
                     </View>
@@ -265,8 +265,8 @@ const CancelledScreen = () => {
                   ...TextStyle.SM,
                   color: '#3B3021',
                 }}>
-                {totalOrder(item.items).totalItem}{' '}
-                {totalOrder(item.items).totalItem > 1 ? 'items' : 'item'}
+                {totalOrder(item?.items).totalItem}{' '}
+                {totalOrder(item?.items).totalItem > 1 ? 'items' : 'item'}
               </Text>
               <Text
                 style={{
@@ -274,7 +274,7 @@ const CancelledScreen = () => {
                   ...TextStyle.LG,
                   color: '#3B3021',
                 }}>
-                Total: ${totalOrder(item.items).total}
+                Total: ${totalOrder(item?.items).total}
               </Text>
             </View>
             <View

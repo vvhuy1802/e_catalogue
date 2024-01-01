@@ -23,6 +23,7 @@ import Config from '~/config';
 import {userInfoService} from '~/services/service/userInfo.service';
 import {StoreResponse} from '../../../components/productDetail/Seller';
 import {ProductStackContext} from '~/utils/context';
+import {productService} from '~/services/service/product.service';
 
 type Props = {
   route: RouteProp<ProductDetailStackParamList, 'StoreScreen'>;
@@ -37,7 +38,9 @@ const StoreScreen = ({route}: Props) => {
     navigation.goBack();
   };
   const {store, setStore} = useContext(ProductStackContext);
-
+  useEffect(() => {
+    productService.postVisitStore({storeId: store.id});
+  }, []);
   const [isFollow, setIsFollow] = React.useState(false);
   useEffect(() => {
     axios

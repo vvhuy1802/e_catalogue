@@ -1,31 +1,21 @@
-import {
-  Image,
-  Pressable,
-  SectionList,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Image, Pressable, SectionList, Text, View} from 'react-native';
 import React, {useEffect} from 'react';
 import {HeightSize, width} from '~/theme/size';
 import {TextFont, TextStyle} from '~/theme/textStyle';
-import {useDispatch, useSelector} from 'react-redux';
-import {selectAllOrder} from '~/redux/reducers/orderSlice';
+import {useSelector} from 'react-redux';
+import {selectAllOrder, selectAllOrderUser} from '~/redux/reducers/orderSlice';
 import {Normalized, OrderStackAdminStoreParamList} from '~/types';
 import {NormalizeCartVariant, OrderAdminStore} from '~/types/order';
 import {formatDate, getUrl} from '~/utils';
 import {NormalizeColor} from '~/types/color';
-import {orderService} from '~/services/service/order.service';
-import {AppDispatch} from '~/app/store';
-import {getAllOrder} from '~/redux/actions/orderAction';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 
-const CancelledScreen = () => {
-  const allOrder = useSelector(selectAllOrder);
-  const [dataCancelled, setDataCancelled] =
+const DeliveredScreen = () => {
+  const allOrder = useSelector(selectAllOrderUser);
+
+  const [dataDelivered, setDataDelivered] =
     React.useState<Normalized<string, Array<OrderAdminStore>>>();
-  const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
     const data: Normalized<string, Array<OrderAdminStore>> = {
       ids: [],
@@ -33,7 +23,7 @@ const CancelledScreen = () => {
     };
     allOrder.length >= 0 &&
       allOrder.forEach(item => {
-        if (item.deliver_status === 'canceled') {
+        if (item.deliver_status === 'delivered') {
           const date = new Date(item.order_date);
           const dateString = `${date.getDate()}/${
             date.getMonth() + 1
@@ -45,7 +35,7 @@ const CancelledScreen = () => {
           data.entities[dateString].push(item);
         }
       });
-    setDataCancelled(data);
+    setDataDelivered(data);
   }, [allOrder]);
 
   const totalOrder = (items: NormalizeCartVariant) => {
@@ -68,8 +58,7 @@ const CancelledScreen = () => {
         'OrderScreenAdminStore'
       >
     >();
-
-  return dataCancelled ? (
+  return dataDelivered ? (
     <View
       style={{
         flex: 1,
@@ -82,10 +71,10 @@ const CancelledScreen = () => {
         contentContainerStyle={{
           gap: HeightSize(32),
         }}
-        sections={dataCancelled.ids
+        sections={dataDelivered.ids
           .map(item => ({
             title: item,
-            data: dataCancelled.entities[item],
+            data: dataDelivered.entities[item],
           }))
           .reverse()}
         keyExtractor={(item, index) => item.id.toString()}
@@ -294,7 +283,7 @@ const CancelledScreen = () => {
               <View
                 style={{
                   flex: 1,
-                  backgroundColor: 'red',
+                  backgroundColor: '#5FA758',
                   paddingVertical: HeightSize(8),
                   alignItems: 'center',
                   borderRadius: 10,
@@ -305,7 +294,7 @@ const CancelledScreen = () => {
                     ...TextStyle.SM,
                     color: 'white',
                   }}>
-                  Cancelled
+                  Delivered
                 </Text>
               </View>
             </View>
@@ -329,4 +318,4 @@ const CancelledScreen = () => {
   ) : null;
 };
 
-export default CancelledScreen;
+export default DeliveredScreen;

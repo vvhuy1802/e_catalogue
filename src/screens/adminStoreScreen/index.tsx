@@ -191,13 +191,13 @@ const AdminStoreStack = () => {
           title: 'Style Room',
         }}
       />
-      <Drawer.Screen
+      {/* <Drawer.Screen
         name={REVENUE_SCREEN_ADMIN_STORE}
         component={Revenue}
         options={{
           title: 'Revenue',
         }}
-      />
+      /> */}
     </Drawer.Navigator>
   );
 };

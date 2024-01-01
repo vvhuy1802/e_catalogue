@@ -35,6 +35,14 @@ export const orderService = {
     );
   },
 
+  getOrderUser: () => {
+    return request<Array<OrderAdminStore>>(
+      apiUrl.getOrderUser(),
+      Methods.get,
+      '',
+    );
+  },
+
   updateStatusOrder: (
     orderId: number,
     params: {

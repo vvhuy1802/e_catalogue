@@ -10,7 +10,6 @@ import {selectAllOrder} from '~/redux/reducers/orderSlice';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {AdminStoreStackParamList} from '~/types';
-import {selectUserInfo} from '~/redux/reducers/authSlice';
 import {selectStoreInfo} from '~/redux/reducers/productSlice';
 
 const HomeScreen = () => {
@@ -43,13 +42,12 @@ const HomeScreen = () => {
   const allOrder = useSelector(selectAllOrder);
   const navigation =
     useNavigation<StackNavigationProp<AdminStoreStackParamList>>();
-  const currentAccount = useSelector(selectUserInfo);
   const storeInfo = useSelector(selectStoreInfo);
 
   const textAdapter = (text: string) => {
     switch (text) {
       case 'Visitors':
-        return 0;
+        return storeInfo?.visitors;
       case 'Followers':
         return storeInfo?.followers?.length;
       case 'Income':

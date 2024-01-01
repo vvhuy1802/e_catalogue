@@ -24,3 +24,12 @@ export const getAllOrder = createAsyncThunk(
     return {data: res};
   },
 );
+
+export const getOrderUser = createAsyncThunk(
+  'product/getOrderUser Action',
+  async () => {
+    const res = await orderService.getOrderUser();
+    console.log(res.data);
+    return {data: res};
+  },
+);

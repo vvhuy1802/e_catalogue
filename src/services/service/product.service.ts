@@ -40,4 +40,12 @@ export const productService = {
       '',
     );
   },
+
+  postVisitStore: (params: any) => {
+    return request<StoreResponse>(
+      apiUrl.postVisitStore(),
+      Methods.post,
+      params,
+    );
+  },
 };

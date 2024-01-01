@@ -5,12 +5,14 @@ import {
   addProductToCart,
   getAllOrder,
   getCartUser,
+  getOrderUser,
 } from '../actions/orderAction';
 import {CartResponse, CartUser, OrderAdminStore} from '~/types/order';
 
 interface OrderState {
   dataOrder: Normalized<number, any>;
   allOrder: Array<OrderAdminStore>;
+  allOrderUser: Array<OrderAdminStore>;
   loadingAddProductToCart: LoadingState;
   dataCart: CartResponse;
 }
@@ -19,6 +21,7 @@ const initialState = {
   dataOrder: {},
   loadingAddProductToCart: 'idle',
   allOrder: [{}],
+  allOrderUser: [{}],
   dataCart: {},
 } as OrderState;
 
@@ -51,6 +54,12 @@ const orderSlice = createSlice({
       state.allOrder = action.payload.data.data;
     });
     builder.addCase(getAllOrder.rejected, state => {});
+
+    builder.addCase(getOrderUser.pending, state => {});
+    builder.addCase(getOrderUser.fulfilled, (state, action) => {
+      state.allOrderUser = action.payload.data.data;
+    });
+    builder.addCase(getOrderUser.rejected, state => {});
   },
 });
 
@@ -62,3 +71,5 @@ export const selectLoadingAddProductToCart = (state: RootState) =>
   state.order.loadingAddProductToCart;
 export const selectDataCart = (state: RootState) => state.order.dataCart;
 export const selectAllOrder = (state: RootState) => state.order.allOrder;
+export const selectAllOrderUser = (state: RootState) =>
+  state.order.allOrderUser;

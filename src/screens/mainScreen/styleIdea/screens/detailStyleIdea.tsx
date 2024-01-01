@@ -284,28 +284,6 @@ const DetailStyleIdea = ({route}: Props) => {
                 );
               })}
             </View>
-            <View
-              style={{
-                marginTop: HeightSize(64),
-              }}>
-              <Text
-                style={{
-                  ...TextStyle.XL,
-                  ...TextFont.SBold,
-                  color: '#3B3021',
-                }}>
-                {styleIdea.store.name}
-                <Text
-                  style={{
-                    ...TextStyle.Base,
-                    ...TextFont.SRegular,
-                    color: '#3B3021',
-                  }}>
-                  {' '}
-                  ‘s another ideas
-                </Text>
-              </Text>
-            </View>
           </View>
         </ScrollView>
       ) : null}

@@ -25,6 +25,7 @@ import {SetIsAuthorized, SetUserInforLogin} from '~/redux/reducers/authSlice';
 import {AppProvider} from '~/app/appProvider';
 import {useSetting} from './hooks/useSetting';
 import {getAllUserContact} from '~/redux/actions/contact';
+import {getAllOrder, getOrderUser} from '~/redux/actions/orderAction';
 
 type ProfileProps = {
   navigation: StackNavigationProp<ProfileStackParamList, 'Profile'>;
@@ -127,10 +128,16 @@ const Profile: React.FC<ProfileProps> = ({navigation}) => {
 
           <Text style={styles.accountName}>John Doe</Text>
 
-          <View style={styles.containerOption}>
+          <Pressable
+            onPress={() => {
+              dispatch(getOrderUser());
+              dispatch(SetDirectionBottomBar('down'));
+              navigation.navigate('MyPurchases');
+            }}
+            style={styles.containerOption}>
             <IconSvg icon={'IconCube'} style={styles.iconOption} />
             <Text style={styles.textOption}>My purchases</Text>
-          </View>
+          </Pressable>
 
           <Pressable
             onPress={() => {

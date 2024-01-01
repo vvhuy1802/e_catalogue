@@ -38,12 +38,13 @@ const DeliveredScreen = () => {
   }, [allOrder]);
 
   const totalOrder = (items: NormalizeCartVariant) => {
-    let total = 15;
+    let total = 0;
     let totalItem = 0;
     items.ids.map(item => {
       totalItem += items.entities[item].quantity;
       total += items.entities[item].price * items.entities[item].quantity;
     });
+    total = total * 1.05;
     return {
       total,
       totalItem,
