@@ -4,12 +4,14 @@ import {ProductCategoryResponse, ProductsByCategory} from '~/types/product';
 import {
   getAllCategories,
   getProductsByCategory,
+  getStoreById,
 } from '../actions/productAction';
+import {StoreResponse} from '~/screens/mainScreen/category/components/productDetail/Seller';
 
 interface ProductState {
   loadingGetAllCategories: LoadingState;
   allCategories: ProductCategoryResponse[];
-
+  storeInfo: StoreResponse;
   loadingGetProductsByCategory: LoadingState;
   productsByCategory: ProductsByCategory;
 }
@@ -17,7 +19,7 @@ interface ProductState {
 const initialState = {
   loadingGetAllCategories: 'idle',
   allCategories: [],
-
+  storeInfo: {} as StoreResponse,
   loadingGetProductsByCategory: 'idle',
   productsByCategory: {
     id: 0,
@@ -54,6 +56,11 @@ const productSlice = createSlice({
     builder.addCase(getProductsByCategory.rejected, state => {
       state.loadingGetProductsByCategory = 'rejected';
     });
+    builder.addCase(getStoreById.pending, state => {});
+    builder.addCase(getStoreById.fulfilled, (state, action) => {
+      state.storeInfo = action.payload.data.data;
+    });
+    builder.addCase(getStoreById.rejected, state => {});
   },
 });
 
@@ -72,3 +79,6 @@ export const selectLoadingGetProductsByCategory = (state: {
 
 export const selectProductsByCategory = (state: {product: ProductState}) =>
   state.product.productsByCategory;
+
+export const selectStoreInfo = (state: {product: ProductState}) =>
+  state.product.storeInfo;

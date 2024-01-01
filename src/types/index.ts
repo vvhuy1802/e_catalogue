@@ -53,6 +53,7 @@ import {ImagePickerResponse} from 'react-native-image-picker';
 import {CartVariant, NormalizeCartVariant, OrderAdminStore} from './order';
 import {ContactAddress} from './contact';
 import {StoreResponse} from '~/screens/mainScreen/category/components/productDetail/Seller';
+import {StyleIdeaResponse} from './styleIdea';
 
 export type LoadingState = 'idle' | 'pending' | 'fulfilled' | 'rejected';
 
@@ -169,7 +170,9 @@ export type StyleRoomStackParamList = {
     widthImgage: number;
     heightImage: number;
   };
-  [DETAIL_STYLE_ROOM_SCREEN_ADMIN_STORE]: undefined;
+  [DETAIL_STYLE_ROOM_SCREEN_ADMIN_STORE]: {
+    styleRoom: StyleIdeaResponse;
+  };
 };
 
 export type OrderStackAdminStoreParamList = {

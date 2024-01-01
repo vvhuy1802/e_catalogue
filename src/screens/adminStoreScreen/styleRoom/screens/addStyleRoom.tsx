@@ -7,13 +7,13 @@ import {
   Keyboard,
   Modal,
   Pressable,
-  TextInput,
   StatusBar,
   FlatList,
   ScrollView,
   TouchableOpacity,
+  TextInput,
 } from 'react-native';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {setDemoImage} from '~/redux/reducers/globalSlice';
 import {height, HeightSize, width, WidthSize} from '~/theme/size';
 import {
@@ -22,7 +22,7 @@ import {
   ImagePickerResponse,
   launchImageLibrary,
 } from 'react-native-image-picker';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {AppDispatch} from '~/app/store';
 import ContainerView from '~/components/global/containerView';
 import {RouteProp, useNavigation} from '@react-navigation/native';
@@ -31,12 +31,21 @@ import {IconSvg} from '~/components/global/iconSvg';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {TextFont, TextStyle} from '~/theme/textStyle';
+import {selectStoreInfo} from '~/redux/reducers/productSlice';
+import {Dropdown} from 'react-native-element-dropdown';
+import {ProductById, StoreProduct, Variant} from '~/types/product';
+import axios from 'axios';
+import {getUrl} from '~/utils';
+import {styleService} from '~/services/service/style.service';
+import {getStyleByStore} from '~/redux/actions/categoryAction';
 type Retangle = {
+  id: number;
   minX: number;
   minY: number;
   maxX: number;
   maxY: number;
-  info?: any;
+  product?: StoreProduct;
+  variant?: Variant;
 };
 
 type actualImageProps = {
@@ -56,6 +65,21 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
     width: route.params.widthImgage,
     height: route.params.heightImage,
   });
+  const storeInfo = useSelector(selectStoreInfo);
+  const [currentProduct, setCurrentProduct] = useState<StoreProduct>();
+  const [currentVariant, setCurrentVariant] = useState<ProductById>();
+  const [name, setName] = useState('');
+  useEffect(() => {
+    if (currentProduct?.id) {
+      axios
+        .get(`https://e-catalogue.abcdavid.top/product?id=${currentProduct.id}`)
+        .then(res => {
+          console.log(JSON.stringify(res.data, null, 2));
+          setCurrentVariant(res.data);
+        });
+    }
+  }, [currentProduct]);
+
   const [actualImage, setActualImage] = useState<actualImageProps>({
     image: route.params.imageAdding,
     width: route.params.widthImgage,
@@ -63,7 +87,7 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
     retangles: [],
   });
   const [modalVisible, setModalVisible] = useState(false);
-  const [text, setText] = useState('');
+  const [variant, setVariant] = useState<Variant>();
   const tabs = [
     {
       id: '1',
@@ -123,96 +147,8 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
   );
   const dispatch = useDispatch<AppDispatch>();
 
-  // const [currentPosition, setCurrentPosition] = useState<any>([]);
   const [retangles, setRetangles] = useState<Array<Retangle>>([]);
-  const path = useRef('');
-  // const pathRetange = useRef({
-  //   minX: 0,
-  //   minY: 0,
-  //   maxX: 0,
-  //   maxY: 0,
-  // });
-  // const panResponder = useRef(
-  //   PanResponder.create({
-  //     onStartShouldSetPanResponder: () => true,
-  //     onPanResponderGrant: () => {
-  //       path.current = '';
-  //       pathRetange.current = {
-  //         minX: 0,
-  //         minY: 0,
-  //         maxX: 0,
-  //         maxY: 0,
-  //       };
-  //     },
-  //     onPanResponderMove: (e, gesture) => {
-  //       const newPoint = {
-  //         x: e.nativeEvent.locationX,
-  //         y:
-  //           e.nativeEvent.locationY > size.height
-  //             ? size.height
-  //             : e.nativeEvent.locationY < 0
-  //             ? 0
-  //             : e.nativeEvent.locationY,
-  //       };
-  //       setCurrentPosition([...currentPosition, newPoint]);
-  //       if (path.current === '') {
-  //         path.current = `M${newPoint.x},${newPoint.y}`;
-  //       } else {
-  //         path.current += ` L ${newPoint.x},${newPoint.y}`;
-  //       }
-  //       if (
-  //         pathRetange.current.minX === 0 &&
-  //         pathRetange.current.minY === 0 &&
-  //         pathRetange.current.maxX === 0 &&
-  //         pathRetange.current.maxY === 0
-  //       ) {
-  //         pathRetange.current.minX = newPoint.x;
-  //         pathRetange.current.minY = newPoint.y;
-  //         pathRetange.current.maxX = newPoint.x;
-  //         pathRetange.current.maxY = newPoint.y;
-  //       } else {
-  //         if (newPoint.x < pathRetange.current.minX) {
-  //           pathRetange.current.minX = newPoint.x;
-  //         }
-  //         if (newPoint.y < pathRetange.current.minY) {
-  //           pathRetange.current.minY = newPoint.y;
-  //         }
-  //         if (newPoint.x > pathRetange.current.maxX) {
-  //           pathRetange.current.maxX = newPoint.x;
-  //         }
-  //         if (newPoint.y > pathRetange.current.maxY) {
-  //           pathRetange.current.maxY = newPoint.y;
-  //         }
-  //       }
-  //     },
-  //     onPanResponderRelease: (e, gesture) => {
-  //       if (
-  //         pathRetange.current.maxX - pathRetange.current.minX < 10 ||
-  //         pathRetange.current.maxY - pathRetange.current.minY < 10
-  //       ) {
-  //         pathRetange.current = {
-  //           minX: 0,
-  //           minY: 0,
-  //           maxX: 0,
-  //           maxY: 0,
-  //         };
-  //         return;
-  //       }
-  //       console.log(pathRetange.current);
-  //       setRetangles(retangles => [
-  //         ...retangles,
-  //         {
-  //           minX: pathRetange.current.minX > 0 ? pathRetange.current.minX : 0,
-  //           minY: pathRetange.current.minY > 0 ? pathRetange.current.minY : 0,
-  //           maxX: pathRetange.current.maxX > 0 ? pathRetange.current.maxX : 0,
-  //           maxY: pathRetange.current.maxY > 0 ? pathRetange.current.maxY : 0,
-  //         },
-  //       ]);
-  //       setModalVisible(true);
-  //       setCurrentPosition([]);
-  //     },
-  //   }),
-  // ).current;
+
   useEffect(() => {
     StatusBar.setBarStyle('light-content');
   }, []);
@@ -271,11 +207,13 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
   };
 
   const renderInfoBox = (retangle: {
+    id: number;
     minX: number;
     minY: number;
     maxX: number;
     maxY: number;
-    info?: string;
+    variant?: Variant;
+    product?: StoreProduct;
   }) => {
     let left = 0;
     let top = 0;
@@ -283,20 +221,36 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
     let leftTriangle = 0;
     let rotate = '0deg';
     if (retangle.minX > size.width / 2) {
-      left = WidthSize((retangle.maxX - retangle.minX) / 2 + 15);
-      top = WidthSize(-(HeightSize(60) - WidthSize(20)));
-      topTriangle = (HeightSize(60) + WidthSize(20)) / 2 - 5;
-      leftTriangle = -15;
-      rotate = '-90deg';
+      if (retangle.maxX - size.width / 2 > WidthSize(115)) {
+        left = WidthSize(-110);
+        top = WidthSize(-(HeightSize(60) - WidthSize(20)));
+        topTriangle = (HeightSize(60) + WidthSize(20)) / 2 - 5;
+        leftTriangle = WidthSize(95);
+        rotate = '90deg';
+      } else {
+        left = WidthSize(15);
+        top = WidthSize(-(HeightSize(60) - WidthSize(20)));
+        topTriangle = (HeightSize(60) + WidthSize(20)) / 2 - 5;
+        leftTriangle = -WidthSize(15);
+        rotate = '-90deg';
+      }
     } else {
-      left = WidthSize(-WidthSize(100) - 15);
-      top = WidthSize(-(HeightSize(60) - WidthSize(20)));
-      topTriangle = (HeightSize(60) + WidthSize(20)) / 2 - 5;
-      leftTriangle = WidthSize(100) - 5;
-      rotate = '90deg';
+      if (WidthSize(115) - retangle.maxX > 0) {
+        left = WidthSize(5);
+        top = WidthSize(-(HeightSize(60) - WidthSize(20)));
+        topTriangle = (HeightSize(60) + WidthSize(20)) / 2 - 5;
+        leftTriangle = WidthSize(-15);
+        rotate = '-90deg';
+      } else {
+        left = WidthSize(-WidthSize(100) - 15);
+        top = WidthSize(-(HeightSize(60) - WidthSize(20)));
+        topTriangle = (HeightSize(60) + WidthSize(20)) / 2 - 5;
+        leftTriangle = WidthSize(100) - 5;
+        rotate = '90deg';
+      }
     }
 
-    return retangle.info ? (
+    return retangle.variant ? (
       <View
         style={{
           backgroundColor: '#ffffffB3',
@@ -306,7 +260,31 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
           left: left,
           top: top,
           borderRadius: 8,
+          justifyContent: 'center',
+          alignItems: 'center',
         }}>
+        <Pressable
+          onPress={() => {
+            //remove retangle by id
+            const index = retangles.findIndex(item => item.id === retangle.id);
+            setRetangles(retangles =>
+              retangles.filter((item, i) => i !== index),
+            );
+          }}
+          style={{
+            position: 'absolute',
+            zIndex: 2,
+            bottom: HeightSize(4),
+            right: HeightSize(4),
+            backgroundColor: 'red',
+            borderRadius: 10,
+          }}>
+          <IconSvg
+            icon="IconCloseBoldWhite"
+            width={HeightSize(16)}
+            height={HeightSize(16)}
+          />
+        </Pressable>
         {renderTriangle(topTriangle, leftTriangle, rotate)}
         <View
           style={{
@@ -321,7 +299,7 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
               ...TextStyle.SM,
               width: WidthSize(80),
             }}>
-            {retangle.info}
+            {retangle.product?.name}
           </Text>
           <Text
             numberOfLines={1}
@@ -331,7 +309,7 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
               ...TextStyle.SM,
               width: WidthSize(80),
             }}>
-            Price
+            Price: ${retangle.variant?.price}
           </Text>
           <Text
             numberOfLines={1}
@@ -341,7 +319,7 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
               ...TextStyle.SM,
               width: WidthSize(80),
             }}>
-            Size
+            Size: {retangle.variant?.size}
           </Text>
         </View>
       </View>
@@ -353,6 +331,7 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
     setRetangles(retangles => [
       ...retangles,
       {
+        id: Math.random(),
         minX: locationX,
         minY: locationY,
         maxX: locationX,
@@ -363,9 +342,6 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
   };
 
   const [modalPost, setModalPost] = useState(false);
-  const queryText = (text: string) => {
-    return text;
-  };
   return (
     <ContainerView
       style={{
@@ -476,7 +452,7 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
               renderItem={({item, index}) => {
                 return (
                   <ImageBackground
-                    key={index}
+                    key={item.id}
                     style={{
                       width: WidthSize(70),
                       height: WidthSize(70),
@@ -582,25 +558,16 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
           justifyContent: 'center',
         }}>
         {retangles.map(
-          (
-            retangle: {
-              minX: any;
-              minY: any;
-              maxX: any;
-              maxY: any;
-              info?: any;
-            },
-            index: React.Key | null | undefined,
-          ) => (
+          (retangle: {
+            id: number;
+            minX: any;
+            minY: any;
+            maxX: any;
+            maxY: any;
+            info?: any;
+          }) => (
             <Pressable
-              key={index}
-              onPress={() => {
-                console.log(
-                  retangle,
-                  (retangle.maxX + retangle.minX) / 2,
-                  (retangle.maxY + retangle.minY) / 2,
-                );
-              }}
+              key={retangle.id}
               style={{
                 position: 'absolute',
                 zIndex: 1,
@@ -613,43 +580,7 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
             </Pressable>
           ),
         )}
-        {/* <Svg
-          style={{
-            position: 'absolute',
-            zIndex: 1,
-            width: size.width,
-            height: size.height,
-          }}>
-          {retangles.map(
-            (
-              retangle: {
-                minX: any;
-                minY: any;
-                maxX: any;
-                maxY: any;
-                info?: any;
-              },
-              index: React.Key | null | undefined,
-            ) => (
-              <Path
-                key={index}
-                d={`M${retangle.minX},${retangle.minY} L ${retangle.maxX},${retangle.minY} L ${retangle.maxX},${retangle.maxY} L ${retangle.minX},${retangle.maxY} L ${retangle.minX},${retangle.minY}`}
-                stroke="#EF6556"
-                strokeWidth={4}
-                fill={'none'}
-              />
-            ),
-          )}
 
-          {currentPosition.length > 0 && (
-            <Path
-              d={path.current}
-              stroke="black"
-              strokeWidth={4}
-              fill={'none'}
-            />
-          )}
-        </Svg> */}
         <ImageBackground
           style={{
             width: size.width,
@@ -667,13 +598,17 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
         onRequestClose={() => {
           setRetangles(retangles => retangles.slice(0, retangles.length - 1));
           setModalVisible(false);
-          setText('');
+          setVariant(undefined);
+          setCurrentProduct(undefined);
+          setCurrentVariant(undefined);
         }}>
         <Pressable
           onPress={() => {
             setRetangles(retangles => retangles.slice(0, retangles.length - 1));
             setModalVisible(false);
-            setText('');
+            setVariant(undefined);
+            setCurrentProduct(undefined);
+            setCurrentVariant(undefined);
           }}
           style={{
             flex: 1,
@@ -687,30 +622,135 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
             }}
             style={{
               width: '80%',
-              height: '80%',
+              height: '50%',
               backgroundColor: 'white',
               borderRadius: 10,
-              padding: 20,
+              padding: HeightSize(16),
             }}>
             <View
               style={{
                 alignItems: 'center',
                 flex: 1,
               }}>
-              <Text>Add Info</Text>
-              <TextInput
+              <Text
                 style={{
+                  ...TextFont.SBold,
+                  ...TextStyle.XL,
+                  color: '#3B3021',
+                }}>
+                Add Variant
+              </Text>
+              <Dropdown
+                style={{
+                  marginTop: HeightSize(16),
+                  height: HeightSize(60),
                   width: '100%',
-                  height: 50,
-                  marginTop: 20,
-                  borderWidth: 1,
-                  borderColor: 'black',
-                  borderRadius: 10,
-                  paddingHorizontal: 10,
+                  padding: HeightSize(16),
+                  backgroundColor: 'white',
+                  borderRadius: 12,
+                  shadowColor: '#000',
+                  shadowOffset: {
+                    width: 0,
+                    height: 1,
+                  },
+                  shadowOpacity: 0.2,
+                  shadowRadius: 1.41,
+                  elevation: 2,
                 }}
-                onChangeText={text => setText(text)}
-                value={text}
+                placeholderStyle={{
+                  ...TextFont.SRegular,
+                  ...TextStyle.Base,
+                  color: '#3B3021',
+                }}
+                selectedTextStyle={{
+                  ...TextFont.SRegular,
+                  ...TextStyle.Base,
+                  color: '#3B3021',
+                }}
+                inputSearchStyle={{
+                  ...TextFont.SRegular,
+                  ...TextStyle.Base,
+                  color: '#3B3021',
+                }}
+                itemTextStyle={{
+                  ...TextFont.SRegular,
+                  ...TextStyle.Base,
+                  color: '#3B3021',
+                }}
+                containerStyle={{
+                  marginTop: HeightSize(8),
+                  backgroundColor: 'white',
+                  borderBottomLeftRadius: 12,
+                  borderBottomRightRadius: 12,
+                }}
+                data={storeInfo.products}
+                search
+                maxHeight={300}
+                labelField="name"
+                valueField="id"
+                placeholder="Select a product"
+                searchPlaceholder="Search..."
+                onChange={item => {
+                  setCurrentProduct(item);
+                }}
               />
+              {currentVariant ? (
+                <Dropdown
+                  style={{
+                    marginTop: HeightSize(16),
+                    height: HeightSize(60),
+                    width: '100%',
+                    padding: HeightSize(16),
+                    backgroundColor: 'white',
+                    borderRadius: 12,
+                    shadowColor: '#000',
+                    shadowOffset: {
+                      width: 0,
+                      height: 1,
+                    },
+                    shadowOpacity: 0.2,
+                    shadowRadius: 1.41,
+                    elevation: 2,
+                  }}
+                  placeholderStyle={{
+                    ...TextFont.SRegular,
+                    ...TextStyle.Base,
+                    color: '#3B3021',
+                  }}
+                  selectedTextStyle={{
+                    ...TextFont.SRegular,
+                    ...TextStyle.Base,
+                    color: '#3B3021',
+                  }}
+                  inputSearchStyle={{
+                    ...TextFont.SRegular,
+                    ...TextStyle.Base,
+                    color: '#3B3021',
+                  }}
+                  itemTextStyle={{
+                    ...TextFont.SRegular,
+                    ...TextStyle.Base,
+                    color: '#3B3021',
+                  }}
+                  containerStyle={{
+                    marginTop: HeightSize(8),
+                    backgroundColor: 'white',
+                    borderBottomLeftRadius: 12,
+                    borderBottomRightRadius: 12,
+                  }}
+                  data={currentVariant.variants}
+                  search
+                  maxHeight={300}
+                  labelField="size"
+                  valueField="id"
+                  placeholder="Select a variant"
+                  searchPlaceholder="Search..."
+                  onChange={item => {
+                    setVariant(item);
+                  }}
+                />
+              ) : null}
+
               <View
                 style={{
                   width: '100%',
@@ -722,17 +762,19 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
                 <Pressable
                   onPress={() => {
                     const index = retangles.length - 1;
-                    retangles[index].info = text;
+                    retangles[index].variant = variant;
+                    retangles[index].product = currentProduct;
                     const data = {
                       image: actualImage?.image,
                       width: size.width,
                       height: size.height,
                       retangles: retangles,
                     };
-                    dispatch(setDemoImage(data));
                     setActualImage(data);
                     setModalVisible(false);
-                    setText('');
+                    setVariant(undefined);
+                    setCurrentProduct(undefined);
+                    setCurrentVariant(undefined);
                   }}
                   style={{
                     width: '40%',
@@ -746,12 +788,13 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
                 </Pressable>
                 <Pressable
                   onPress={() => {
-                    //undo previous line
                     setRetangles(retangles =>
                       retangles.slice(0, retangles.length - 1),
                     );
                     setModalVisible(false);
-                    setText('');
+                    setVariant(undefined);
+                    setCurrentProduct(undefined);
+                    setCurrentVariant(undefined);
                   }}
                   style={{
                     width: '40%',
@@ -771,7 +814,6 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
 
       <Modal
         visible={modalPost}
-        // transparent={true}
         presentationStyle="pageSheet"
         animationType="slide"
         onRequestClose={() => {
@@ -808,6 +850,7 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
                 }}>
                 <Text
                   style={{
+                    flex: 1,
                     ...TextFont.SBold,
                     ...TextStyle.XL,
                     color: '#3B3021',
@@ -816,13 +859,12 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
                 </Text>
                 <Text
                   style={{
+                    flex: 1,
                     ...TextFont.SBold,
                     ...TextStyle.XL,
                     color: '#3B3021',
-                    position: 'absolute',
-                    left: width - WidthSize(248),
                   }}>
-                  {`Variant: ${retangles.length}`}
+                  Name
                 </Text>
               </View>
               <View
@@ -840,158 +882,105 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
                 />
                 <View
                   style={{
-                    marginLeft: WidthSize(8),
-                    gap: HeightSize(8),
+                    flex: 1,
+                    marginLeft: WidthSize(16),
                   }}>
-                  <View
+                  <TextInput
+                    value={name}
+                    onChangeText={setName}
+                    multiline={true}
                     style={{
-                      flexDirection: 'row',
-                    }}>
-                    <Image
-                      style={{
-                        width: WidthSize(50),
-                        height: WidthSize(50),
-                        borderRadius: 10,
-                      }}
-                      source={{uri: actualImage?.image?.assets[0].uri}}
-                    />
-                    <View
-                      style={{
-                        marginLeft: WidthSize(8),
-                        justifyContent: 'space-between',
-                      }}>
-                      <Text
-                        numberOfLines={1}
-                        style={{
-                          ...TextFont.SBold,
-                          ...TextStyle.SM,
-                          color: '#3B3021',
-                          width: width - WidthSize(240),
-                        }}>
-                        Product name
-                      </Text>
-                      <Text
-                        numberOfLines={1}
-                        style={{
-                          ...TextFont.SBold,
-                          ...TextStyle.SM,
-                          color: '#3B3021',
-                          width: width - WidthSize(240),
-                        }}>
-                        Price
-                      </Text>
-                      <Text
-                        numberOfLines={1}
-                        style={{
-                          ...TextFont.SBold,
-                          ...TextStyle.SM,
-                          color: '#3B3021',
-                          width: width - WidthSize(240),
-                        }}>
-                        Size
-                      </Text>
-                    </View>
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                    }}>
-                    <Image
-                      style={{
-                        width: WidthSize(50),
-                        height: WidthSize(50),
-                        borderRadius: 10,
-                      }}
-                      source={{uri: actualImage?.image?.assets[0].uri}}
-                    />
-                    <View
-                      style={{
-                        marginLeft: WidthSize(8),
-                        justifyContent: 'space-between',
-                      }}>
-                      <Text
-                        numberOfLines={1}
-                        style={{
-                          ...TextFont.SBold,
-                          ...TextStyle.SM,
-                          color: '#3B3021',
-                          width: width - WidthSize(256),
-                        }}>
-                        Product name
-                      </Text>
-                      <Text
-                        numberOfLines={1}
-                        style={{
-                          ...TextFont.SBold,
-                          ...TextStyle.SM,
-                          color: '#3B3021',
-                          width: width - WidthSize(256),
-                        }}>
-                        Price
-                      </Text>
-                      <Text
-                        numberOfLines={1}
-                        style={{
-                          ...TextFont.SBold,
-                          ...TextStyle.SM,
-                          color: '#3B3021',
-                          width: width - WidthSize(256),
-                        }}>
-                        Size
-                      </Text>
-                    </View>
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                    }}>
-                    <Image
-                      style={{
-                        width: WidthSize(50),
-                        height: WidthSize(50),
-                        borderRadius: 10,
-                      }}
-                      source={{uri: actualImage?.image?.assets[0].uri}}
-                    />
-                    <View
-                      style={{
-                        marginLeft: WidthSize(8),
-                        justifyContent: 'space-between',
-                      }}>
-                      <Text
-                        numberOfLines={1}
-                        style={{
-                          ...TextFont.SBold,
-                          ...TextStyle.SM,
-                          color: '#3B3021',
-                          width: width - WidthSize(256),
-                        }}>
-                        Product name
-                      </Text>
-                      <Text
-                        numberOfLines={1}
-                        style={{
-                          ...TextFont.SBold,
-                          ...TextStyle.SM,
-                          color: '#3B3021',
-                          width: width - WidthSize(256),
-                        }}>
-                        Price
-                      </Text>
-                      <Text
-                        numberOfLines={1}
-                        style={{
-                          ...TextFont.SBold,
-                          ...TextStyle.SM,
-                          color: '#3B3021',
-                          width: width - WidthSize(256),
-                        }}>
-                        Size
-                      </Text>
-                    </View>
-                  </View>
+                      borderRadius: 10,
+                      borderWidth: 1,
+                      borderColor: '#836E44',
+                      padding: HeightSize(16),
+                      ...TextFont.SBold,
+                      ...TextStyle.Base,
+                      color: '#3B3021',
+                      maxHeight: HeightSize(164),
+                    }}
+                    placeholder="Name your style room"
+                  />
                 </View>
               </View>
+            </View>
+            <View
+              style={{
+                marginTop: HeightSize(16),
+              }}>
+              <Text
+                style={{
+                  ...TextFont.SBold,
+                  ...TextStyle.XL,
+                  color: '#3B3021',
+                }}>
+                Variants ({retangles.length})
+              </Text>
+              <FlatList
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={{
+                  gap: HeightSize(8),
+                }}
+                style={{
+                  marginTop: HeightSize(16),
+                }}
+                horizontal={true}
+                data={retangles}
+                renderItem={({item, index}) => {
+                  return (
+                    <View
+                      key={item.maxX}
+                      style={{
+                        flexDirection: 'row',
+                      }}>
+                      <Image
+                        style={{
+                          width: WidthSize(50),
+                          height: WidthSize(50),
+                          borderRadius: 10,
+                        }}
+                        source={getUrl(item.variant?.image)}
+                      />
+                      <View
+                        style={{
+                          marginLeft: WidthSize(8),
+                          justifyContent: 'space-between',
+                        }}>
+                        <Text
+                          numberOfLines={1}
+                          style={{
+                            ...TextFont.SBold,
+                            ...TextStyle.SM,
+                            color: '#3B3021',
+                            width: width - WidthSize(300),
+                          }}>
+                          {item.product?.name}
+                        </Text>
+                        <Text
+                          numberOfLines={1}
+                          style={{
+                            ...TextFont.SBold,
+                            ...TextStyle.SM,
+                            color: '#3B3021',
+                            width: width - WidthSize(300),
+                          }}>
+                          Price: ${item.variant?.price}
+                        </Text>
+                        <Text
+                          numberOfLines={1}
+                          style={{
+                            ...TextFont.SBold,
+                            ...TextStyle.SM,
+                            color: '#3B3021',
+                            width: width - WidthSize(300),
+                          }}>
+                          Size: {item.variant?.size}
+                        </Text>
+                      </View>
+                    </View>
+                  );
+                }}
+              />
             </View>
             <View
               style={{
@@ -1051,7 +1040,7 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
                   renderItem={({item, index}) => {
                     return (
                       <ImageBackground
-                        key={index}
+                        key={item.id}
                         style={{
                           width: WidthSize(70),
                           height: WidthSize(70),
@@ -1110,7 +1099,7 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
                 {tabs.map((item, index) => {
                   return (
                     <Pressable
-                      key={index}
+                      key={item.id}
                       onPress={() => {
                         setCategory(item);
                       }}
@@ -1139,15 +1128,53 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
           </ScrollView>
           <TouchableOpacity
             onPress={() => {
-              const params = {
-                mainImage: actualImage?.image,
-                width: size.width,
-                height: size.height,
-                retangles: retangles,
-                images: listImageMore,
-                category: category,
-              };
-              console.log(JSON.stringify(params, null, 2));
+              let formData = new FormData();
+              formData.append('name', name);
+              formData.append('category', category.title);
+              formData.append('mainImage', {
+                uri: actualImage?.image?.assets[0].uri,
+                type: actualImage.image?.assets[0].type,
+                name: actualImage.image?.assets[0].fileName,
+              });
+              formData.append('width', actualImage.width);
+              formData.append('height', actualImage.height);
+              let arrRetangle: {
+                minX: number;
+                minY: number;
+                maxX: number;
+                maxY: number;
+                variant: number | undefined;
+              }[] = [];
+              retangles.map((item, index) => {
+                arrRetangle.push({
+                  minX: item.minX,
+                  minY: item.minY,
+                  maxX: item.maxX,
+                  maxY: item.maxY,
+                  variant: item.variant?.id,
+                });
+              });
+              formData.append('rectangles', JSON.stringify(arrRetangle));
+              console.log('formData', formData);
+
+              styleService.createStyle(formData).then(res => {
+                console.log('res', JSON.stringify(res.data, null, 2));
+                // dispatch(getStyleByStore(res.data.store.id));
+                if (listImageMore.length > 0) {
+                  listImageMore.forEach(async (item, index) => {
+                    let formData = new FormData();
+                    formData.append('style', res.data.id);
+                    formData.append('image', {
+                      uri: item.uri,
+                      type: item.type,
+                      name: item.fileName,
+                    });
+                    await styleService.addListImage(formData);
+                  });
+                }
+              });
+              setModalPost(false);
+              navigation.goBack();
             }}
             activeOpacity={0.8}
             style={{
@@ -1178,5 +1205,3 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
 };
 
 export default AddStyleRoom;
-
-const styles = StyleSheet.create({});

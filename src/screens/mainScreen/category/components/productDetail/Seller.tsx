@@ -14,6 +14,20 @@ type Props = {
   store: StoreResponse;
   currentProduct: string;
 };
+export type StoreProduct = {
+  id: number;
+  name: string;
+  description: string;
+  image: string;
+  minPrice: number;
+  maxPrice: number;
+  category: {
+    id: number;
+    name: string;
+    description: string;
+    image: string;
+  };
+};
 export type StoreResponse = {
   id: number;
   name: string;
@@ -22,20 +36,7 @@ export type StoreResponse = {
   logo_image: string;
   cover_image: string;
   approved: boolean;
-  products: Array<{
-    id: number;
-    name: string;
-    description: string;
-    image: string;
-    minPrice: number;
-    maxPrice: number;
-    category: {
-      id: number;
-      name: string;
-      description: string;
-      image: string;
-    };
-  }>;
+  products: Array<StoreProduct>;
   followers: [];
 };
 const Seller = ({store, currentProduct}: Props) => {

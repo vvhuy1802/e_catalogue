@@ -16,3 +16,11 @@ export const getProductsByCategory = createAsyncThunk(
     return {data: res};
   },
 );
+
+export const getStoreById = createAsyncThunk(
+  'product/getStoreById Action',
+  async (storeId: number) => {
+    const res = await productService.getStoreById(storeId);
+    return {data: res};
+  },
+);

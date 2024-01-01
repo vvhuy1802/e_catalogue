@@ -1,12 +1,14 @@
 import {View, FlatList, ScrollView, Pressable} from 'react-native';
-import {width, WidthSize, HeightSize} from '~/theme/size';
+import {width, WidthSize, HeightSize, height} from '~/theme/size';
 import FullWidthImage from '../fullWidthImage';
 import React from 'react';
+import {StyleIdeaResponse} from '~/types/styleIdea';
+import {getUrl} from '~/utils';
 
 type Props = {
-  data: any;
+  data: StyleIdeaResponse[];
   widthView: number;
-  onPress?: (item: any) => void;
+  onPress?: (item: StyleIdeaResponse) => void;
 };
 const CustomListView = ({data, widthView, onPress}: Props) => {
   return (
@@ -24,6 +26,7 @@ const CustomListView = ({data, widthView, onPress}: Props) => {
         keyExtractor={(item, index) => index.toString()}
         style={{
           width: widthView,
+          height: height,
         }}
         contentContainerStyle={{
           paddingBottom: HeightSize(16),
@@ -43,7 +46,7 @@ const CustomListView = ({data, widthView, onPress}: Props) => {
                 imageStyle={{
                   borderRadius: 20,
                 }}
-                source={{uri: item.img}}
+                source={getUrl(item.mainImage)}
               />
             </Pressable>
           ) : null
@@ -56,6 +59,7 @@ const CustomListView = ({data, widthView, onPress}: Props) => {
         keyExtractor={(item, index) => index.toString()}
         style={{
           width: widthView,
+          height: height,
         }}
         contentContainerStyle={{
           paddingBottom: HeightSize(16),
@@ -76,7 +80,7 @@ const CustomListView = ({data, widthView, onPress}: Props) => {
                 imageStyle={{
                   borderRadius: 20,
                 }}
-                source={{uri: item.img}}
+                source={getUrl(item.mainImage)}
               />
             </Pressable>
           ) : null
