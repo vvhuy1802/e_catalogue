@@ -4,6 +4,7 @@ import {
   ORDER_SCREEN_ADMIN_STORE,
   ORDER_STACK_ADMIN_STORE_PARAMS_LIST,
   PRODUCT_SCREEN_ADMIN_STORE,
+  REVENUE_SCREEN_ADMIN_STORE,
   STYLE_ROOM_STACK_PARAMS_LIST,
 } from '~/constants/routeNames';
 import {AdminStoreStackParamList} from '~/types';
@@ -18,7 +19,7 @@ import {
 } from '@react-navigation/drawer';
 import {Pressable, Text, View} from 'react-native';
 import {images} from '~/assets';
-import {HeightSize, WidthSize} from '~/theme/size';
+import {HeightSize, width, WidthSize} from '~/theme/size';
 import {TextFont, TextStyle} from '~/theme/textStyle';
 import FastImage from 'react-native-fast-image';
 import {IconSvg} from '~/components/global/iconSvg';
@@ -33,11 +34,16 @@ import {
 import StyleRoomtack from './styleRoom';
 import {getAllOrder} from '~/redux/actions/orderAction';
 import OrderAdminStoreStack from './orderScreen';
+import {getStoreById} from '~/redux/actions/productAction';
+import {selectStoreInfo} from '~/redux/reducers/productSlice';
+import {getUrl} from '~/utils';
+import Revenue from './revenue';
 
 const Drawer = createDrawerNavigator<AdminStoreStackParamList>();
 const AdminStoreStack = () => {
   const dispatch = useDispatch<AppDispatch>();
   const currentAccount = useSelector(selectAccountInfo);
+  const storeInfo = useSelector(selectStoreInfo);
   const handleLogout = () => {
     dispatch(
       SetUserInforLogin({
@@ -53,6 +59,7 @@ const AdminStoreStack = () => {
   };
 
   useEffect(() => {
+    dispatch(getStoreById(currentAccount.id));
     dispatch(getAllOrder());
   }, []);
 
@@ -71,10 +78,11 @@ const AdminStoreStack = () => {
               alignItems: 'center',
             }}>
             <FastImage
-              source={images.home.DropDownMan}
+              source={getUrl(storeInfo?.logo_image) as any}
               style={{
                 width: WidthSize(80),
                 height: WidthSize(80),
+                borderRadius: 99,
               }}
             />
             <View
@@ -82,12 +90,14 @@ const AdminStoreStack = () => {
                 marginLeft: WidthSize(10),
               }}>
               <Text
+                numberOfLines={1}
                 style={{
                   ...TextFont.SMedium,
                   ...TextStyle.XXL,
                   color: '#3B3021',
+                  width: width - WidthSize(250),
                 }}>
-                Store Name
+                {storeInfo?.name} storeInfo storeInfo storeInfo
               </Text>
               <Text
                 style={{
@@ -179,6 +189,13 @@ const AdminStoreStack = () => {
         component={StyleRoomtack}
         options={{
           title: 'Style Room',
+        }}
+      />
+      <Drawer.Screen
+        name={REVENUE_SCREEN_ADMIN_STORE}
+        component={Revenue}
+        options={{
+          title: 'Revenue',
         }}
       />
     </Drawer.Navigator>

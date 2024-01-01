@@ -61,22 +61,6 @@ const HotLooks = () => {
           }}>
           Hot looks
         </Text>
-        <View
-          style={{
-            width: WidthSize(80),
-            height: HeightSize(40),
-            backgroundColor: '#EFEFE8',
-            borderTopLeftRadius: 36,
-            borderBottomLeftRadius: 36,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-          <IconSvg
-            icon="IconArrowRightBlack"
-            width={WidthSize(32)}
-            height={WidthSize(32)}
-          />
-        </View>
       </View>
       <View
         style={{

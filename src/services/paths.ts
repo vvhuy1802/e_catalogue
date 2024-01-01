@@ -15,7 +15,7 @@ export const apiUrl = {
   register: () => `${baseUrl}${Services.user}createuser`,
   refreshToken: () => `${baseUrl}${Services.auth}refresh`,
   me: () => `${baseUrl}${Services.auth}me`,
-  getUserById: () => `${baseUrl}${Services.user}`,
+  createStyle: () => 'https://e-catalogue.abcdavid.top/product/style',  getUserById: () => `${baseUrl}${Services.user}`,
   setNewUsername: () => `${baseUrl}${Services.user}username`,
   setNewEmail: () => `${baseUrl}${Services.user}email`,
   setNewPassword: () => `${baseUrl}${Services.user}password`,
@@ -30,7 +30,9 @@ export const apiUrl = {
   getProductById: (productId: number) =>
     `${baseUrl}${Services.product}?id=${productId}`,
   followStore: () => `${baseUrl}${Services.userInfo}store/follow`,
-
+  getStoreById: (storeId: number) => {
+    return `${baseUrl}${Services.product}store?id=${storeId}`;
+  },
   addProductToCart: () => `${baseUrl}${Services.order}cart`,
   getCartUser: () => `${baseUrl}${Services.product}cart`,
   deleteItemCart: () => `${baseUrl}${Services.order}cart`,
@@ -43,5 +45,9 @@ export const apiUrl = {
 
   profileImage: () => `${baseUrl}${Services.userInfo}profile-image`,
   getUserInfo: () => `${baseUrl}${Services.userInfo}`,
+
+  updateCategory: (categoryId: number) =>
+    `${baseUrl}${Services.product}category?id=${categoryId}`,
+  addNewCategory: () => `${baseUrl}${Services.product}category`,
   setUserInfo: () => `${baseUrl}${Services.userInfo}`,
 };

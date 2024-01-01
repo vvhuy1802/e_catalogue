@@ -6,6 +6,7 @@ import {
   ProductCategoryResponse,
   ProductsByCategory,
 } from '~/types/product';
+import {StoreResponse} from '~/screens/mainScreen/category/components/productDetail/Seller';
 
 export const productService = {
   getAllCategories: () => {
@@ -27,6 +28,14 @@ export const productService = {
   getProductById: (productId: number) => {
     return request<ProductById>(
       apiUrl.getProductById(productId),
+      Methods.get,
+      '',
+    );
+  },
+
+  getStoreById: (storeId: number) => {
+    return request<StoreResponse>(
+      apiUrl.getStoreById(storeId),
       Methods.get,
       '',
     );

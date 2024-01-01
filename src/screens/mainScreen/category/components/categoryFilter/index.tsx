@@ -269,100 +269,6 @@ const CategoryFilter = ({categoryId, navigation, filter, setFilter}: Props) => {
                     ...TextStyle.XL,
                     color: '#3B3021',
                   }}>
-                  Sort by
-                </Text>
-                <IconSvg
-                  onPress={() => {
-                    setSortState(sortState === 'up' ? 'down' : 'up');
-                  }}
-                  icon={
-                    sortState === 'up'
-                      ? 'IconArrowUpBlack'
-                      : 'IconArrowDownBlack'
-                  }
-                  width={HeightSize(20)}
-                  height={HeightSize(20)}
-                />
-              </View>
-              <View
-                style={{
-                  padding: HeightSize(16),
-                  gap: HeightSize(8),
-                }}>
-                {dataSortBy.map((item, index) => (
-                  <Pressable
-                    onPress={() => {
-                      if (item.id === sortByFilter?.id) {
-                        setSortByFilter({});
-                      } else {
-                        setSortByFilter(item);
-                      }
-                    }}
-                    key={index}
-                    style={{flexDirection: 'row', alignItems: 'center'}}>
-                    <View
-                      style={{
-                        width: WidthSize(11),
-                        height: WidthSize(11),
-                        borderWidth: WidthSize(1),
-                        borderColor: '#3B3021',
-                        borderRadius: 6,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}>
-                      <View
-                        style={{
-                          width: WidthSize(7),
-                          height: WidthSize(7),
-                          backgroundColor:
-                            sortByFilter?.id === item.id
-                              ? '#3B3021'
-                              : 'transparent',
-                          borderRadius: 6,
-                        }}
-                      />
-                    </View>
-                    <Text
-                      style={{
-                        ...TextFont.SLight,
-                        ...TextStyle.Base,
-                        color: '#3B3021',
-                        marginLeft: WidthSize(16),
-                      }}>
-                      {item.name}
-                    </Text>
-                  </Pressable>
-                ))}
-              </View>
-
-              <View
-                style={{
-                  marginTop: HeightSize(4),
-                  width: '100%',
-                  height: HeightSize(2),
-                  backgroundColor: '#EFEFE8',
-                  borderRadius: 8,
-                }}
-              />
-            </View>
-
-            <View
-              style={{
-                paddingHorizontal: HeightSize(32),
-                paddingTop: HeightSize(32),
-              }}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                }}>
-                <Text
-                  style={{
-                    ...TextFont.SMedium,
-                    ...TextStyle.XL,
-                    color: '#3B3021',
-                  }}>
                   Colours
                 </Text>
                 <IconSvg
@@ -378,71 +284,76 @@ const CategoryFilter = ({categoryId, navigation, filter, setFilter}: Props) => {
                   height={HeightSize(20)}
                 />
               </View>
-              <View
-                style={{
-                  marginTop: HeightSize(16),
-                  flexDirection: 'row',
-                  flexWrap: 'wrap',
-                  gap: HeightSize(16),
-                }}>
-                {dataColoursNormalize.ids.map((item: number, index: number) => (
-                  <Pressable
-                    onPress={() => {
-                      const newColorFilter = {...colorFilter};
-                      if (colorFilter.ids.includes(item)) {
-                        newColorFilter.ids.splice(
-                          newColorFilter.ids.indexOf(item),
-                          1,
-                        );
-                        delete newColorFilter.entities[item];
-                      } else {
-                        newColorFilter.ids.push(item);
-                        newColorFilter.entities[item] =
-                          dataColoursNormalize.entities[item];
-                      }
-                      setColorFilter(newColorFilter);
-                    }}
-                    key={index}
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      paddingHorizontal: HeightSize(
-                        colorFilter.ids.includes(item) ? 15 : 16,
-                      ),
-                      paddingVertical: HeightSize(
-                        colorFilter.ids.includes(item) ? 12 : 13,
-                      ),
-                      backgroundColor: '#EFEFE8',
-                      borderRadius: 12,
-                      marginLeft: index % 3 === 0 ? 0 : HeightSize(16),
-                      borderWidth: colorFilter.ids.includes(item)
-                        ? HeightSize(1)
-                        : 0,
-                      borderColor: colorFilter.ids.includes(item)
-                        ? '#836E44'
-                        : 'transparent',
-                    }}>
-                    <View
-                      style={{
-                        width: WidthSize(16),
-                        height: WidthSize(16),
-                        borderRadius: 8,
-                        backgroundColor:
-                          dataColoursNormalize.entities[item].color,
-                        marginRight: WidthSize(8),
-                      }}
-                    />
-                    <Text
-                      style={{
-                        ...TextFont.SLight,
-                        ...TextStyle.Base,
-                        color: '#3B3021',
-                      }}>
-                      {dataColoursNormalize.entities[item].name}
-                    </Text>
-                  </Pressable>
-                ))}
-              </View>
+
+              {colorState === 'down' ? (
+                <View
+                  style={{
+                    marginTop: HeightSize(16),
+                    flexDirection: 'row',
+                    flexWrap: 'wrap',
+                    gap: HeightSize(16),
+                  }}>
+                  {dataColoursNormalize.ids.map(
+                    (item: number, index: number) => (
+                      <Pressable
+                        onPress={() => {
+                          const newColorFilter = {...colorFilter};
+                          if (colorFilter.ids.includes(item)) {
+                            newColorFilter.ids.splice(
+                              newColorFilter.ids.indexOf(item),
+                              1,
+                            );
+                            delete newColorFilter.entities[item];
+                          } else {
+                            newColorFilter.ids.push(item);
+                            newColorFilter.entities[item] =
+                              dataColoursNormalize.entities[item];
+                          }
+                          setColorFilter(newColorFilter);
+                        }}
+                        key={index}
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          paddingHorizontal: HeightSize(
+                            colorFilter.ids.includes(item) ? 15 : 16,
+                          ),
+                          paddingVertical: HeightSize(
+                            colorFilter.ids.includes(item) ? 12 : 13,
+                          ),
+                          backgroundColor: '#EFEFE8',
+                          borderRadius: 12,
+                          marginLeft: index % 3 === 0 ? 0 : HeightSize(16),
+                          borderWidth: colorFilter.ids.includes(item)
+                            ? HeightSize(1)
+                            : 0,
+                          borderColor: colorFilter.ids.includes(item)
+                            ? '#836E44'
+                            : 'transparent',
+                        }}>
+                        <View
+                          style={{
+                            width: WidthSize(16),
+                            height: WidthSize(16),
+                            borderRadius: 8,
+                            backgroundColor:
+                              dataColoursNormalize.entities[item].color,
+                            marginRight: WidthSize(8),
+                          }}
+                        />
+                        <Text
+                          style={{
+                            ...TextFont.SLight,
+                            ...TextStyle.Base,
+                            color: '#3B3021',
+                          }}>
+                          {dataColoursNormalize.entities[item].name}
+                        </Text>
+                      </Pressable>
+                    ),
+                  )}
+                </View>
+              ) : null}
 
               <View
                 style={{
@@ -487,54 +398,56 @@ const CategoryFilter = ({categoryId, navigation, filter, setFilter}: Props) => {
                   height={HeightSize(20)}
                 />
               </View>
-              <View
-                style={{
-                  padding: HeightSize(16),
-                  gap: HeightSize(8),
-                }}>
-                {dataSizeNormalize.ids.map((item: number, index: number) => (
-                  <Pressable
-                    onPress={() => {
-                      const newSizeFilter = {...sizeFilter};
-                      if (sizeFilter.ids.includes(item)) {
-                        newSizeFilter.ids.splice(
-                          newSizeFilter.ids.indexOf(item),
-                          1,
-                        );
-                        delete newSizeFilter.entities[item];
-                      } else {
-                        newSizeFilter.ids.push(item);
-                        newSizeFilter.entities[item] =
-                          dataSizeNormalize.entities[item];
-                      }
-                      setSizeFilter(newSizeFilter);
-                    }}
-                    key={index}
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                    }}>
-                    <IconSvg
-                      icon={
-                        sizeFilter.ids.includes(item)
-                          ? 'IconCheckedBlack'
-                          : 'IconUnCheckBlack'
-                      }
-                      width={WidthSize(12)}
-                      height={WidthSize(12)}
-                    />
-                    <Text
+              {sizeState === 'down' ? (
+                <View
+                  style={{
+                    padding: HeightSize(16),
+                    gap: HeightSize(8),
+                  }}>
+                  {dataSizeNormalize.ids.map((item: number, index: number) => (
+                    <Pressable
+                      onPress={() => {
+                        const newSizeFilter = {...sizeFilter};
+                        if (sizeFilter.ids.includes(item)) {
+                          newSizeFilter.ids.splice(
+                            newSizeFilter.ids.indexOf(item),
+                            1,
+                          );
+                          delete newSizeFilter.entities[item];
+                        } else {
+                          newSizeFilter.ids.push(item);
+                          newSizeFilter.entities[item] =
+                            dataSizeNormalize.entities[item];
+                        }
+                        setSizeFilter(newSizeFilter);
+                      }}
+                      key={index}
                       style={{
-                        ...TextFont.SLight,
-                        ...TextStyle.Base,
-                        color: '#3B3021',
-                        marginLeft: WidthSize(16),
+                        flexDirection: 'row',
+                        alignItems: 'center',
                       }}>
-                      {dataSizeNormalize.entities[item].size}
-                    </Text>
-                  </Pressable>
-                ))}
-              </View>
+                      <IconSvg
+                        icon={
+                          sizeFilter.ids.includes(item)
+                            ? 'IconCheckedBlack'
+                            : 'IconUnCheckBlack'
+                        }
+                        width={WidthSize(12)}
+                        height={WidthSize(12)}
+                      />
+                      <Text
+                        style={{
+                          ...TextFont.SLight,
+                          ...TextStyle.Base,
+                          color: '#3B3021',
+                          marginLeft: WidthSize(16),
+                        }}>
+                        {dataSizeNormalize.entities[item].size}
+                      </Text>
+                    </Pressable>
+                  ))}
+                </View>
+              ) : null}
 
               <View
                 style={{
@@ -579,70 +492,76 @@ const CategoryFilter = ({categoryId, navigation, filter, setFilter}: Props) => {
                   height={HeightSize(20)}
                 />
               </View>
-              <View
-                style={{
-                  padding: HeightSize(16),
-                }}>
-                <Slider
-                  ref={refPriceSlider}
-                  onSlidingStart={() => {
-                    setIsDisableScroll(true);
-                  }}
-                  onSlidingComplete={() => {
-                    setIsDisableScroll(false);
-                  }}
-                  minimumValue={0}
-                  maximumValue={2000}
-                  step={1}
-                  value={priceFilter as [number, number]}
-                  onValueChange={value => {
-                    setPriceFilter(value as [number, number]);
-                  }}
-                  thumbTintColor="#836E44"
-                  thumbStyle={{
-                    width: WidthSize(24),
-                    height: WidthSize(24),
-                    borderRadius: 12,
-                    backgroundColor: '#EFEFE8',
-                    shadowColor: '#0000001A',
-                    shadowOffset: {
-                      width: 0,
-                      height: 4,
-                    },
-                    shadowOpacity: 1,
-                    shadowRadius: 10,
-                    elevation: 10,
-                    borderWidth: WidthSize(6),
-                    borderColor: '#836E44',
-                  }}
-                  minimumTrackTintColor="#836E44"
-                  maximumTrackTintColor="#EFEFE8"
-                  trackStyle={{
-                    height: HeightSize(4),
-                    borderRadius: 8,
-                    backgroundColor: '#D4D3DB',
-                  }}
-                  renderAboveThumbComponent={(value: number, index: number) => (
-                    <View
-                      style={{
-                        width: WidthSize(100),
-                        position: 'absolute',
-                        top: -HeightSize(14),
-                        left: -WidthSize(50),
-                        alignItems: 'center',
-                      }}>
-                      <Text
+
+              {priceState === 'down' ? (
+                <View
+                  style={{
+                    padding: HeightSize(16),
+                  }}>
+                  <Slider
+                    ref={refPriceSlider}
+                    onSlidingStart={() => {
+                      setIsDisableScroll(true);
+                    }}
+                    onSlidingComplete={() => {
+                      setIsDisableScroll(false);
+                    }}
+                    minimumValue={0}
+                    maximumValue={2000}
+                    step={1}
+                    value={priceFilter as [number, number]}
+                    onValueChange={value => {
+                      setPriceFilter(value as [number, number]);
+                    }}
+                    thumbTintColor="#836E44"
+                    thumbStyle={{
+                      width: WidthSize(24),
+                      height: WidthSize(24),
+                      borderRadius: 12,
+                      backgroundColor: '#EFEFE8',
+                      shadowColor: '#0000001A',
+                      shadowOffset: {
+                        width: 0,
+                        height: 4,
+                      },
+                      shadowOpacity: 1,
+                      shadowRadius: 10,
+                      elevation: 10,
+                      borderWidth: WidthSize(6),
+                      borderColor: '#836E44',
+                    }}
+                    minimumTrackTintColor="#836E44"
+                    maximumTrackTintColor="#EFEFE8"
+                    trackStyle={{
+                      height: HeightSize(4),
+                      borderRadius: 8,
+                      backgroundColor: '#D4D3DB',
+                    }}
+                    renderAboveThumbComponent={(
+                      value: number,
+                      index: number,
+                    ) => (
+                      <View
                         style={{
-                          ...TextStyle.Base,
-                          ...TextFont.SLight,
-                          color: '#3B3021',
+                          width: WidthSize(100),
+                          position: 'absolute',
+                          top: -HeightSize(14),
+                          left: -WidthSize(50),
+                          alignItems: 'center',
                         }}>
-                        ${index}
-                      </Text>
-                    </View>
-                  )}
-                />
-              </View>
+                        <Text
+                          style={{
+                            ...TextStyle.Base,
+                            ...TextFont.SLight,
+                            color: '#3B3021',
+                          }}>
+                          ${index}
+                        </Text>
+                      </View>
+                    )}
+                  />
+                </View>
+              ) : null}
 
               <View
                 style={{

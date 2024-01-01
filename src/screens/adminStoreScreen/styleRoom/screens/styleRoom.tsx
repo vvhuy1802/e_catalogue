@@ -1,5 +1,5 @@
 import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {images} from '~/assets';
 import ContainerImage from '~/components/global/containerImage';
 import CustomListView from '~/components/global/customListView';
@@ -14,6 +14,12 @@ import {useNavigation} from '@react-navigation/native';
 import {StyleRoomStackParamList} from '~/types';
 import {StackNavigationProp} from '@react-navigation/stack';
 import HeaderAdmin from '~/components/global/headerAdmin';
+import axios from 'axios';
+import {useDispatch, useSelector} from 'react-redux';
+import {selectStoreInfo} from '~/redux/reducers/productSlice';
+import {AppDispatch} from '~/app/store';
+import {getStyleByStore} from '~/redux/actions/categoryAction';
+import {selectAllStyleByStore} from '~/redux/reducers/categorySlice';
 
 const StyleRoom = () => {
   const navigation =
@@ -50,33 +56,13 @@ const StyleRoom = () => {
       }
     });
   };
-  const stylelist = [
-    {
-      id: 1,
-      img: 'https://images2.thanhnien.vn/528068263637045248/2023/7/24/huu-anh-zoner-2-4-16901664385181453210496.jpg',
-    },
-    {
-      id: 2,
-      img: 'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg',
-    },
-    {
-      id: 3,
-      img: 'https://imgupscaler.com/images/samples/anime-after.webp',
-    },
-    {
-      id: 4,
-      img: 'https://pixlr.com/images/index/ai-image-generator-two.webp',
-    },
-    {
-      id: 5,
-      img: 'https://cdn.pixabay.com/photo/2023/06/29/03/02/ai-generated-8095540_1280.jpg',
-    },
-    {
-      id: 6,
-      img: 'https://db53ipnarc8vy.cloudfront.net/task-category1.png',
-    },
-  ];
 
+  const storeInfo = useSelector(selectStoreInfo);
+  const dispatch = useDispatch<AppDispatch>();
+  const Storestyles = useSelector(selectAllStyleByStore);
+  useEffect(() => {
+    dispatch(getStyleByStore(storeInfo.id));
+  }, []);
   return (
     <ContainerImage
       isOpacity={true}
@@ -84,7 +70,6 @@ const StyleRoom = () => {
       resizeMode="cover"
       source={images.home.BackgroundHome}>
       <HeaderAdmin title="Style Room" />
-
       <View
         style={{
           paddingHorizontal: WidthSize(32),
@@ -111,14 +96,19 @@ const StyleRoom = () => {
           showsVerticalScrollIndicator={false}
           style={{
             marginTop: HeightSize(16),
+            marginBottom: HeightSize(50),
           }}>
-          <CustomListView
-            widthView={width / 2 - WidthSize(40)}
-            data={stylelist}
-            onPress={item => {
-              console.log(item);
-            }}
-          />
+          {Storestyles.length !== 0 ? (
+            <CustomListView
+              widthView={width / 2 - WidthSize(40)}
+              data={Storestyles}
+              onPress={item => {
+                navigation.navigate('DetailStyleRoomScreenAdminStore', {
+                  styleRoom: item,
+                });
+              }}
+            />
+          ) : null}
         </ScrollView>
       </View>
     </ContainerImage>

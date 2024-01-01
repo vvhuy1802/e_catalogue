@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {Pressable, StyleSheet, Text, View} from 'react-native';
 import React, {useEffect} from 'react';
 import {HeightSize, WidthSize} from '~/theme/size';
 import {TextStyle, TextFont} from '~/theme/textStyle';
@@ -6,6 +6,7 @@ import {IconSvg} from '~/components/global/iconSvg';
 import {AppProvider} from '~/app/appProvider';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {HomeStackParamList} from '~/types';
+import {DETAILSEARCHSCREEN} from '~/constants/routeNames';
 
 type Props = {
   navigation: StackNavigationProp<HomeStackParamList>;
@@ -54,7 +55,12 @@ const HistorySearch = ({navigation}: Props) => {
         {histories
           .map((item, index) => {
             return (
-              <View
+              <Pressable
+                onPress={() => {
+                  navigation.navigate(DETAILSEARCHSCREEN, {
+                    searchQuery: item,
+                  });
+                }}
                 key={index}
                 style={{
                   flexDirection: 'row',
@@ -69,7 +75,7 @@ const HistorySearch = ({navigation}: Props) => {
                   }}>
                   {item}
                 </Text>
-              </View>
+              </Pressable>
             );
           })
           .reverse()}

@@ -11,6 +11,31 @@ import {
 import {HeightSize, WidthSize, height, width} from '~/theme/size';
 import {TextFont, TextStyle} from '~/theme/textStyle';
 
+type V = {
+  id: number;
+  size: string;
+  color: string;
+  image: string;
+  price: number;
+  quantity: number;
+  product: {
+    id: number;
+    name: string;
+    description: string;
+    image: string;
+    minPrice: number;
+    maxPrice: number;
+    store: {
+      id: number;
+      name: string;
+      description: string;
+      address: number;
+      logo_image: string;
+      cover_image: string;
+      approved: boolean;
+    };
+  };
+};
 export default function FullWidthImage(props: {
   widthNeed?: number;
   source: any;
@@ -28,7 +53,7 @@ export default function FullWidthImage(props: {
       minY: number;
       maxX: number;
       maxY: number;
-      info: any;
+      variant: V;
     }>;
   };
   onPress?: (e: any) => void;
@@ -37,7 +62,7 @@ export default function FullWidthImage(props: {
 }) {
   const [widthImg, setWidthImg] = useState(0);
   const [heightImg, setHeightImg] = useState(0);
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(true);
 
   const onLayout = useCallback(
     (event: any) => {
@@ -89,22 +114,44 @@ export default function FullWidthImage(props: {
     minY: number;
     maxX: number;
     maxY: number;
-    info?: string;
+    variant?: V;
   }) => {
-    let left = WidthSize((retangle.maxX - retangle.minX) / 2 - 50);
-    let top = WidthSize((retangle.maxY - retangle.minY) / 2);
-    let topTriangle = -WidthSize(10);
-    let leftTriangle = WidthSize(40);
+    let left = 0;
+    let top = 0;
+    let topTriangle = 0;
+    let leftTriangle = 0;
     let rotate = '0deg';
-    if (WidthSize(retangle.maxX) < WidthSize(80)) {
-      left = WidthSize((retangle.maxX - retangle.minX) / 2 + 10);
-      top = WidthSize((retangle.maxY - retangle.minY) / 2 - 10);
-      topTriangle = WidthSize(30);
-      leftTriangle = -WidthSize(15);
-      rotate = '-90deg';
+    if (retangle.minX > widthImg / 2) {
+      if (retangle.maxX - widthImg / 2 > WidthSize(115)) {
+        left = WidthSize(-110);
+        top = WidthSize(-(HeightSize(60) - WidthSize(20)));
+        topTriangle = (HeightSize(60) + WidthSize(20)) / 2 - 5;
+        leftTriangle = WidthSize(95);
+        rotate = '90deg';
+      } else {
+        left = WidthSize(15);
+        top = WidthSize(-(HeightSize(60) - WidthSize(20)));
+        topTriangle = (HeightSize(60) + WidthSize(20)) / 2 - 5;
+        leftTriangle = -WidthSize(15);
+        rotate = '-90deg';
+      }
+    } else {
+      if (WidthSize(115) - retangle.maxX > 0) {
+        left = WidthSize(5);
+        top = WidthSize(-(HeightSize(60) - WidthSize(20)));
+        topTriangle = (HeightSize(60) + WidthSize(20)) / 2 - 5;
+        leftTriangle = WidthSize(-15);
+        rotate = '-90deg';
+      } else {
+        left = WidthSize(-WidthSize(100) - 15);
+        top = WidthSize(-(HeightSize(60) - WidthSize(20)));
+        topTriangle = (HeightSize(60) + WidthSize(20)) / 2 - 5;
+        leftTriangle = WidthSize(100) - 5;
+        rotate = '90deg';
+      }
     }
 
-    return (
+    return retangle.variant ? (
       <View
         style={{
           backgroundColor: '#ffffffB3',
@@ -129,7 +176,7 @@ export default function FullWidthImage(props: {
               ...TextStyle.SM,
               width: WidthSize(80),
             }}>
-            {retangle.info}
+            {retangle.variant.product?.name}
           </Text>
           <Text
             numberOfLines={1}
@@ -139,7 +186,7 @@ export default function FullWidthImage(props: {
               ...TextStyle.SM,
               width: WidthSize(80),
             }}>
-            Price
+            Price: ${retangle.variant?.price}
           </Text>
           <Text
             numberOfLines={1}
@@ -149,11 +196,11 @@ export default function FullWidthImage(props: {
               ...TextStyle.SM,
               width: WidthSize(80),
             }}>
-            Size
+            Size: {retangle.variant?.size}
           </Text>
         </View>
       </View>
-    );
+    ) : null;
   };
 
   return (
@@ -205,7 +252,7 @@ export default function FullWidthImage(props: {
                           minY: number;
                           maxX: number;
                           maxY: number;
-                          info?: string;
+                          variant?: V;
                         },
                         index: React.Key | null | undefined,
                       ) => (

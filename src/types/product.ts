@@ -60,4 +60,6 @@ export type ProductById = {
   }>;
   store: StoreProduct;
   ratings: Array<{}>;
+  minPrice: number;
+  maxPrice: number;
 };

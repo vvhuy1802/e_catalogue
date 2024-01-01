@@ -166,13 +166,13 @@ const AdminSystemStack = () => {
           title: 'Approve Store',
         }}
       />
-      <Drawer.Screen
+      {/* <Drawer.Screen
         name={REVENUE_SCREEN_ADMIN_SYSTEM}
         component={Revenue}
         options={{
           title: 'Revenue Screen',
         }}
-      />
+      /> */}
     </Drawer.Navigator>
   );
 };

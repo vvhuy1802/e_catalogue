@@ -40,6 +40,7 @@ export const ADDRESS_BOOK = 'AddressBook';
 export const MY_WALLET = 'MyWallet';
 
 export const ADMIN_STORE_STACK = 'AdminStoreStack';
+export const REVENUE_SCREEN_ADMIN_STORE = 'RevenueScreenAdminStore';
 export const HOME_SCREEN_ADMIN_STORE = 'HomeScreenAdminStore';
 export const ORDER_SCREEN_ADMIN_STORE = 'OrderScreenAdminStore';
 export const PRODUCT_SCREEN_ADMIN_STORE = 'ProductScreenAdminStore';
@@ -48,6 +49,8 @@ export const STYLE_ROOM_SCREEN_ADMIN_STORE = 'StyleRoomScreenAdminStore';
 export const ADD_STYLE_ROOM_SCREEN_ADMIN_STORE = 'AddStyleRoomScreenAdminStore';
 export const DETAIL_STYLE_ROOM_SCREEN_ADMIN_STORE =
   'DetailStyleRoomScreenAdminStore';
+export const EDIT_STYLE_ROOM_SCREEN_ADMIN_STORE =
+  'EditStyleRoomScreenAdminStore';
 export const POST_STYLE_ROOM_SCREEN_ADMIN_STORE =
   'PostStyleRoomScreenAdminStore';
 

@@ -294,8 +294,9 @@ const DetailCategory = ({route}: Props) => {
             alignItems: 'flex-start',
             justifyContent: 'space-between',
             gap: WidthSize(16),
+            marginBottom: HeightSize(120),
           }}>
-          {products.products.map((item, index) => {
+          {products?.products?.map((item, index) => {
             return (
               <Pressable
                 onPress={() => {
@@ -327,15 +328,16 @@ const DetailCategory = ({route}: Props) => {
                   source={getUrl(item.image)}
                   style={{
                     width: width / 2 - WidthSize(60),
-                    aspectRatio: 1,
-                    height: undefined,
+                    height: width / 2,
                     alignSelf: 'center',
                     borderRadius: 16,
                   }}
                   resizeMode="cover"
                 />
                 <Text
+                  numberOfLines={1}
                   style={{
+                    width: width / 2 - WidthSize(60),
                     marginTop: HeightSize(14),
                     color: '#3B3021',
                     ...TextStyle.Base,

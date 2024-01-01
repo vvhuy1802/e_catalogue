@@ -55,20 +55,17 @@ type actualImageProps = {
   retangles: Array<Retangle>;
 };
 
-type AddStyleRoomProps = {
-  route: RouteProp<StyleRoomStackParamList, 'AddStyleRoomScreenAdminStore'>;
+type EditStyleRoomProps = {
+  route: RouteProp<StyleRoomStackParamList, 'EditStyleRoomScreenAdminStore'>;
 };
-const AddStyleRoom = ({route}: AddStyleRoomProps) => {
+const EditStyleRoom = ({route}: EditStyleRoomProps) => {
   const navigation =
     useNavigation<StackNavigationProp<StyleRoomStackParamList>>();
-  const [size, setSize] = useState({
-    width: route.params.widthImgage,
-    height: route.params.heightImage,
-  });
   const storeInfo = useSelector(selectStoreInfo);
+  const size = route.params.size;
   const [currentProduct, setCurrentProduct] = useState<StoreProduct>();
   const [currentVariant, setCurrentVariant] = useState<ProductById>();
-  const [name, setName] = useState('');
+  const [name, setName] = useState(route.params.name);
   useEffect(() => {
     if (currentProduct?.id) {
       axios
@@ -80,12 +77,6 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
     }
   }, [currentProduct]);
 
-  const [actualImage, setActualImage] = useState<actualImageProps>({
-    image: route.params.imageAdding,
-    width: route.params.widthImgage,
-    height: route.params.heightImage,
-    retangles: [],
-  });
   const [modalVisible, setModalVisible] = useState(false);
   const [variant, setVariant] = useState<Variant>();
   const tabs = [
@@ -147,7 +138,9 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
   );
   const dispatch = useDispatch<AppDispatch>();
 
-  const [retangles, setRetangles] = useState<Array<Retangle>>([]);
+  const [retangles, setRetangles] = useState<Array<Retangle>>(
+    route.params.rectangles,
+  );
 
   useEffect(() => {
     StatusBar.setBarStyle('light-content');
@@ -156,6 +149,14 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
   const insets = useSafeAreaInsets();
   const [isDraw, setIsDraw] = useState(false);
   const [listImageMore, setListImageMore] = useState<Array<Asset>>([]);
+  const [listImage, setListImage] = useState<
+    {
+      id: number;
+      image: string;
+      isFromEdit?: boolean;
+    }[]
+  >(route.params.listImage);
+  const [listImageDeletee, setListImageDelete] = useState<Array<string>>([]);
   const openImagePicker = () => {
     const options: ImageLibraryOptions = {
       mediaType: 'photo',
@@ -342,6 +343,7 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
   };
 
   const [modalPost, setModalPost] = useState(false);
+
   return (
     <ContainerView
       style={{
@@ -371,12 +373,6 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
                   setRetangles(retangles =>
                     retangles.slice(0, retangles.length - 1),
                   );
-                  setActualImage({
-                    image: actualImage?.image,
-                    width: size.width,
-                    height: size.height,
-                    retangles: retangles,
-                  });
                 }}
                 suppressHighlighting={true}
                 style={{
@@ -441,7 +437,15 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
             </View>
             <FlatList
               showsHorizontalScrollIndicator={false}
-              data={listImageMore}
+              data={listImage.concat(
+                listImageMore.map(item => {
+                  return {
+                    id: Math.random(),
+                    image: item.uri as string,
+                    isFromEdit: false,
+                  };
+                }),
+              )}
               horizontal={true}
               style={{
                 marginLeft: WidthSize(16),
@@ -452,7 +456,7 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
               renderItem={({item, index}) => {
                 return (
                   <ImageBackground
-                    key={item.id}
+                    key={item.image}
                     style={{
                       width: WidthSize(70),
                       height: WidthSize(70),
@@ -462,13 +466,26 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
                     imageStyle={{
                       borderRadius: 10,
                     }}
-                    source={{uri: item.uri}}>
+                    source={
+                      item.isFromEdit ? getUrl(item.image) : {uri: item.image}
+                    }>
                     <IconSvg
                       onPress={() => {
-                        const newList = listImageMore.filter(
-                          (item, i) => i !== index,
-                        );
-                        setListImageMore(newList);
+                        if (item.isFromEdit) {
+                          setListImageDelete(listImageDeletee => [
+                            ...listImageDeletee,
+                            item.image,
+                          ]);
+                          const newList = listImage.filter(
+                            (item, i) => i !== index,
+                          );
+                          setListImage(newList);
+                        } else {
+                          const newList = listImageMore.filter(
+                            (items, i) => items.uri !== item.image,
+                          );
+                          setListImageMore(newList);
+                        }
                       }}
                       style={{
                         position: 'absolute',
@@ -587,7 +604,7 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
             height: size.height,
           }}
           resizeMode="contain"
-          source={{uri: actualImage?.image?.assets[0].uri}}
+          source={getUrl(route.params.mainImage)}
         />
       </Pressable>
 
@@ -764,13 +781,6 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
                     const index = retangles.length - 1;
                     retangles[index].variant = variant;
                     retangles[index].product = currentProduct;
-                    const data = {
-                      image: actualImage?.image,
-                      width: size.width,
-                      height: size.height,
-                      retangles: retangles,
-                    };
-                    setActualImage(data);
                     setModalVisible(false);
                     setVariant(undefined);
                     setCurrentProduct(undefined);
@@ -878,7 +888,7 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
                     height: WidthSize(164),
                     borderRadius: 10,
                   }}
-                  source={{uri: actualImage?.image?.assets[0].uri}}
+                  source={getUrl(route.params.mainImage)}
                 />
                 <View
                   style={{
@@ -1029,7 +1039,15 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
                 </View>
                 <FlatList
                   showsHorizontalScrollIndicator={false}
-                  data={listImageMore}
+                  data={listImage.concat(
+                    listImageMore.map(item => {
+                      return {
+                        id: Math.random(),
+                        image: item.uri as string,
+                        isFromEdit: false,
+                      };
+                    }),
+                  )}
                   horizontal={true}
                   style={{
                     marginLeft: WidthSize(16),
@@ -1040,7 +1058,7 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
                   renderItem={({item, index}) => {
                     return (
                       <ImageBackground
-                        key={item.id}
+                        key={item.image}
                         style={{
                           width: WidthSize(70),
                           height: WidthSize(70),
@@ -1050,13 +1068,28 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
                         imageStyle={{
                           borderRadius: 10,
                         }}
-                        source={{uri: item.uri}}>
+                        source={
+                          item.isFromEdit
+                            ? getUrl(item.image)
+                            : {uri: item.image}
+                        }>
                         <IconSvg
                           onPress={() => {
-                            const newList = listImageMore.filter(
-                              (item, i) => i !== index,
-                            );
-                            setListImageMore(newList);
+                            if (item.isFromEdit) {
+                              setListImageDelete(listImageDeletee => [
+                                ...listImageDeletee,
+                                item.image,
+                              ]);
+                              const newList = listImage.filter(
+                                (item, i) => i !== index,
+                              );
+                              setListImage(newList);
+                            } else {
+                              const newList = listImageMore.filter(
+                                (items, i) => items.uri !== item.image,
+                              );
+                              setListImageMore(newList);
+                            }
                           }}
                           style={{
                             position: 'absolute',
@@ -1131,13 +1164,9 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
               let formData = new FormData();
               formData.append('name', name);
               formData.append('category', category.title);
-              formData.append('mainImage', {
-                uri: actualImage?.image?.assets[0].uri,
-                type: actualImage.image?.assets[0].type,
-                name: actualImage.image?.assets[0].fileName,
-              });
-              formData.append('width', actualImage.width);
-              formData.append('height', actualImage.height);
+
+              formData.append('width', route.params.size.width);
+              formData.append('height', route.params.size.height);
               let arrRetangle: {
                 minX: number;
                 minY: number;
@@ -1155,24 +1184,37 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
                 });
               });
               formData.append('rectangles', JSON.stringify(arrRetangle));
-
-              styleService.createStyle(formData).then(res => {
-                dispatch(getStyleByStore(res.data.store.id));
-                if (listImageMore.length > 0) {
-                  listImageMore.forEach(async (item, index) => {
-                    let formData = new FormData();
-                    formData.append('style', res.data.id);
-                    formData.append('image', {
-                      uri: item.uri,
-                      type: item.type,
-                      name: item.fileName,
+              console.log(JSON.stringify(formData, null, 2));
+              styleService.updateStyle(formData, route.params.id).then(res => {
+                console.log(JSON.stringify(res.data, null, 2));
+                if (res.status === 200) {
+                  dispatch(getStyleByStore(res.data.store.id));
+                  if (listImageMore.length > 0) {
+                    listImageMore.forEach(async (item, index) => {
+                      let formData = new FormData();
+                      formData.append('style', res.data.id);
+                      formData.append('image', {
+                        uri: item.uri,
+                        type: item.type,
+                        name: item.fileName,
+                      });
+                      await styleService.addListImage(formData);
                     });
-                    await styleService.addListImage(formData);
-                  });
+                  }
+                  if (listImageDeletee.length > 0) {
+                    listImageDeletee.forEach(async (item, index) => {
+                      await styleService.deleteImage(
+                        {
+                          image: item,
+                        },
+                        route.params.id,
+                      );
+                    });
+                  }
                 }
               });
-              setModalPost(false);
-              navigation.goBack();
+              //   setModalPost(false);
+              //   navigation.goBack();
             }}
             activeOpacity={0.8}
             style={{
@@ -1193,7 +1235,7 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
                 color: 'white',
                 textAlign: 'center',
               }}>
-              Post
+              Update
             </Text>
           </TouchableOpacity>
         </View>
@@ -1202,4 +1244,4 @@ const AddStyleRoom = ({route}: AddStyleRoomProps) => {
   );
 };
 
-export default AddStyleRoom;
+export default EditStyleRoom;
