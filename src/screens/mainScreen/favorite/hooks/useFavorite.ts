@@ -1,13 +1,30 @@
-import {View, Text} from 'react-native';
-import React from 'react';
-import {useNavigation} from '@react-navigation/native';
-import {StackNavigationProp} from '@react-navigation/stack';
 import {useDispatch} from 'react-redux';
 import {AppDispatch} from '~/app/store';
-import {ORDERSTACK} from '~/constants/routeNames';
-import {SetDirectionBottomBar} from '~/redux/reducers/globalSlice';
-import {HomeStackParamList} from '~/types';
+import {getAllCollection} from '~/redux/actions/userInfoAction';
+import {userInfoService} from '~/services/service/userInfo.service';
 
 export const useFavorite = () => {
-  return {};
+  const dispatch = useDispatch<AppDispatch>();
+  const addFavorite = (
+    contentId: string,
+    contentType: 'product' | 'idea',
+    collectionId: string,
+  ) => {
+    userInfoService.addFavorite({
+      contentId,
+      contentType,
+      collectionId,
+    });
+  };
+
+  const removeFavorite = async (favoriteId: string) => {
+    await userInfoService.removeFavorite({
+      id: favoriteId,
+    });
+    await dispatch(getAllCollection());
+  };
+  return {
+    addFavorite,
+    removeFavorite,
+  };
 };

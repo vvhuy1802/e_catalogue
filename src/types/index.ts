@@ -97,6 +97,7 @@ export type HomeStackParamList = {
   [PROFILE_STACK]: undefined;
   [CATEGORY]: NavigatorScreenParams<CategoryStackParamList>;
   [FAVORITE]: undefined;
+  [PRODUCTSTACK]: NavigatorScreenParams<ProfileStackParamList>;
   [STYLEIDEASTACK]: NavigatorScreenParams<StyleIdeaStackParamList>;
   [SEARCHSTACK]: NavigatorScreenParams<SearchStackParamList>;
   [ORDERSTACK]: NavigatorScreenParams<OrderStackParamList>;

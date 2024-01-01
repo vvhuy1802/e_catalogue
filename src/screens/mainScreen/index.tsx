@@ -11,6 +11,7 @@ import {
   STYLEIDEA,
   STYLEIDEASTACK,
   PROFILE_STACK,
+  PRODUCTSTACK,
 } from '~/constants/routeNames';
 import HomeScreen from './home';
 import {HomeStackParamList} from '~/types';
@@ -23,6 +24,7 @@ import OrderStack from './category/screens/order';
 import StyleIdea from './styleIdea/screens/styleIdea';
 import StyleIdeaStack from './styleIdea';
 import ProfileStack from './profile';
+import ProductStack from './category/screens/productDetail';
 
 const Stack = createNativeStackNavigator<HomeStackParamList>();
 const MainStack = () => {
@@ -41,6 +43,15 @@ const MainStack = () => {
         <Stack.Screen
           name={CATEGORY}
           component={CategoryStack}
+          options={{
+            headerShown: false,
+            gestureEnabled: false,
+            animation: 'fade',
+          }}
+        />
+        <Stack.Screen
+          name={PRODUCTSTACK}
+          component={ProductStack}
           options={{
             headerShown: false,
             gestureEnabled: false,

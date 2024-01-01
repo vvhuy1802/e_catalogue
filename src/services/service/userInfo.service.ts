@@ -30,11 +30,13 @@ export const userInfoService = {
   removeFavorite: (params: {id: string}) => {
     return request<Favorite>(apiUrl.removeFavorite(), Methods.delete, params);
   },
-  createNewCollection: (params: {id: string}) => {
+  createNewCollection: (params: {name: string; image: FormData}) => {
+    console.log('params create board: ', JSON.stringify(params, null, 2));
     return request<Favorite>(
       apiUrl.createNewCollection(),
       Methods.post,
       params,
+      true,
     );
   },
   updateCollection: (params: {id: string}) => {

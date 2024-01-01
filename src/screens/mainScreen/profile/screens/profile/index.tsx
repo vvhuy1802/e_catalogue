@@ -5,7 +5,7 @@ import Cart from '~/components/global/cart';
 import ContainerImage from '~/components/global/containerImage';
 import CustomScrollView from '~/components/global/customScrollView';
 import {HeightSize, WidthSize, width} from '~/theme/size';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {AppDispatch} from '~/app/store';
 import {SetDirectionBottomBar} from '~/redux/reducers/globalSlice';
 import {StackNavigationProp} from '@react-navigation/stack';
@@ -25,6 +25,7 @@ import {SetIsAuthorized, SetUserInforLogin} from '~/redux/reducers/authSlice';
 import {AppProvider} from '~/app/appProvider';
 import {useSetting} from './hooks/useSetting';
 import {getAllUserContact} from '~/redux/actions/contact';
+import {selectUserInfo} from '~/redux/reducers/userInfo';
 
 type ProfileProps = {
   navigation: StackNavigationProp<ProfileStackParamList, 'Profile'>;
@@ -42,7 +43,7 @@ const Profile: React.FC<ProfileProps> = ({navigation}) => {
 
   const {onPressCamera, image, loadingSetProfileImage} = useImagePicker();
   const {onPressSetting} = useSetting({navigation});
-
+  const userInfo = useSelector(selectUserInfo);
   const handleLogout = () => {
     dispatch(
       SetUserInforLogin({
@@ -125,7 +126,7 @@ const Profile: React.FC<ProfileProps> = ({navigation}) => {
             </View>
           </View>
 
-          <Text style={styles.accountName}>John Doe</Text>
+          <Text style={styles.accountName}>{userInfo.fullname || ''}</Text>
 
           <View style={styles.containerOption}>
             <IconSvg icon={'IconCube'} style={styles.iconOption} />
