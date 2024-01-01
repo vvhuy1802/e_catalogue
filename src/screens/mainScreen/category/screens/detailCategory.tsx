@@ -351,7 +351,7 @@ const DetailCategory = ({route}: Props) => {
                     ...TextStyle.SM,
                     ...TextFont.SMedium,
                   }}>
-                  {item?.type ? item?.type : 'No type'}
+                  ''
                 </Text>
                 <Text
                   style={{

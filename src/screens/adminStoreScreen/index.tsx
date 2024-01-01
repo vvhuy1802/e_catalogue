@@ -60,7 +60,7 @@ const AdminStoreStack = () => {
   useEffect(() => {
     dispatch(getStoreById(currentAccount.id));
     dispatch(getAllOrder());
-  }, []);
+  }, [currentAccount]);
 
   const CustomDrawer = (props: any) => {
     return (
@@ -96,7 +96,7 @@ const AdminStoreStack = () => {
                   color: '#3B3021',
                   width: width - WidthSize(250),
                 }}>
-                {storeInfo?.name} storeInfo storeInfo storeInfo
+                {storeInfo?.name}
               </Text>
               <Text
                 style={{

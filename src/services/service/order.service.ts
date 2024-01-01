@@ -38,7 +38,7 @@ export const orderService = {
   updateStatusOrder: (
     orderId: number,
     params: {
-      status: 'pending' | 'delivering' | 'delivered' | 'cancelled';
+      status: 'pending' | 'delivering' | 'delivered' | 'canceled';
     },
   ) => {
     return request<any>(apiUrl.updateOrderStatus(orderId), Methods.put, params);

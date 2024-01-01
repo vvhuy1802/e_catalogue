@@ -26,6 +26,7 @@ import {getAllOrder} from '~/redux/actions/orderAction';
 import {orderService} from '~/services/service/order.service';
 import {useDispatch} from 'react-redux';
 import {AppDispatch} from '~/app/store';
+import {NormalizeCartVariant, OrderAdminStore} from '~/types/order';
 
 type Props = {
   route: RouteProp<
@@ -34,7 +35,10 @@ type Props = {
   >;
 };
 const DetailOrderScreen = ({route}: Props) => {
-  const order = route.params.order;
+  const [order, setOrder] = React.useState<OrderAdminStore>(route.params.order);
+  const [status, setStatus] = React.useState<string>(
+    route.params.order.deliver_status,
+  );
   const [dataContact, setDataContact] = React.useState<Contact | any>();
   const [localAddress, setLocalAddress] =
     React.useState<NormalizedLocationVietNam | null>();
@@ -92,6 +96,18 @@ const DetailOrderScreen = ({route}: Props) => {
       default:
         return {color: '#FFC107', text: 'Pending'};
     }
+  };
+  const totalOrder = (items: NormalizeCartVariant) => {
+    let total = 15;
+    let totalItem = 0;
+    items?.ids?.map(item => {
+      totalItem += items.entities[item].quantity;
+      total += items.entities[item].price * items.entities[item].quantity;
+    });
+    return {
+      total,
+      totalItem,
+    };
   };
 
   return (
@@ -194,9 +210,10 @@ const DetailOrderScreen = ({route}: Props) => {
             style={{
               gap: HeightSize(16),
             }}>
-            {order?.items?.ids.map((id: any) => {
+            {order?.items?.ids?.map((id: any) => {
               return (
                 <View
+                  key={id}
                   style={{
                     flexDirection: 'row',
                   }}>
@@ -388,9 +405,32 @@ const DetailOrderScreen = ({route}: Props) => {
                 style={{
                   ...TextFont.SBold,
                   ...TextStyle.Base,
-                  color: orderStatusAdapter(order.deliver_status).color,
+                  color: orderStatusAdapter(status).color,
                 }}>
-                {orderStatusAdapter(order.deliver_status).text}
+                {orderStatusAdapter(status).text}
+              </Text>
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}>
+              <Text
+                style={{
+                  ...TextFont.SRegular,
+                  ...TextStyle.Base,
+                  color: '#3B3021',
+                }}>
+                Shipping fee:
+              </Text>
+              <Text
+                style={{
+                  ...TextFont.SBold,
+                  ...TextStyle.Base,
+                  color: '#3B3021',
+                }}>
+                $15
               </Text>
             </View>
             <View
@@ -413,12 +453,12 @@ const DetailOrderScreen = ({route}: Props) => {
                   ...TextStyle.Base,
                   color: '#3B3021',
                 }}>
-                ${order.total_price}
+                ${totalOrder(order.items).total}
               </Text>
             </View>
           </View>
         </View>
-        {order.deliver_status === 'pending' && (
+        {status === 'pending' && (
           <View
             style={{
               flexDirection: 'row',
@@ -432,9 +472,9 @@ const DetailOrderScreen = ({route}: Props) => {
             <TouchableOpacity
               onPress={() => {
                 orderService
-                  .updateStatusOrder(order.id, {status: 'cancelled'})
+                  .updateStatusOrder(order.id, {status: 'canceled'})
                   .then(res => {
-                    console.log(res);
+                    setStatus('canceled');
                     res.status === 200 && dispatch(getAllOrder());
                   });
               }}
@@ -461,6 +501,7 @@ const DetailOrderScreen = ({route}: Props) => {
                 orderService
                   .updateStatusOrder(order.id, {status: 'delivering'})
                   .then(res => {
+                    setStatus('delivering');
                     res.status === 200 && dispatch(getAllOrder());
                   });
               }}
@@ -480,6 +521,104 @@ const DetailOrderScreen = ({route}: Props) => {
                 Accept
               </Text>
             </TouchableOpacity>
+          </View>
+        )}
+        {status === 'delivering' && (
+          <TouchableOpacity
+            onPress={() => {
+              orderService
+                .updateStatusOrder(order.id, {status: 'delivered'})
+                .then(res => {
+                  setStatus('delivered');
+                  res.status === 200 && dispatch(getAllOrder());
+                });
+            }}
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: HeightSize(48),
+              marginHorizontal: WidthSize(16),
+              marginTop: HeightSize(16),
+              marginBottom: HeightSize(16),
+            }}>
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: '#836E44',
+                paddingVertical: HeightSize(8),
+                alignItems: 'center',
+                borderRadius: 10,
+              }}>
+              <Text
+                style={{
+                  ...TextFont.SRegular,
+                  ...TextStyle.SM,
+                  color: 'white',
+                }}>
+                Delivering
+              </Text>
+            </View>
+          </TouchableOpacity>
+        )}
+        {status === 'delivered' && (
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: HeightSize(48),
+              marginHorizontal: WidthSize(16),
+              marginTop: HeightSize(16),
+              marginBottom: HeightSize(16),
+            }}>
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: '#5FA758',
+                paddingVertical: HeightSize(8),
+                alignItems: 'center',
+                borderRadius: 10,
+              }}>
+              <Text
+                style={{
+                  ...TextFont.SRegular,
+                  ...TextStyle.SM,
+                  color: 'white',
+                }}>
+                Delivered
+              </Text>
+            </View>
+          </View>
+        )}
+        {status === 'canceled' && (
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: HeightSize(48),
+              marginHorizontal: WidthSize(16),
+              marginTop: HeightSize(16),
+              marginBottom: HeightSize(16),
+            }}>
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: 'red',
+                paddingVertical: HeightSize(8),
+                alignItems: 'center',
+                borderRadius: 10,
+              }}>
+              <Text
+                style={{
+                  ...TextFont.SRegular,
+                  ...TextStyle.SM,
+                  color: 'white',
+                }}>
+                Cancelled
+              </Text>
+            </View>
           </View>
         )}
       </ScrollView>

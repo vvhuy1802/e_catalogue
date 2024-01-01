@@ -33,6 +33,7 @@ const MyBag = ({route}: Props) => {
   const navigationOrder =
     useNavigation<StackNavigationProp<OrderStackParamList, 'MyBag'>>();
   const dataCart = useSelector(selectDataCart);
+  console.log(JSON.stringify(dataCart, null, 2));
   const dispatch = useDispatch<AppDispatch>();
   const onGoBack = () => {
     if (route.params.isShowBottomBarWhenBack) {

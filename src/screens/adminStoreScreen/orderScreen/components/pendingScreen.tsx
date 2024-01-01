@@ -49,7 +49,7 @@ const PendingScreen = () => {
   }, [allOrder]);
 
   const totalOrder = (items: NormalizeCartVariant) => {
-    let total = 0;
+    let total = 15;
     let totalItem = 0;
     items.ids.map(item => {
       totalItem += items.entities[item].quantity;
@@ -292,7 +292,7 @@ const PendingScreen = () => {
               <TouchableOpacity
                 onPress={() => {
                   orderService
-                    .updateStatusOrder(item.id, {status: 'cancelled'})
+                    .updateStatusOrder(item.id, {status: 'canceled'})
                     .then(res => {
                       console.log(res);
                       res.status === 200 && dispatch(getAllOrder());

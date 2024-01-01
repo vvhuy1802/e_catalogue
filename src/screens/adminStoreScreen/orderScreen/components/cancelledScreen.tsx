@@ -33,9 +33,11 @@ const CancelledScreen = () => {
     };
     allOrder.length >= 0 &&
       allOrder.forEach(item => {
-        if (item.deliver_status === 'cancelled') {
+        if (item.deliver_status === 'canceled') {
           const date = new Date(item.order_date);
-          const dateString = `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`;
+          const dateString = `${date.getDate()}/${
+            date.getMonth() + 1
+          }/${date.getFullYear()}`;
           if (data.ids.indexOf(dateString) === -1) {
             data.ids.push(dateString);
             data.entities[dateString] = [];
@@ -48,7 +50,7 @@ const CancelledScreen = () => {
   }, [allOrder]);
 
   const totalOrder = (items: NormalizeCartVariant) => {
-    let total = 0;
+    let total = 15;
     let totalItem = 0;
     items.ids.map(item => {
       totalItem += items.entities[item].quantity;

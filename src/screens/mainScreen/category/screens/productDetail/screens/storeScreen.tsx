@@ -49,6 +49,7 @@ const StoreScreen = ({route}: Props) => {
             userId: number;
           }>;
         }) => {
+          console.log(res.data);
           res.data.map(item => {
             if (item.storeId === store.id) setIsFollow(true);
           });

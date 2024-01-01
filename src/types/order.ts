@@ -96,7 +96,7 @@ export type OrderAdminStore = {
   user_id: number;
   contact_id: number;
   total_price: number;
-  deliver_status: 'pending' | 'delivering' | 'delivered' | 'cancelled';
+  deliver_status: 'pending' | 'delivering' | 'delivered' | 'canceled';
   order_date: string;
   delivery_date: string;
   delivered_date: string;

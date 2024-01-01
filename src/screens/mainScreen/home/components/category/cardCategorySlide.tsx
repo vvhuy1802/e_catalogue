@@ -91,7 +91,7 @@ const CardCategorySlide = () => {
         }}
         data={
           loadingGetCategories === 'fulfilled'
-            ? allCategories.filter(
+            ? allCategories?.filter(
                 item => item.name === currentDropDown.title,
               )[0].children
             : []
