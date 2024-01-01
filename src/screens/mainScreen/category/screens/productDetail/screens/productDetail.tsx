@@ -5,7 +5,9 @@ import {
   Modal,
   Pressable,
   ScrollView,
+  StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -13,6 +15,7 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react';
@@ -46,6 +49,14 @@ import {addProductToCart, getCartUser} from '~/redux/actions/orderAction';
 import {NormalizeSize} from '~/types/size';
 import axios from 'axios';
 import {ProductStackContext} from '~/utils/context';
+import {useFavorite} from '~/screens/mainScreen/favorite/hooks/useFavorite';
+import BottomSheet, {BottomSheetBackdrop} from '@gorhom/bottom-sheet';
+import {useImagePicker} from '~/screens/mainScreen/profile/screens/profile/hooks/useImagePicker';
+import {URL_GET_FILE} from '~/constants/global';
+import {useBoard} from './hooks/useBoard';
+import {FAB} from 'react-native-paper';
+import {userInfoService} from '~/services/service/userInfo.service';
+import {AddPopupMessage} from '~/redux/reducers/popupMessageSlice';
 
 type Props = {
   route: RouteProp<ProductDetailStackParamList, 'ProductDetailScreen'>;
@@ -275,6 +286,20 @@ const ProductDetail = ({route}: Props) => {
     return 0;
   };
 
+  const bottomSheetBoardRef = useRef<BottomSheet>(null);
+  const snapPointsBoard = useMemo(() => ['80%'], []);
+  const handleAddressSnapPress = useCallback((index: number) => {
+    bottomSheetBoardRef.current?.snapToIndex(index);
+    if (index == 0) {
+    }
+  }, []);
+  const handleCloseBoardPress = useCallback(() => {
+    bottomSheetBoardRef.current?.close();
+  }, []);
+  const [isAddingBoard, setIsAddingBoard] = useState<boolean>(false);
+  const [nameBoard, setNameBoard] = useState<string>('');
+  const {onPressCamera, image} = useBoard();
+  const {addFavorite} = useFavorite();
   return (
     <ContainerImage
       // isOpacity={true}
@@ -381,6 +406,10 @@ const ProductDetail = ({route}: Props) => {
 
             {renderDots()}
             <PrimaryHeart
+              onPress={() => {
+                addFavorite(productId, 'product', '0');
+                // handleAddressSnapPress(0);
+              }}
               styleView={{
                 position: 'absolute',
                 width: WidthSize(44),
@@ -980,8 +1009,234 @@ const ProductDetail = ({route}: Props) => {
           </Pressable>
         </Pressable>
       </Modal>
+
+      <BottomSheet
+        ref={bottomSheetBoardRef}
+        index={-1}
+        snapPoints={snapPointsBoard}
+        enablePanDownToClose={true}
+        onClose={() => {}}
+        handleIndicatorStyle={{backgroundColor: '#3B3021'}}
+        handleStyle={{
+          backgroundColor: '#F0EFE9',
+          borderTopRightRadius: 16,
+          borderTopLeftRadius: 16,
+        }}
+        backdropComponent={props => (
+          <BottomSheetBackdrop
+            {...props}
+            enableTouchThrough={true}
+            appearsOnIndex={0}
+            disappearsOnIndex={-1}
+            opacity={0.7}>
+            <Pressable style={{flex: 1}} />
+          </BottomSheetBackdrop>
+        )}
+        style={{
+          backgroundColor: '#F0EFE9',
+          borderColor: '#000',
+          borderTopRightRadius: 16,
+          borderTopLeftRadius: 16,
+        }}>
+        <View
+          style={{
+            marginHorizontal: WidthSize(16),
+          }}>
+          <Text
+            style={{
+              ...TextFont.SBold,
+              ...TextStyle.Base,
+              color: '#3B3021',
+              marginTop: HeightSize(16),
+            }}>
+            Choose Board
+          </Text>
+
+          {isAddingBoard && (
+            <View>
+              <Text
+                style={{
+                  ...TextFont.SBold,
+                  ...TextStyle.XL,
+                  color: '#3B3021',
+                  marginTop: HeightSize(16),
+                  alignSelf: 'center',
+                }}>
+                Add new board
+              </Text>
+
+              <Text
+                style={[
+                  styles.selectedLabel,
+                  {
+                    marginBottom: 10,
+                    marginTop: 15,
+                    color: '#3B3021',
+                    ...TextFont.SMedium,
+                  },
+                ]}>
+                Board Name
+              </Text>
+
+              <View
+                style={{
+                  marginHorizontal: WidthSize(16),
+                  marginBottom: HeightSize(32),
+                }}>
+                <TextInput
+                  style={styles.txtInput}
+                  placeholderTextColor={'#A5ABB9'}
+                  placeholder="Enter your board name"
+                  value={nameBoard}
+                  onChangeText={text => setNameBoard(text)}
+                  secureTextEntry={false}
+                />
+              </View>
+
+              <View
+                style={{
+                  flexDirection: 'row',
+                }}>
+                <Text
+                  style={[
+                    styles.selectedLabel,
+                    {
+                      marginBottom: 10,
+                      marginTop: 15,
+                      color: '#3B3021',
+                      ...TextFont.SMedium,
+                      marginEnd: 40,
+                    },
+                  ]}>
+                  Image
+                </Text>
+                <TouchableOpacity
+                  onPress={onPressCamera}
+                  style={{
+                    width: WidthSize(20),
+                    height: WidthSize(20),
+                    borderRadius: 16,
+                    backgroundColor: '#F2F2F4',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    alignSelf: 'center',
+                  }}>
+                  <IconSvg icon="IconCamera" />
+                </TouchableOpacity>
+              </View>
+              <View>
+                <FastImage
+                  source={{uri: image?.uri}}
+                  resizeMode="cover"
+                  style={{
+                    width: WidthSize(128),
+                    height: WidthSize(128),
+                    alignSelf: 'center',
+                  }}
+                />
+              </View>
+              <FAB
+                onPress={async () => {
+                  let formData = new FormData();
+                  formData.append('image', {
+                    uri: image.uri || '',
+                    type: image.type || '',
+                    name: image.fileName || '',
+                  });
+                  await userInfoService.createNewCollection({
+                    name: nameBoard,
+                    image: formData,
+                  });
+                  dispatch(
+                    AddPopupMessage({
+                      title: 'Success',
+                      type: 'success',
+                      message: 'Add new board successfully!',
+                      size: 'small',
+                      time: 'long',
+                    }),
+                  );
+                  setIsAddingBoard(false);
+                }}
+                label="Create"
+                size="small"
+                color={'#fff'}
+                style={{
+                  backgroundColor: '#836E44',
+                  marginBottom: 30,
+                  marginTop: 20,
+                }}
+              />
+            </View>
+          )}
+          <Pressable
+            style={{marginTop: HeightSize(30), alignSelf: 'center'}}
+            onPress={() => {
+              setIsAddingBoard(!isAddingBoard);
+            }}>
+            <Text>{!isAddingBoard ? 'Add new board' : 'Back'}</Text>
+          </Pressable>
+        </View>
+      </BottomSheet>
     </ContainerImage>
   );
 };
 
 export default ProductDetail;
+
+const styles = StyleSheet.create({
+  selectedSectionLabel: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 15,
+  },
+  selectedLabel: {
+    marginStart: 15,
+    // color: colors.black,
+    // fontWeight: 'bold',
+  },
+  resetLabel: {
+    marginEnd: 15,
+    // color: colors.primary,
+    // fontWeight: 'bold',
+  },
+  selectedSectionContent: {
+    marginTop: 15,
+  },
+
+  selectedSectionItem: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    marginStart: 25,
+  },
+  selectedSectionItemText: {
+    marginStart: 10,
+    alignSelf: 'flex-end',
+  },
+  title: {
+    ...TextStyle.Base,
+    ...TextFont.SMedium,
+    fontWeight: 'bold',
+    marginBottom: HeightSize(5),
+    color: '#525A7F',
+  },
+  error: {
+    ...TextStyle.Base,
+    ...TextFont.SMedium,
+    fontWeight: 'bold',
+    marginBottom: HeightSize(5),
+    color: '#BC2424',
+  },
+  txtInput: {
+    ...TextFont.SRegular,
+    borderRadius: 16,
+    paddingHorizontal: WidthSize(20),
+    backgroundColor: '#F2F2F4',
+    color: 'black',
+    height: HeightSize(64),
+    borderColor: '#D8D2C4',
+    borderWidth: 1,
+  },
+});

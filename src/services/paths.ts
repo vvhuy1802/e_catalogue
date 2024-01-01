@@ -59,4 +59,6 @@ export const apiUrl = {
   updateCollection: () => `${baseUrl}${Services.userInfo}collection`,
   removeCollection: () => `${baseUrl}${Services.userInfo}collection`,
   getAllCollection: () => `${baseUrl}${Services.userInfo}collections`,
+
+  createNewProduct: () => `${baseUrl}${Services.product}`,
 };

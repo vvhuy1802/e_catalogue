@@ -27,12 +27,20 @@ import {
 import PrimaryHeart from '~/components/global/primaryHeart';
 import {getUrl} from '~/utils';
 import {productService} from '~/services/service/product.service';
-import {useNavigation} from '@react-navigation/core';
+import {useIsFocused, useNavigation} from '@react-navigation/core';
 import {StackNavigationProp} from '@react-navigation/stack';
-import {CategoryStackParamList} from '~/types';
+import {CategoryStackParamList, HomeStackParamList} from '~/types';
 import {ProductById} from '~/types/product';
+import {CATEGORY, PRODUCTDETAILSCREEN} from '~/constants/routeNames';
+import {useFavorite} from './hooks/useFavorite';
 
 const Favorite = () => {
+  const isFocused = useIsFocused();
+  useEffect(() => {
+    if (isFocused) {
+      dispatch(SetDirectionBottomBar('up'));
+    }
+  }, [isFocused]);
   const {handlePressCart} = useCart();
 
   const dispatch = useDispatch<AppDispatch>();
@@ -40,7 +48,6 @@ const Favorite = () => {
 
   const allCollection = useSelector(selectAllCollection);
   const allItem = useSelector(selectAllItem);
-  console.log('all items: ', allItem);
   const allIdea = useSelector(selectAllIdea);
   const [items, setItems] = useState<Array<ProductById>>([]);
 
@@ -59,7 +66,10 @@ const Favorite = () => {
 
   const navigation =
     useNavigation<StackNavigationProp<CategoryStackParamList>>();
+  const navi =
+    useNavigation<StackNavigationProp<HomeStackParamList, 'Favorite'>>();
 
+  const {removeFavorite} = useFavorite();
   return (
     <ContainerImage
       // isOpacity={true}
@@ -120,6 +130,7 @@ const Favorite = () => {
           marginTop: HeightSize(20),
           flex: 1,
           paddingHorizontal: WidthSize(32),
+          marginBottom: HeightSize(100),
         }}>
         <View
           style={{
@@ -133,12 +144,17 @@ const Favorite = () => {
           {currentTab === 'All items' && (
             <>
               {items.map((dataProduct, index) => {
+                let id = dataProduct.id
+                  ? allItem.find(
+                      item => item.contentId == dataProduct.id.toString(),
+                    )?.id
+                  : '';
                 return (
                   <Pressable
                     onPress={() => {
                       dispatch(SetDirectionBottomBar('down'));
-                      navigation.navigate('ProductStack', {
-                        screen: 'ProductDetailScreen',
+                      navi.navigate('ProductStack', {
+                        screen: PRODUCTDETAILSCREEN,
                         params: {
                           productId: dataProduct.id.toString(),
                         },
@@ -204,7 +220,7 @@ const Favorite = () => {
                     </Text>
                     <PrimaryHeart
                       isLiked={
-                        dataProduct != undefined
+                        dataProduct.id != undefined
                           ? allItem.find(
                               item =>
                                 item.contentId == dataProduct.id.toString(),
@@ -220,6 +236,9 @@ const Favorite = () => {
                       }}
                       widthIcon={WidthSize(16)}
                       heightIcon={WidthSize(16)}
+                      onPress={async () => {
+                        await removeFavorite(id || '');
+                      }}
                     />
                   </Pressable>
                 );
