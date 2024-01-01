@@ -80,11 +80,29 @@ export const styleService = {
     );
   },
 
-  getAllStyleByCategory: (categoryId: number) => {
+  getAllStyleByCategory: (categoryId: string) => {
     return request<StyleIdeaResponse[]>(
-      `https://e-catalogue.abcdavid.top/product/style/category?id=${categoryId}`,
+      `https://e-catalogue.abcdavid.top/product/style/category?category=${categoryId}`,
       Methods.get,
       null,
+      true,
+    );
+  },
+
+  updateStyle: (params: any, styleId: number) => {
+    return request<StyleResponse>(
+      `https://e-catalogue.abcdavid.top/product/style?id=${styleId}`,
+      Methods.put,
+      params,
+      true,
+    );
+  },
+
+  deleteImage: (params: any, styleId: number) => {
+    return request<any>(
+      `https://e-catalogue.abcdavid.top/product/style/image?id=${styleId}`,
+      Methods.delete,
+      params,
       true,
     );
   },

@@ -45,8 +45,6 @@ const DetailStyleRoom = ({route}: Props) => {
     });
   }, []);
 
-  console.log(styleIdea.rectangles);
-
   return (
     <ContainerImage
       isOpacity={true}
@@ -69,6 +67,8 @@ const DetailStyleRoom = ({route}: Props) => {
         <View
           style={{
             paddingHorizontal: WidthSize(32),
+            flexDirection: 'row',
+            justifyContent: 'space-between',
           }}>
           <Text
             style={{
@@ -79,6 +79,45 @@ const DetailStyleRoom = ({route}: Props) => {
               width: width / 2,
             }}>
             {styleIdea.name}
+          </Text>
+          <Text
+            onPress={() => {
+              navigation.navigate('EditStyleRoomScreenAdminStore', {
+                size: {
+                  width: styleIdea.width,
+                  height: styleIdea.height,
+                },
+                mainImage: styleIdea.mainImage,
+                rectangles: styleIdea.rectangles.map(item => {
+                  return {
+                    id: Math.random(),
+                    minX: item.minX,
+                    minY: item.minY,
+                    maxX: item.maxX,
+                    maxY: item.maxY,
+                    product: item.variant.product,
+                    variant: item.variant,
+                  };
+                }),
+                listImage: styleIdea.images.map(item => {
+                  return {
+                    id: item.id,
+                    image: item.image,
+                    isFromEdit: true,
+                  };
+                }),
+                name: styleIdea.name,
+                id: styleIdea.id,
+              });
+            }}
+            suppressHighlighting={true}
+            style={{
+              ...TextStyle.LG,
+              ...TextFont.SBold,
+              marginTop: HeightSize(8),
+              color: '#3B3021',
+            }}>
+            Edit
           </Text>
         </View>
 
@@ -101,30 +140,16 @@ const DetailStyleRoom = ({route}: Props) => {
           source={getUrl(styleIdea.mainImage)}>
           <IconSvg
             onPress={() => {
-              // navigationStyleIdea.navigate('AllImage', {
-              //   arrayImages: [
-              //     {
-              //       id: '1',
-              //       url: images.home.ImageHotLook,
-              //     },
-              //     {
-              //       id: '2',
-              //       url: images.home.DropDownGirl,
-              //     },
-              //     {
-              //       id: '3',
-              //       url: images.home.CategoryKids,
-              //     },
-              //     {
-              //       id: '4',
-              //       url: images.home.DropDownWoman,
-              //     },
-              //     {
-              //       id: '5',
-              //       url: images.home.ImagePopular,
-              //     },
-              //   ],
-              // });
+              const imgs = [
+                {
+                  id: Math.random(),
+                  image: styleIdea.mainImage,
+                },
+                ...styleIdea.images,
+              ];
+              navigation.navigate('AllImage', {
+                imgs: imgs,
+              });
             }}
             style={{
               position: 'absolute',
@@ -169,7 +194,7 @@ const DetailStyleRoom = ({route}: Props) => {
                     borderRadius: 20,
                   }}>
                   <Image
-                    source={images.home.ImagePopular}
+                    source={getUrl(item.variant.image)}
                     style={{
                       width: HeightSize(90),
                       height: HeightSize(90),
@@ -211,7 +236,6 @@ const DetailStyleRoom = ({route}: Props) => {
                       {item.variant.price}
                     </Text>
                   </View>
-                  <PrimaryHeart />
                 </View>
               );
             })}

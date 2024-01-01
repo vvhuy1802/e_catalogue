@@ -96,6 +96,7 @@ const StyleRoom = () => {
           showsVerticalScrollIndicator={false}
           style={{
             marginTop: HeightSize(16),
+            marginBottom: HeightSize(50),
           }}>
           {Storestyles.length !== 0 ? (
             <CustomListView

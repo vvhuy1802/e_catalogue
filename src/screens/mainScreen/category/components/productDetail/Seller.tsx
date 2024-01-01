@@ -169,6 +169,7 @@ const Seller = ({store, currentProduct}: Props) => {
         </Text>
 
         <FlatList
+          showsHorizontalScrollIndicator={false}
           data={store?.products
             ?.slice(0, 4)
             ?.filter(item => item.id !== parseInt(currentProduct))}
@@ -200,14 +201,16 @@ const Seller = ({store, currentProduct}: Props) => {
                   source={getUrl(item.image)}
                   style={{
                     width: width / 2 - WidthSize(60),
-                    height: width / 2 - WidthSize(60),
+                    height: width / 2,
                     alignSelf: 'center',
                     borderRadius: 16,
                   }}
                   resizeMode="contain"
                 />
                 <Text
+                  numberOfLines={1}
                   style={{
+                    width: width / 2 - WidthSize(60),
                     marginTop: HeightSize(14),
                     color: '#3B3021',
                     ...TextStyle.Base,

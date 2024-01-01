@@ -27,6 +27,7 @@ import {
 import {Dropdown} from 'react-native-element-dropdown';
 import {addNewCategory, updateCategory} from '~/redux/actions/categoryAction';
 import {AppDispatch} from '~/app/store';
+import {useNavigation} from '@react-navigation/native';
 
 const Category = () => {
   const [categories, setCategories] = useState<Array<RootCategory>>();
@@ -75,7 +76,7 @@ const Category = () => {
       }
     });
   };
-
+  const navigation = useNavigation<any>();
   return (
     <ContainerImage
       // isOpacity={true}
@@ -89,6 +90,24 @@ const Category = () => {
           alignItems: 'center',
           justifyContent: 'center',
         }}>
+        <Pressable
+          onPress={() => {
+            navigation.openDrawer();
+          }}
+          style={{
+            position: 'absolute',
+            left: WidthSize(16),
+          }}>
+          <IconSvg
+            onPress={() => {
+              navigation.openDrawer();
+            }}
+            style={{
+              marginLeft: WidthSize(16),
+            }}
+            icon="IconMenuBrown"
+          />
+        </Pressable>
         <Text
           style={{
             ...TextFont.GRegular,

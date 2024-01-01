@@ -19,7 +19,7 @@ import {
 } from 'react-native-image-picker';
 import {HeightSize, WidthSize, height, width} from '~/theme/size';
 import {BOTTOM_TAB_HEIGHT} from '~/constants/global';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {AppDispatch} from '~/app/store';
 import {
   SetDirectionBottomBar,
@@ -39,6 +39,8 @@ import PrimaryHeart from '~/components/global/primaryHeart';
 import Svg, {Path} from 'react-native-svg';
 import ContainerView from '~/components/global/containerView';
 import CustomListView from '~/components/global/customListView';
+import {getStyleByCategory} from '~/redux/actions/categoryAction';
+import {selectAllStyleByCategory} from '~/redux/reducers/categorySlice';
 
 type Retangle = {
   minX: number;
@@ -250,34 +252,15 @@ const StyleIdea = () => {
     },
   ];
 
-  const stylelist = [
-    {
-      id: 1,
-      img: 'https://images2.thanhnien.vn/528068263637045248/2023/7/24/huu-anh-zoner-2-4-16901664385181453210496.jpg',
-    },
-    {
-      id: 2,
-      img: 'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg',
-    },
-    {
-      id: 3,
-      img: 'https://imgupscaler.com/images/samples/anime-after.webp',
-    },
-    {
-      id: 4,
-      img: 'https://pixlr.com/images/index/ai-image-generator-two.webp',
-    },
-    {
-      id: 5,
-      img: 'https://cdn.pixabay.com/photo/2023/06/29/03/02/ai-generated-8095540_1280.jpg',
-    },
-    {
-      id: 6,
-      img: 'https://db53ipnarc8vy.cloudfront.net/task-category1.png',
-    },
-  ];
-
   const [currentTab, setCurrentTab] = useState(1);
+  const selectStyle = useSelector(selectAllStyleByCategory);
+  console.log('selectStyle', selectStyle);
+  useEffect(() => {
+    dispatch(
+      getStyleByCategory(tabs[currentTab - 1].title.toLocaleLowerCase()),
+    );
+  }, [currentTab]);
+
   const navigation = useNavigation<StackNavigationProp<HomeStackParamList>>();
   const navigationStyleIdea =
     useNavigation<StackNavigationProp<StyleIdeaStackParamList, 'StyleIdea'>>();
@@ -383,12 +366,12 @@ const StyleIdea = () => {
           }}
           showsVerticalScrollIndicator={false}>
           <CustomListView
-            data={stylelist}
+            data={selectStyle}
             widthView={width / 2 - WidthSize(38)}
             onPress={item => {
               dispatch(SetDirectionBottomBar('down'));
               navigationStyleIdea.navigate('StyleDetail', {
-                styleId: item.id.toString(),
+                styleId: item.id,
               });
             }}
           />

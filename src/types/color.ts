@@ -19,7 +19,7 @@ export const NormalizeColor: Normalized<string, string> = {
   ids: [
     'whites',
     'blacks',
-    'breys',
+    'greys',
     'beiges',
     'browns',
     'reds',
@@ -33,7 +33,7 @@ export const NormalizeColor: Normalized<string, string> = {
   entities: {
     whites: '#FFFFFF',
     blacks: '#000000',
-    breys: '#83878D',
+    greys: '#83878D',
     beiges: '#A99C82',
     browns: '#401D0b',
     reds: '#A50221',

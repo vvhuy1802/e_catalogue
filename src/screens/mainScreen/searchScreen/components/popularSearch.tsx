@@ -1,98 +1,50 @@
-import {ImageBackground, StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import {ImageBackground, Pressable, StyleSheet, Text, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import {images} from '~/assets';
 import BlurBackground from '~/components/global/blurBackground';
 import {HeightSize, WidthSize} from '~/theme/size';
 import {TextStyle, TextFont} from '~/theme/textStyle';
 import FastImage from 'react-native-fast-image';
+import {useDispatch, useSelector} from 'react-redux';
+import {selectAllCategories} from '~/redux/reducers/productSlice';
+import {AppDispatch} from '~/app/store';
+import {
+  SetDirectionBottomBar,
+  selectCurrentDropDown,
+} from '~/redux/reducers/globalSlice';
+import {ProductCategoryResponse} from '~/types/product';
+import {getUrl} from '~/utils';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {CategoryStackParamList, HomeStackParamList} from '~/types';
+import {DETAILCATEGORYSCREEN} from '~/constants/routeNames';
 
 const PopularSearch = () => {
-  const temp = [
-    {
-      id: 1,
-      title: 'Bucket hat',
-    },
-    {
-      id: 2,
-      title: 'Loafers',
-    },
-    {
-      id: 3,
-      title: 'Shacket',
-    },
-    {
-      id: 4,
-      title: 'Low-Rise Jeans',
-    },
-    {
-      id: 5,
-      title: 'Wide-Leg Pants',
-    },
-  ];
-  const dataList = [
-    {
-      id: 1,
-      name: 'Clothing',
-      img: images.category.MenClothing,
-    },
-    {
-      id: 2,
-      name: 'Suits',
-      img: images.category.MenSuits,
-    },
-    {
-      id: 3,
-      name: 'Accessories',
-      img: images.category.MenAccessories,
-    },
-  ];
+  const navigation = useNavigation<StackNavigationProp<HomeStackParamList>>();
+  const dispatch = useDispatch<AppDispatch>();
+  const categories = useSelector(selectAllCategories);
+  const currentDropDown = useSelector(selectCurrentDropDown);
+  const [currentCategory, setCurrentCategory] =
+    useState<ProductCategoryResponse>();
+  useEffect(() => {
+    setCurrentCategory(undefined);
+    categories.map(item => {
+      if (item.name === currentDropDown.title) {
+        setCurrentCategory(item);
+      }
+    });
+  }, [currentDropDown]);
+  const handleNavigate = (category: ProductCategoryResponse) => {
+    dispatch(SetDirectionBottomBar('down'));
+    navigation.navigate('Category', {
+      screen: 'DetailCategoryScreen',
+      params: {
+        category: category,
+      },
+    });
+  };
   return (
     <>
-      <View
-        style={{
-          marginTop: HeightSize(40),
-        }}>
-        <Text
-          style={{
-            color: '#3B3021',
-            ...TextStyle.XL,
-            ...TextFont.SBold,
-          }}>
-          Popular searches
-        </Text>
-        <View
-          style={{
-            marginTop: HeightSize(16),
-            flexDirection: 'row',
-            flexWrap: 'wrap',
-            alignItems: 'flex-start',
-            gap: WidthSize(16),
-          }}>
-          {temp.map((item, index) => {
-            return (
-              <View
-                key={index}
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  backgroundColor: '#EFEFE8',
-                  borderRadius: 12,
-                }}>
-                <Text
-                  style={{
-                    ...TextStyle.Base,
-                    ...TextFont.SRegular,
-                    color: '#3B3021',
-                    paddingVertical: HeightSize(12),
-                    paddingHorizontal: WidthSize(20),
-                  }}>
-                  {item.title}
-                </Text>
-              </View>
-            );
-          })}
-        </View>
-      </View>
       <View
         style={{
           marginTop: HeightSize(40),
@@ -110,10 +62,11 @@ const PopularSearch = () => {
           style={{
             marginTop: HeightSize(28),
           }}>
-          {dataList.map((item, index) => {
+          {currentCategory?.children.map((item, index) => {
             return (
-              <View
-                key={index}
+              <Pressable
+                onPress={() => handleNavigate(item)}
+                key={item.id}
                 style={{
                   flexDirection: 'row',
                   alignItems: 'center',
@@ -133,7 +86,7 @@ const PopularSearch = () => {
                     bottom: 0,
                   }}
                   resizeMode="contain"
-                  source={item.img}
+                  source={getUrl(item.image) as any}
                 />
                 <Text
                   style={{
@@ -145,7 +98,7 @@ const PopularSearch = () => {
                   }}>
                   {item.name}
                 </Text>
-              </View>
+              </Pressable>
             );
           })}
         </View>

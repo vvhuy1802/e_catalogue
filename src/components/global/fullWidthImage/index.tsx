@@ -62,7 +62,7 @@ export default function FullWidthImage(props: {
 }) {
   const [widthImg, setWidthImg] = useState(0);
   const [heightImg, setHeightImg] = useState(0);
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(true);
 
   const onLayout = useCallback(
     (event: any) => {

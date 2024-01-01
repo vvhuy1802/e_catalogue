@@ -51,7 +51,7 @@ export const getStyleByStore = createAsyncThunk(
 
 export const getStyleByCategory = createAsyncThunk(
   'getStyleByCategory/getStyleByCategory Action',
-  async (categoryId: number) => {
+  async (categoryId: string) => {
     const res = await styleService.getAllStyleByCategory(categoryId);
     return {data: res};
   },

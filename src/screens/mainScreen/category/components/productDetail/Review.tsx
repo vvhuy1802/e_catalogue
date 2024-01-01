@@ -133,9 +133,9 @@ const Review = () => {
               <View
                 key={index}
                 style={{
-                  padding: HeightSize(16),
+                  padding: HeightSize(12),
                   backgroundColor: '#EFEFE8',
-                  borderRadius: 20,
+                  borderRadius: 16,
                 }}>
                 <View
                   style={{
@@ -143,9 +143,9 @@ const Review = () => {
                   }}>
                   <Image
                     style={{
-                      width: HeightSize(48),
-                      height: HeightSize(48),
-                      borderRadius: 16,
+                      width: HeightSize(80),
+                      height: HeightSize(80),
+                      borderRadius: 12,
                     }}
                     source={item.avatar}
                   />
@@ -161,6 +161,7 @@ const Review = () => {
                         justifyContent: 'space-between',
                       }}>
                       <Text
+                        numberOfLines={1}
                         style={{
                           ...TextFont.SMedium,
                           color: '#3B3021',
@@ -223,7 +224,7 @@ const Review = () => {
             )
           );
         })}
-        <Pressable
+        {/* <Pressable
           onPress={() => {
             setIsShowCommentModal(true);
           }}
@@ -246,7 +247,7 @@ const Review = () => {
             }}>
             Add your reviews
           </Text>
-        </Pressable>
+        </Pressable> */}
       </View>
 
       <Modal

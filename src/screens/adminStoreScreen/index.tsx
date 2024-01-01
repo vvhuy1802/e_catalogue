@@ -4,6 +4,7 @@ import {
   ORDER_SCREEN_ADMIN_STORE,
   ORDER_STACK_ADMIN_STORE_PARAMS_LIST,
   PRODUCT_SCREEN_ADMIN_STORE,
+  REVENUE_SCREEN_ADMIN_STORE,
   STYLE_ROOM_STACK_PARAMS_LIST,
 } from '~/constants/routeNames';
 import {AdminStoreStackParamList} from '~/types';
@@ -36,6 +37,7 @@ import OrderAdminStoreStack from './orderScreen';
 import {getStoreById} from '~/redux/actions/productAction';
 import {selectStoreInfo} from '~/redux/reducers/productSlice';
 import {getUrl} from '~/utils';
+import Revenue from './revenue';
 
 const Drawer = createDrawerNavigator<AdminStoreStackParamList>();
 const AdminStoreStack = () => {
@@ -186,6 +188,13 @@ const AdminStoreStack = () => {
         component={StyleRoomtack}
         options={{
           title: 'Style Room',
+        }}
+      />
+      <Drawer.Screen
+        name={REVENUE_SCREEN_ADMIN_STORE}
+        component={Revenue}
+        options={{
+          title: 'Revenue',
         }}
       />
     </Drawer.Navigator>

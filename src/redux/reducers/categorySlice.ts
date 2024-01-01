@@ -12,7 +12,7 @@ import {StyleIdeaResponse} from '~/types/styleIdea';
 interface CategoryState {
   dataUpdateCategory: any;
   allStyleByStore: StyleIdeaResponse[];
-  allStyleByCategory: any;
+  allStyleByCategory: StyleIdeaResponse[];
   loading: LoadingState;
 }
 

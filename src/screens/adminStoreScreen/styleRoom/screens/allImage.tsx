@@ -1,29 +1,22 @@
-import {
-  Image,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import ContainerImage from '~/components/global/containerImage';
-import {images} from '~/assets';
-import {StyleIdeaStackParamList} from '~/types';
 import {RouteProp, useNavigation} from '@react-navigation/native';
-import {IconSvg} from '~/components/global/iconSvg';
+import {StyleRoomStackParamList} from '~/types';
+import {images} from '~/assets';
+import ContainerImage from '~/components/global/containerImage';
+import HeaderAdmin from '~/components/global/headerAdmin';
 import {HeightSize} from '~/theme/size';
-import {StackNavigationProp} from '@react-navigation/stack';
 import FullWidthImage from '~/components/global/fullWidthImage';
 import {getUrl} from '~/utils';
 import HeaderProduct from '~/components/global/headerProduct';
+import {StackNavigationProp} from '@react-navigation/stack';
 
 type Props = {
-  route: RouteProp<StyleIdeaStackParamList, 'AllImage'>;
+  route: RouteProp<StyleRoomStackParamList, 'AllImage'>;
 };
-const ShowAllImage = ({route}: Props) => {
-  const navigationStyleIdea =
-    useNavigation<StackNavigationProp<StyleIdeaStackParamList, 'AllImage'>>();
+const AllImage = ({route}: Props) => {
+  const navigation =
+    useNavigation<StackNavigationProp<StyleRoomStackParamList>>();
   return (
     <ContainerImage
       isOpacity={true}
@@ -34,7 +27,7 @@ const ShowAllImage = ({route}: Props) => {
         isShowBottomBarWhenBack={false}
         title="Images"
         onPressBack={() => {
-          navigationStyleIdea.goBack();
+          navigation.goBack();
         }}
         showBag={false}
       />
@@ -54,4 +47,6 @@ const ShowAllImage = ({route}: Props) => {
   );
 };
 
-export default ShowAllImage;
+export default AllImage;
+
+const styles = StyleSheet.create({});

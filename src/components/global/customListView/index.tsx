@@ -27,6 +27,7 @@ const CustomListView = ({data, widthView, onPress}: Props) => {
         style={{
           width: widthView,
           height: height,
+          marginBottom: HeightSize(32),
         }}
         contentContainerStyle={{
           paddingBottom: HeightSize(16),
@@ -60,6 +61,7 @@ const CustomListView = ({data, widthView, onPress}: Props) => {
         style={{
           width: widthView,
           height: height,
+          marginBottom: HeightSize(32),
         }}
         contentContainerStyle={{
           paddingBottom: HeightSize(16),

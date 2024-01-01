@@ -13,6 +13,7 @@ import navigation from '~/navigation';
 import {
   SetDirectionBottomBar,
   selectCurrentDropDown,
+  setCurrentTabRedux,
 } from '~/redux/reducers/globalSlice';
 import {ProductCategoryResponse} from '~/types/product';
 import {useNavigation} from '@react-navigation/native';
@@ -21,6 +22,7 @@ import {CategoryStackParamList, HomeStackParamList} from '~/types';
 import {AppDispatch} from '~/app/store';
 import {getProductsByCategory} from '~/redux/actions/productAction';
 import {CATEGORY, CATEGORYSCREEN} from '~/constants/routeNames';
+import {IconSvg} from '~/components/global/iconSvg';
 
 const CardCategorySlide = () => {
   const allCategories = useSelector(selectAllCategories);
@@ -48,7 +50,7 @@ const CardCategorySlide = () => {
           flexDirection: 'row',
           alignItems: 'center',
           justifyContent: 'space-between',
-          paddingHorizontal: WidthSize(30),
+          paddingLeft: WidthSize(30),
         }}>
         <Text
           style={{
@@ -58,6 +60,28 @@ const CardCategorySlide = () => {
           }}>
           Category
         </Text>
+        <Pressable
+          onPress={() => {
+            navigation.navigate('Category', {
+              screen: 'CategoryScreen',
+            });
+            dispatch(setCurrentTabRedux('Category'));
+          }}
+          style={{
+            width: WidthSize(80),
+            height: HeightSize(40),
+            backgroundColor: '#EFEFE8',
+            borderTopLeftRadius: 36,
+            borderBottomLeftRadius: 36,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <IconSvg
+            icon="IconArrowRightBlack"
+            width={WidthSize(32)}
+            height={WidthSize(32)}
+          />
+        </Pressable>
       </View>
       <FlatList
         style={{

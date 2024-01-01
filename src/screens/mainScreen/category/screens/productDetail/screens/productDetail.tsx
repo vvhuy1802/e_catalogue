@@ -69,6 +69,7 @@ const ProductDetail = ({route}: Props) => {
   const [variantAddToCart, setVariantAddToCart] = useState<Variant>();
 
   const [listImage, setListImage] = useState<any>([]);
+  const [listImageDisplay, setListImageDisplay] = useState<any>([]);
   const [isShowModal, setIsShowModal] = useState(false);
   useEffect(() => {
     const fetchData = async () => {
@@ -81,6 +82,7 @@ const ProductDetail = ({route}: Props) => {
     fetchData();
   }, []);
   const {store, setStore} = useContext(ProductStackContext);
+  const [storage, setStorage] = useState(0);
   useEffect(() => {
     axios
       .get(
@@ -94,6 +96,7 @@ const ProductDetail = ({route}: Props) => {
   useEffect(() => {
     if (dataProduct) {
       const imgs = [];
+      let storage = 0;
       const normalizeVariant: Normalized<string, Array<Variant>> = {
         ids: [],
         entities: {},
@@ -101,16 +104,19 @@ const ProductDetail = ({route}: Props) => {
       imgs.push(dataProduct.image);
       Promise.all([
         dataProduct.variants.map((item: Variant) => {
-          imgs.push(item.image);
+          storage += item.quantity;
+
           if (!normalizeVariant.ids.includes(item.color)) {
             normalizeVariant.ids.push(item.color);
             normalizeVariant.entities[item.color] = [];
+            imgs.push(item.image);
           }
           normalizeVariant.entities[item.color].push(item);
         }),
-        imgs.push(...dataProduct.images),
+        // imgs.push(...dataProduct.images),
       ]);
       setListImage(imgs);
+      setStorage(storage);
       setNormalizeVariant(normalizeVariant);
     }
   }, [dataProduct]);
@@ -572,7 +578,7 @@ const ProductDetail = ({route}: Props) => {
               ...TextStyle.XL,
               color: '#3B3021',
             }}>
-            {currentVariant?.price}$
+            ${currentVariant?.price || dataProduct?.minPrice}
           </Text>
         </View>
         <Pressable
@@ -661,7 +667,10 @@ const ProductDetail = ({route}: Props) => {
                     ...TextFont.SBold,
                     ...TextStyle.XXL,
                   }}>
-                  {variantAddToCart?.price}$
+                  $
+                  {variantAddToCart?.price
+                    ? variantAddToCart?.price
+                    : dataProduct?.minPrice}
                 </Text>
                 <Text
                   style={{
@@ -669,7 +678,7 @@ const ProductDetail = ({route}: Props) => {
                     ...TextFont.SLight,
                     ...TextStyle.Base,
                   }}>
-                  Storage : {variantAddToCart?.quantity}
+                  Storage : {variantAddToCart?.quantity || storage}
                 </Text>
               </View>
               <IconSvg onPress={handleHideModal} icon="IconCloseBoldBrown" />
@@ -696,78 +705,87 @@ const ProductDetail = ({route}: Props) => {
                   marginTop: HeightSize(12),
                   gap: WidthSize(12),
                 }}>
-                {normalizeVariant?.ids.map((item: string, index: number) => {
-                  return (
-                    <Pressable
-                      disabled={
-                        normalizeVariant?.entities[item]?.find(
-                          (v: Variant) => v.size.toLocaleLowerCase() === size,
-                        )?.quantity! > 0
-                          ? false
-                          : size !== ''
-                          ? true
-                          : false
-                      }
-                      onPress={() => {
-                        if (color !== item) {
-                          setColor(item);
-                        } else {
-                          setColor('');
-                        }
-                      }}
-                      key={index}
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        gap: WidthSize(8),
-                        borderWidth: 1,
-                        borderColor: item === color ? '#3B3021' : '#EFEFE8',
-                        borderRadius: 8,
-                        padding: HeightSize(8),
-                        backgroundColor:
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: WidthSize(12),
+                    flexWrap: 'wrap',
+                  }}>
+                  {normalizeVariant?.ids.map((item: string, index: number) => {
+                    return (
+                      <Pressable
+                        disabled={
                           normalizeVariant?.entities[item]?.find(
                             (v: Variant) => v.size.toLocaleLowerCase() === size,
                           )?.quantity! > 0
-                            ? 'white'
+                            ? false
                             : size !== ''
-                            ? '#EFEFE8'
-                            : 'white',
-                      }}>
-                      <View
-                        style={{
-                          width: WidthSize(20),
-                          height: WidthSize(20),
-                          backgroundColor:
-                            NormalizeColor.entities[item.toLocaleLowerCase()],
-                          borderRadius: 100,
-                          elevation: 10,
-                          shadowColor: '#000',
-                          shadowOffset: {
-                            width: 0,
-                            height: 2,
-                          },
-                          shadowOpacity: 0.25,
+                            ? true
+                            : false
+                        }
+                        onPress={() => {
+                          if (color !== item) {
+                            setColor(item);
+                          } else {
+                            setColor('');
+                          }
                         }}
-                      />
-                      <Text
+                        key={index}
                         style={{
-                          ...TextFont.SRegular,
-                          ...TextStyle.Base,
-                          color:
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          gap: WidthSize(8),
+                          borderWidth: 1,
+                          borderColor: item === color ? '#3B3021' : '#EFEFE8',
+                          borderRadius: 8,
+                          padding: HeightSize(8),
+                          backgroundColor:
                             normalizeVariant?.entities[item]?.find(
                               (v: Variant) =>
                                 v.size.toLocaleLowerCase() === size,
                             )?.quantity! > 0
-                              ? '#3B3021'
+                              ? 'white'
                               : size !== ''
-                              ? 'gray'
-                              : '#3B3021',
+                              ? '#EFEFE8'
+                              : 'white',
                         }}>
-                        {item}
-                      </Text>
-                    </Pressable>
-                  );
-                })}
+                        <View
+                          style={{
+                            width: WidthSize(20),
+                            height: WidthSize(20),
+                            backgroundColor:
+                              NormalizeColor.entities[item.toLocaleLowerCase()],
+                            borderRadius: 100,
+                            elevation: 10,
+                            shadowColor: '#000',
+                            shadowOffset: {
+                              width: 0,
+                              height: 2,
+                            },
+                            shadowOpacity: 0.25,
+                          }}
+                        />
+                        <Text
+                          style={{
+                            ...TextFont.SRegular,
+                            ...TextStyle.Base,
+                            color:
+                              normalizeVariant?.entities[item]?.find(
+                                (v: Variant) =>
+                                  v.size.toLocaleLowerCase() === size,
+                              )?.quantity! > 0
+                                ? '#3B3021'
+                                : size !== ''
+                                ? 'gray'
+                                : '#3B3021',
+                          }}>
+                          {item}
+                        </Text>
+                      </Pressable>
+                    );
+                  })}
+                </View>
               </View>
             </View>
             <View

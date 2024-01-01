@@ -238,7 +238,9 @@ const ConfirmOrder = ({route}: Props) => {
                       paddingHorizontal: WidthSize(12),
                     }}>
                     <Text
+                      numberOfLines={1}
                       style={{
+                        width: WidthSize(148),
                         ...TextFont.SMedium,
                         ...TextStyle.Base,
                         color: '#3B3021',
