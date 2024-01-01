@@ -90,7 +90,6 @@ export const formatDate = (date: string) => {
   const month = dateArr[1];
   const day = dateArr[0];
   const year = dateArr[2];
-
   const months = [
     'Jan',
     'Feb',
@@ -106,5 +105,5 @@ export const formatDate = (date: string) => {
     'Dec',
   ];
 
-  return `${months[month - 1]} ${day}, ${year}`;
+  return `${months[parseInt(month) - 1]} ${day}, ${year}`;
 };

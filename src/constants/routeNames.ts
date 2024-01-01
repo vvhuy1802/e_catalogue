@@ -20,6 +20,7 @@ export const PRODUCTSTACK = 'ProductStack';
 export const DETAILCATEGORYSCREEN = 'DetailCategoryScreen';
 export const PRODUCTDETAILSCREEN = 'ProductDetailScreen';
 export const REVIEWDETAIL = 'ReviewDetail';
+export const STORESCREEN = 'StoreScreen';
 
 export const ORDERSTACK = 'OrderStack';
 export const MYBAG = 'MyBag';
@@ -52,3 +53,10 @@ export const POST_STYLE_ROOM_SCREEN_ADMIN_STORE =
 export const ORDER_STACK_ADMIN_STORE_PARAMS_LIST =
   'OrderStackAdminStoreParamsList';
 export const DETAIL_ORDER_SCREEN_ADMIN_STORE = 'DetailOrderScreenAdminStore';
+
+export const ADMIN_SYSTEM_STACK = 'AdminSystemStack';
+export const HOME_SCREEN_ADMIN_SYSTEM = 'HomeScreenAdminSystem';
+export const APPROVE_STORE_SCREEN_ADMIN_SYSTEM =
+  'ApproveStoreScreenAdminSystem';
+export const CATEGORY_SCREEN_ADMIN_SYSTEM = 'CategoryScreenAdminSystem';
+export const REVENUE_SCREEN_ADMIN_SYSTEM = 'RevenueScreenAdminSystem';

@@ -66,6 +66,9 @@ import IconAddBrown from '~/assets/icons/ic_add_brown.svg';
 import IconMinusBrown from '~/assets/icons/ic_minus_brown.svg';
 import IconShopBrown from '~/assets/icons/ic_shop_brown.svg';
 import IconInfoBoxWhite from '~/assets/icons/ic_info_box_white.svg';
+import IconFollowBrown from '~/assets/icons/ic_follow_brown.svg';
+import IconFollowedBrown from '~/assets/icons/ic_followed_brown.svg';
+import IconAddImageBrown from '~/assets/icons/ic_add_image_brown.svg';
 
 interface IconSvgProps {
   icon:
@@ -132,7 +135,10 @@ interface IconSvgProps {
     | 'IconAddBrown'
     | 'IconMinusBrown'
     | 'IconShopBrown'
-    | 'IconInfoBoxWhite';
+    | 'IconInfoBoxWhite'
+    | 'IconFollowBrown'
+    | 'IconFollowedBrown'
+    | 'IconAddImageBrown';
 
   width?: number;
   height?: number;
@@ -207,6 +213,9 @@ const svgComponents: Record<string, React.ComponentType> = {
   IconMinusBrown,
   IconShopBrown,
   IconInfoBoxWhite,
+  IconFollowBrown,
+  IconFollowedBrown,
+  IconAddImageBrown,
 };
 
 interface Svg {

@@ -16,4 +16,12 @@ export const userInfoService = {
       undefined,
     );
   },
+  followStore: (params: {storeId: number; follow: boolean}) => {
+    return request<
+      Array<{
+        storeId: number;
+        userId: number;
+      }>
+    >(apiUrl.followStore(), Methods.post, params);
+  },
 };

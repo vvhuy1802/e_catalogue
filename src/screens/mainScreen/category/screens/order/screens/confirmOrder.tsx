@@ -523,7 +523,6 @@ const ConfirmOrder = ({route}: Props) => {
               items: dataOrder.ids,
             };
             await orderService.makeOrder(params).then(res => {
-              console.log(res);
               dispatch(SetDirectionBottomBar('up'));
               rootNavigation.navigate('Home');
             });
