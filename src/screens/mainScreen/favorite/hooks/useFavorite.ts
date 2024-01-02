@@ -5,7 +5,7 @@ import {userInfoService} from '~/services/service/userInfo.service';
 
 export const useFavorite = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const addFavorite = (
+  const addFavorite = async (
     contentId: string,
     contentType: 'product' | 'idea',
     collectionId: string,
@@ -15,6 +15,7 @@ export const useFavorite = () => {
       contentType,
       collectionId,
     });
+    await dispatch(getAllCollection());
   };
 
   const removeFavorite = async (favoriteId: string) => {

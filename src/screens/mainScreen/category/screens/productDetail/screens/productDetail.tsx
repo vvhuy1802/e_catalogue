@@ -407,7 +407,7 @@ const ProductDetail = ({route}: Props) => {
             {renderDots()}
             <PrimaryHeart
               onPress={() => {
-                addFavorite(productId, 'product', '0');
+                addFavorite(productId, 'product', '1');
                 // handleAddressSnapPress(0);
               }}
               styleView={{
