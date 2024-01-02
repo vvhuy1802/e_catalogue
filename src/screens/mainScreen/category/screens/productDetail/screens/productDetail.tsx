@@ -68,7 +68,9 @@ const ProductDetail = ({route}: Props) => {
   const productId = route.params.productId;
   const dispatch = useDispatch<AppDispatch>();
   const onGoBack = () => {
-    dispatch(SetDirectionBottomBar('up'));
+    console.log(route.params.isShowBottomBarWhenBack);
+    route.params.isShowBottomBarWhenBack !== 'no' &&
+      dispatch(SetDirectionBottomBar('up'));
     navigation.goBack();
   };
 
@@ -407,7 +409,7 @@ const ProductDetail = ({route}: Props) => {
             {renderDots()}
             <PrimaryHeart
               onPress={() => {
-                addFavorite(productId, 'product', '1');
+                addFavorite(productId, 'product', '5');
                 // handleAddressSnapPress(0);
               }}
               styleView={{
