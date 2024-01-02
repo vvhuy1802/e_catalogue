@@ -341,6 +341,7 @@ const DetailCategory = ({route}: Props) => {
                     screen: 'ProductDetailScreen',
                     params: {
                       productId: item.id.toString(),
+                      isShowBottomBarWhenBack: 'no',
                     },
                   });
                 }}

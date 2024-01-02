@@ -1,4 +1,4 @@
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {HeightSize, WidthSize} from '~/theme/size';
 import {Icon} from 'react-native-paper';
@@ -8,11 +8,21 @@ import {images} from '~/assets';
 import PrimaryHeart from '~/components/global/primaryHeart';
 import axios from 'axios';
 import {getUrl} from '~/utils';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {PRODUCTSTACK} from '~/constants/routeNames';
+import {HomeStackParamList} from '~/types';
+import {useDispatch} from 'react-redux';
+import {AppDispatch} from '~/app/store';
+import {SetDirectionBottomBar} from '~/redux/reducers/globalSlice';
 
 type PopularChoiceProps = {
   data: any;
 };
 const PopularChoice = ({data}: PopularChoiceProps) => {
+  const navigation =
+    useNavigation<StackNavigationProp<HomeStackParamList, 'OrderStack'>>();
+  const dispatch = useDispatch<AppDispatch>();
   return (
     <View
       style={{
@@ -42,7 +52,20 @@ const PopularChoice = ({data}: PopularChoiceProps) => {
         }}>
         {data?.map((item: any, index: number) => {
           return (
-            <View
+            <Pressable
+              onPress={() => {
+                dispatch(SetDirectionBottomBar('down'));
+                navigation.navigate('Category', {
+                  screen: PRODUCTSTACK,
+                  params: {
+                    screen: 'ProductDetailScreen',
+                    params: {
+                      productId: item.id.toString(),
+                      isShowBottomBarWhenBack: 'yes',
+                    },
+                  },
+                });
+              }}
               key={index}
               style={{
                 width: '100%',
@@ -97,7 +120,7 @@ const PopularChoice = ({data}: PopularChoiceProps) => {
                 </Text>
               </View>
               <PrimaryHeart />
-            </View>
+            </Pressable>
           );
         })}
       </View>
