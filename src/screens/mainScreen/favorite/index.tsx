@@ -85,7 +85,7 @@ const Favorite = () => {
           height: HeightSize(30),
         }}>
         <FlatList
-          data={['All items', 'All Collection', 'Boards']}
+          data={['All items', 'All collection', 'Boards']}
           keyExtractor={item => item.toString()}
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -142,6 +142,111 @@ const Favorite = () => {
             gap: WidthSize(16),
           }}>
           {currentTab === 'All items' && (
+            <>
+              {items.map((dataProduct, index) => {
+                let id = dataProduct.id
+                  ? allItem.find(
+                      item => item.contentId == dataProduct.id.toString(),
+                    )?.id
+                  : '';
+                return (
+                  <Pressable
+                    onPress={() => {
+                      dispatch(SetDirectionBottomBar('down'));
+                      navi.navigate('ProductStack', {
+                        screen: PRODUCTDETAILSCREEN,
+                        params: {
+                          productId: dataProduct.id.toString(),
+                        },
+                      });
+                    }}
+                    key={index}
+                    style={{
+                      width: width / 2 - WidthSize(40),
+                      borderRadius: 16,
+                      backgroundColor: '#F1EFE9',
+                      paddingHorizontal: HeightSize(10),
+                      paddingTop: HeightSize(10),
+                      elevation: 2,
+                      shadowColor: '#000',
+                      shadowOffset: {
+                        width: 0,
+                        height: 1,
+                      },
+                      shadowOpacity: 0.15,
+                      shadowRadius: 2.22,
+                    }}>
+                    <Image
+                      source={getUrl(dataProduct.image)}
+                      style={{
+                        width: width / 2 - WidthSize(60),
+                        aspectRatio: 1,
+                        height: undefined,
+                        alignSelf: 'center',
+                        borderRadius: 16,
+                      }}
+                      resizeMode="cover"
+                    />
+                    <Text
+                      style={{
+                        marginTop: HeightSize(14),
+                        color: '#3B3021',
+                        ...TextStyle.Base,
+                        ...TextFont.SMedium,
+                      }}>
+                      {dataProduct.name}
+                    </Text>
+                    <Text
+                      style={{
+                        color: '#CCCBD3',
+                        ...TextStyle.SM,
+                        ...TextFont.SMedium,
+                      }}>
+                      {/* {dataProduct?.category.name
+                        ? dataProduct?.category.name
+                        : 'No type'} */}
+                    </Text>
+                    <Text
+                      style={{
+                        color: '#3B3021',
+                        ...TextStyle.Base,
+                        ...TextFont.SBold,
+                        marginTop: HeightSize(16),
+                        marginBottom: HeightSize(15),
+                      }}>
+                      {dataProduct?.minPrice
+                        ? '$' + dataProduct?.minPrice
+                        : 'No price'}
+                    </Text>
+                    <PrimaryHeart
+                      isLiked={
+                        dataProduct.id != undefined
+                          ? allItem.find(
+                              item =>
+                                item.contentId == dataProduct.id.toString(),
+                            ) != undefined
+                          : false
+                      }
+                      styleView={{
+                        position: 'absolute',
+                        width: WidthSize(36),
+                        height: WidthSize(36),
+                        bottom: HeightSize(12),
+                        right: HeightSize(16),
+                      }}
+                      widthIcon={WidthSize(16)}
+                      heightIcon={WidthSize(16)}
+                      onPress={async () => {
+                        await removeFavorite(id || '');
+                      }}
+                    />
+                  </Pressable>
+                );
+              })}
+            </>
+          )}
+
+          {currentTab === 'All collection' && (
             <>
               {items.map((dataProduct, index) => {
                 let id = dataProduct.id
