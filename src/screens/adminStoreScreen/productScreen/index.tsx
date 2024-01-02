@@ -6,13 +6,20 @@ import HeaderAdmin from '~/components/global/headerAdmin';
 import {WidthSize, HeightSize} from '~/theme/size';
 import {TextStyle, TextFont} from '~/theme/textStyle';
 import * as ImagePicker from 'react-native-image-picker';
+import DropDownPicker, {ValueType} from 'react-native-dropdown-picker';
 
 const ProductScreen = () => {
   const [isAdding, setAdding] = useState(false);
   const [name, setName] = useState<string>('');
   const [description, setDescription] = useState<string>('');
-  const [category, setCategory] = useState<number>();
+  const [category, setCategory] = useState<string>();
   const [image, setImage] = useState<ImagePicker.Asset>();
+  const [open, setOpen] = useState(false);
+  const [items, setItems] = useState([
+    {label: 'Male', value: 'male'},
+    {label: 'Female', value: 'female'},
+    {label: 'Other', value: 'unknown'},
+  ]);
   return (
     <ContainerImage
       // isOpacity={true}
@@ -49,6 +56,37 @@ const ProductScreen = () => {
               placeholder="Enter product description"
               value={description}
               onChangeText={text => setDescription(text)}
+            />
+          </View>
+
+          <View
+            style={{
+              marginHorizontal: WidthSize(16),
+              marginBottom: HeightSize(32),
+            }}>
+            <Text style={styles.title}>Category</Text>
+            <DropDownPicker
+              open={open}
+              value={category as ValueType}
+              items={items}
+              setOpen={setOpen}
+              setValue={setCategory}
+              setItems={setItems}
+              placeholder={'Select your category'}
+              style={styles.txtInput}
+              placeholderStyle={{
+                color: '#A5ABB9',
+              }}
+              listItemContainerStyle={{
+                backgroundColor: '#F2F2F4',
+              }}
+              dropDownContainerStyle={{
+                backgroundColor: '#00000000',
+                borderColor: '#00000000',
+                borderBottomLeftRadius: WidthSize(16),
+                borderBottomRightRadius: WidthSize(16),
+                position: 'absolute',
+              }}
             />
           </View>
         </View>
