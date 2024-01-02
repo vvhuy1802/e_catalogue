@@ -40,7 +40,7 @@ const PopularChoice = ({data}: PopularChoiceProps) => {
           paddingRight: WidthSize(30),
           gap: HeightSize(20),
         }}>
-        {data?.map((item, index) => {
+        {data?.map((item: any, index: number) => {
           return (
             <View
               key={index}
@@ -54,7 +54,7 @@ const PopularChoice = ({data}: PopularChoiceProps) => {
                 borderRadius: 20,
               }}>
               <Image
-                source={getUrl(item?.image)}
+                source={getUrl(item?.img)}
                 style={{
                   width: HeightSize(90),
                   height: HeightSize(90),

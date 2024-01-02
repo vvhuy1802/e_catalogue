@@ -1,4 +1,11 @@
-import {View, Text, StyleSheet, TextInput, Pressable} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  Pressable,
+  Keyboard,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {ProfileStackParamList} from '~/types';
@@ -45,7 +52,10 @@ const EditProfile: React.FC<EditProfileProps> = ({navigation}) => {
       style={{flex: 1}}
       resizeMode="cover"
       source={images.home.BackgroundHome}>
-      <View
+      <Pressable
+        onPress={() => {
+          Keyboard.dismiss();
+        }}
         style={{
           flex: 1,
         }}>
@@ -194,7 +204,7 @@ const EditProfile: React.FC<EditProfileProps> = ({navigation}) => {
             }}
           />
         </View>
-      </View>
+      </Pressable>
     </ContainerImage>
   );
 };
