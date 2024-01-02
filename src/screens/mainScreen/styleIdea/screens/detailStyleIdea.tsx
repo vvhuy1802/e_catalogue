@@ -29,6 +29,7 @@ import {StoreResponse} from '../../category/components/productDetail/Seller';
 import {getStyleByStore} from '~/redux/actions/categoryAction';
 import {selectAllStyleByStore} from '~/redux/reducers/categorySlice';
 import CustomListView from '~/components/global/customListView';
+import {useFavorite} from '../../favorite/hooks/useFavorite';
 
 type Props = {
   route: RouteProp<StyleIdeaStackParamList, 'StyleDetail'>;
@@ -73,6 +74,7 @@ const DetailStyleIdea = ({route}: Props) => {
     });
   }, []);
   console.log(styleStore);
+  const {addFavorite} = useFavorite();
   return (
     <ContainerImage
       isOpacity={true}
@@ -120,6 +122,9 @@ const DetailStyleIdea = ({route}: Props) => {
               }}
               widthIcon={WidthSize(20)}
               heightIcon={WidthSize(20)}
+              onPress={() => {
+                addFavorite(styleIdea.id, 'idea', '1');
+              }}
             />
           </View>
           <View
