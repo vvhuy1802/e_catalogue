@@ -3,6 +3,7 @@ import {View, Dimensions, Animated, Pressable} from 'react-native';
 import {IconSvg} from '~/components/global/iconSvg';
 import PrimaryHeart from '~/components/global/primaryHeart';
 import {HeightSize, WidthSize} from '~/theme/size';
+import {getUrl} from '~/utils';
 
 export const SLIDER_WIDTH = Dimensions.get('window').width + 80;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.7);
@@ -81,7 +82,7 @@ const CardItem = ({item, index, scrollX, onPress}: CardItemProps) => {
           },
         ]}>
         <Animated.Image
-          source={{uri: item.img}}
+          source={getUrl(item?.image)}
           style={{
             width: HeightSize(256),
             height: HeightSize(380),

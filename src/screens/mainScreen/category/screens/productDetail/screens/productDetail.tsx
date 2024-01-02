@@ -576,7 +576,7 @@ const ProductDetail = ({route}: Props) => {
               ) : null}
             </Text>
           </View>
-          <Review />
+          {/* <Review /> */}
           <Seller
             store={store as StoreResponse}
             currentProduct={productId as string}

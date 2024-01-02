@@ -1,43 +1,18 @@
 import {Image, StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {HeightSize, WidthSize} from '~/theme/size';
 import {Icon} from 'react-native-paper';
 import {IconSvg} from '~/components/global/iconSvg';
 import {TextFont, TextStyle} from '~/theme/textStyle';
 import {images} from '~/assets';
 import PrimaryHeart from '~/components/global/primaryHeart';
+import axios from 'axios';
+import {getUrl} from '~/utils';
 
-const PopularChoice = () => {
-  const data = [
-    {
-      id: 1,
-      title: 'T-shirt Ahweh Yerah',
-      category: 'T-shirt',
-      img: 'https://static.zara.net/photos///2023/I/0/3/p/1716/345/806/2/w/1024/1716345806_6_1_1.jpg',
-      price: '178.000 VND',
-    },
-    {
-      id: 2,
-      title: 'T-shirt Ahweh Yerah',
-      category: 'T-shirt',
-      img: 'https://static.zara.net/photos///2023/I/0/3/p/1716/345/806/2/w/1024/1716345806_6_1_1.jpg',
-      price: '178.000 VND',
-    },
-    {
-      id: 3,
-      title: 'T-shirt Ahweh Yerah',
-      category: 'T-shirt',
-      img: 'https://static.zara.net/photos///2023/I/0/3/p/1716/345/806/2/w/1024/1716345806_6_1_1.jpg',
-      price: '178.000 VND',
-    },
-    {
-      id: 4,
-      title: 'T-shirt Ahweh Yerah',
-      category: 'T-shirt',
-      img: 'https://static.zara.net/photos///2023/I/0/3/p/1716/345/806/2/w/1024/1716345806_6_1_1.jpg',
-      price: '178.000 VND',
-    },
-  ];
+type PopularChoiceProps = {
+  data: any;
+};
+const PopularChoice = ({data}: PopularChoiceProps) => {
   return (
     <View
       style={{
@@ -65,7 +40,7 @@ const PopularChoice = () => {
           paddingRight: WidthSize(30),
           gap: HeightSize(20),
         }}>
-        {data.map((item, index) => {
+        {data?.map((item, index) => {
           return (
             <View
               key={index}
@@ -79,7 +54,7 @@ const PopularChoice = () => {
                 borderRadius: 20,
               }}>
               <Image
-                source={images.home.ImagePopular}
+                source={getUrl(item?.image)}
                 style={{
                   width: HeightSize(90),
                   height: HeightSize(90),
@@ -101,7 +76,7 @@ const PopularChoice = () => {
                       ...TextFont.SMedium,
                       color: '#3B3021',
                     }}>
-                    {item.title}
+                    {item?.title || ''}
                   </Text>
                   <Text
                     style={{
@@ -109,7 +84,7 @@ const PopularChoice = () => {
                       ...TextFont.SMedium,
                       color: '#CCCCD0',
                     }}>
-                    {item.category}
+                    {item?.category || ''}
                   </Text>
                 </View>
                 <Text
@@ -118,7 +93,7 @@ const PopularChoice = () => {
                     ...TextFont.SBold,
                     color: '#3B3021',
                   }}>
-                  {item.price}
+                  ${item?.price || ''}
                 </Text>
               </View>
               <PrimaryHeart />

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {ScrollView, View} from 'react-native';
 import ContainerImage from '~/components/global/containerImage';
 import {images} from '~/assets';
@@ -15,6 +15,7 @@ import DropDown from './components/dropDown';
 import SearchHomeScreen from './components/search';
 import DropDownComponent from '~/components/global/dropDown';
 import {useHomeFacade} from './hooks/useHomeFacade';
+import axios from 'axios';
 
 const HomeScreen = () => {
   const {
@@ -26,6 +27,14 @@ const HomeScreen = () => {
     isShowDropDown,
     setIsShowDropDown,
   } = useHomeFacade();
+
+  const [data, setData] = React.useState<any>();
+  useEffect(() => {
+    axios.get('https://e-catalogue.abcdavid.top/product/filter').then(res => {
+      console.log(JSON.stringify(res.data, null, 2));
+      setData(res.data.slice(0, 5));
+    });
+  }, []);
 
   return (
     <ContainerImage
@@ -74,8 +83,19 @@ const HomeScreen = () => {
           <SearchHomeScreen navigation={navigation} />
           <CardSlide />
           <CardCategorySlide />
-          <PopularChoice />
-          <HotLooks />
+          <PopularChoice
+            data={data?.map((item: any, index: any) => {
+              return (
+                index < 5 && {
+                  id: item.id,
+                  img: item.image,
+                  title: item.name || '',
+                  price: item.variants[0].price,
+                }
+              );
+            })}
+          />
+          {/* <HotLooks /> */}
         </ScrollView>
       </View>
       <DropDownComponent

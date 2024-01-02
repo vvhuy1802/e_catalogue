@@ -6,12 +6,24 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {HeightSize, WidthSize, width} from '~/theme/size';
 import CardItem from './cardItem';
 import {TextStyle, TextFont} from '~/theme/textStyle';
+import axios from 'axios';
 
 const CardSlide = () => {
+  // const [data, setData] = useState();
+  const [dataa, setDataa] = useState();
+  const [datab, setDatab] = useState();
+  useEffect(() => {
+    axios.get('https://e-catalogue.abcdavid.top/product/filter').then(res => {
+      console.log(JSON.stringify(res.data, null, 2));
+      setDataa(res.data);
+      setDatab(res.data.slice(9, 17));
+    });
+  }, []);
+
   const data = [
     {
       id: 1,
@@ -186,7 +198,7 @@ const CardSlide = () => {
             pagingEnabled
             bounces={false}
             nestedScrollEnabled
-            data={dataItem}
+            data={datab?.slice(0, 8)}
             renderItem={({item, index}) => (
               <CardItem
                 onPress={handlePressItem(item, index)}
@@ -245,7 +257,7 @@ const CardSlide = () => {
             pagingEnabled
             bounces={false}
             nestedScrollEnabled
-            data={data}
+            data={dataa?.slice(0, 8)}
             renderItem={({item, index}) => (
               <CardItem
                 onPress={handlePressItem(item, index)}
