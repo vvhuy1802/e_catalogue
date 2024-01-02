@@ -5,9 +5,18 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  TextInput,
+  TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useContext, useEffect} from 'react';
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {selectOrder, setDataOrder} from '~/redux/reducers/orderSlice';
 import {images} from '~/assets';
@@ -25,6 +34,18 @@ import {OrderStackContext} from '~/utils/context';
 import {orderService} from '~/services/service/order.service';
 import {AppDispatch} from '~/app/store';
 import {SetDirectionBottomBar} from '~/redux/reducers/globalSlice';
+import BottomSheet, {BottomSheetBackdrop} from '@gorhom/bottom-sheet';
+import FastImage from 'react-native-fast-image';
+import {FAB} from 'react-native-paper';
+import {AddPopupMessage} from '~/redux/reducers/popupMessageSlice';
+import {userInfoService} from '~/services/service/userInfo.service';
+import {
+  selectAddressTree,
+  selectNormalizedAddressTree,
+  selectAllUserContact,
+} from '~/redux/reducers/contactSlice';
+import {selectUserInfo} from '~/redux/reducers/userInfo';
+import {ContactAPIReponse} from '~/types/contact';
 
 type Props = {
   route: RouteProp<OrderStackParamList, 'ConfirmOrder'>;
@@ -42,6 +63,26 @@ const ConfirmOrder = ({route}: Props) => {
   );
   const {localAddress, dataAddress} = useContext(OrderStackContext);
   const dispatch = useDispatch<AppDispatch>();
+
+  const bottomSheetBoardRef = useRef<BottomSheet>(null);
+  const snapPointsBoard = useMemo(() => ['60%'], []);
+  const handleAddressSnapPress = useCallback((index: number) => {
+    bottomSheetBoardRef.current?.snapToIndex(index);
+    if (index == 0) {
+    }
+  }, []);
+  const handleCloseBoardPress = useCallback(() => {
+    bottomSheetBoardRef.current?.close();
+  }, []);
+
+  const addressTree = useSelector(selectAddressTree);
+  const normalizedAddressTree = useSelector(selectNormalizedAddressTree);
+  const allUserContact = useSelector(selectAllUserContact);
+  const userInfo = useSelector(selectUserInfo);
+
+  const [choosedAddress, setChoosedAddress] = useState<ContactAPIReponse>(
+    allUserContact[0],
+  );
   return (
     <ContainerImage
       style={{flex: 1}}
@@ -107,7 +148,8 @@ const ConfirmOrder = ({route}: Props) => {
           </Text>
           <Pressable
             onPress={() => {
-              navigation.navigate('EditAddress');
+              // navigation.navigate('EditAddress');
+              handleAddressSnapPress(0);
             }}>
             <Text
               style={{
@@ -143,8 +185,8 @@ const ConfirmOrder = ({route}: Props) => {
                   ...TextStyle.Base,
                   color: '#836E44',
                 }}>
-                {dataAddress?.fullname ? dataAddress?.fullname : 'Vũ Viết Huy'}{' '}
-                | {dataAddress?.phone}
+                {userInfo?.fullname ? userInfo?.fullname : 'Vũ Viết Huy'} |{' '}
+                {choosedAddress?.phone}
               </Text>
               <Text
                 style={{
@@ -152,18 +194,23 @@ const ConfirmOrder = ({route}: Props) => {
                   ...TextStyle.Base,
                   color: '#836E44',
                 }}>
-                {dataAddress?.address?.details || ''},{' '}
+                {choosedAddress?.address?.details || ''},{' '}
                 {
-                  localAddress?.entities[dataAddress?.address?.province]
-                    ?.districts.entities[dataAddress?.address?.district]?.wards
-                    .entities[dataAddress?.address?.ward]?.name
+                  localAddress?.entities[choosedAddress?.address?.province]
+                    ?.districts.entities[choosedAddress?.address?.district]
+                    ?.wards.entities[choosedAddress?.address?.ward]?.name
                 }
                 ,{' '}
                 {
-                  localAddress?.entities[dataAddress?.address?.province]
-                    ?.districts.entities[dataAddress?.address?.district]?.name
+                  localAddress?.entities[choosedAddress?.address?.province]
+                    ?.districts.entities[choosedAddress?.address?.district]
+                    ?.name
                 }
-                , {localAddress?.entities[dataAddress?.address?.province]?.name}
+                ,{' '}
+                {
+                  localAddress?.entities[choosedAddress?.address?.province]
+                    ?.name
+                }
               </Text>
             </View>
           </View>
@@ -518,6 +565,113 @@ const ConfirmOrder = ({route}: Props) => {
           }}
         />
       </View>
+      <BottomSheet
+        ref={bottomSheetBoardRef}
+        index={-1}
+        snapPoints={snapPointsBoard}
+        enablePanDownToClose={true}
+        onClose={() => {}}
+        handleIndicatorStyle={{backgroundColor: '#3B3021'}}
+        handleStyle={{
+          backgroundColor: '#F0EFE9',
+          borderTopRightRadius: 16,
+          borderTopLeftRadius: 16,
+        }}
+        backdropComponent={props => (
+          <BottomSheetBackdrop
+            {...props}
+            enableTouchThrough={true}
+            appearsOnIndex={0}
+            disappearsOnIndex={-1}
+            opacity={0.7}>
+            <Pressable style={{flex: 1}} />
+          </BottomSheetBackdrop>
+        )}
+        style={{
+          backgroundColor: '#F0EFE9',
+          borderColor: '#000',
+          borderTopRightRadius: 16,
+          borderTopLeftRadius: 16,
+        }}>
+        <View
+          style={{
+            marginHorizontal: WidthSize(16),
+          }}>
+          <Text
+            style={{
+              ...TextFont.SBold,
+              ...TextStyle.Base,
+              color: '#3B3021',
+              marginTop: HeightSize(16),
+            }}>
+            Choose address
+          </Text>
+          <ScrollView>
+            {allUserContact.map(item => {
+              return (
+                <Pressable
+                  onPress={() => {
+                    setChoosedAddress(item);
+                    handleCloseBoardPress();
+                  }}
+                  style={{
+                    marginTop: HeightSize(12),
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    marginHorizontal: WidthSize(32),
+                    borderRadius: 12,
+                    backgroundColor: '#EFEFE8',
+                    paddingHorizontal: WidthSize(16),
+                  }}>
+                  <IconSvg icon="IconLocationBrown" />
+                  <View
+                    style={{
+                      flex: 1,
+                      paddingHorizontal: WidthSize(16),
+                      paddingVertical: HeightSize(16),
+                    }}>
+                    <View>
+                      <Text
+                        style={{
+                          ...TextFont.SMedium,
+                          ...TextStyle.Base,
+                          color: '#3B3021',
+                        }}>
+                        {userInfo.fullname} | {item?.phone}
+                      </Text>
+                      <Text
+                        style={{
+                          ...TextFont.SMedium,
+                          ...TextStyle.Base,
+                          color: '#836E44',
+                        }}>
+                        {item.address.details || ''},{' '}
+                        {
+                          normalizedAddressTree?.entities[item.address.province]
+                            ?.districts.entities[item?.address?.district]?.wards
+                            .entities[item?.address?.ward]?.name
+                        }
+                        ,{' '}
+                        {
+                          normalizedAddressTree?.entities[
+                            item?.address?.province
+                          ]?.districts.entities[item?.address?.district]?.name
+                        }
+                        ,{' '}
+                        {
+                          normalizedAddressTree?.entities[
+                            item?.address?.province
+                          ]?.name
+                        }
+                      </Text>
+                    </View>
+                  </View>
+                </Pressable>
+              );
+            })}
+          </ScrollView>
+        </View>
+      </BottomSheet>
     </ContainerImage>
   );
 };
