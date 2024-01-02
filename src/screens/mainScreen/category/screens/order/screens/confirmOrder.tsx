@@ -555,7 +555,7 @@ const ConfirmOrder = ({route}: Props) => {
           title="Place Order"
           handlePress={async () => {
             let params: OrderParams = {
-              contact_id: dataAddress.id,
+              contact_id: choosedAddress.id,
               items: dataOrder.ids,
             };
             await orderService.makeOrder(params).then(res => {
