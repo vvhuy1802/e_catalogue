@@ -20,7 +20,9 @@ export const useEditProfile = () => {
   const [sex, setSex] = useState<'male' | 'female' | 'unknown' | undefined>(
     userInfo.sex || undefined,
   );
-  const [birthday, setBirthday] = useState<Date>(new Date(userInfo.dob || ''));
+  const [birthday, setBirthday] = useState<Date>(
+    userInfo.dob ? new Date(userInfo.dob) : new Date(),
+  );
 
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState([

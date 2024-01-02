@@ -555,10 +555,31 @@ const ConfirmOrder = ({route}: Props) => {
           title="Place Order"
           handlePress={async () => {
             let params: OrderParams = {
-              contact_id: choosedAddress.id,
+              contact_id: Number(choosedAddress.id),
               items: dataOrder.ids,
             };
             await orderService.makeOrder(params).then(res => {
+              if (res.status != 400) {
+                dispatch(
+                  AddPopupMessage({
+                    title: 'Success!',
+                    type: 'success',
+                    message: 'Order success!',
+                    size: 'small',
+                    time: 'long',
+                  }),
+                );
+              } else {
+                dispatch(
+                  AddPopupMessage({
+                    title: 'Error!',
+                    type: 'warning',
+                    message: 'Order failed!',
+                    size: 'small',
+                    time: 'long',
+                  }),
+                );
+              }
               dispatch(SetDirectionBottomBar('up'));
               rootNavigation.navigate('Home');
             });

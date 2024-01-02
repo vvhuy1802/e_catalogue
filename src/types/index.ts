@@ -135,6 +135,7 @@ export type CategoryStackParamList = {
 export type ProductDetailStackParamList = {
   [PRODUCTDETAILSCREEN]: {
     productId?: string;
+    isShowBottomBarWhenBack?: string;
   };
   [REVIEWDETAIL]: undefined;
   [STORESCREEN]: {

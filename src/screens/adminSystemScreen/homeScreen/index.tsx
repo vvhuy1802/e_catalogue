@@ -21,26 +21,15 @@ const HomeScreen = () => {
       id: 2,
       title: 'Income',
     },
-    {
-      id: 3,
-      title: '',
-    },
-    {
-      id: 4,
-      title: 'Items Sold',
-    },
   ];
 
   const actionNeeded = [
     {
       id: 1,
-      title: 'To Ship',
+      title: 'Approve Store',
     },
   ];
 
-  const allOrder = useSelector(selectAllOrder);
-  const navigation =
-    useNavigation<StackNavigationProp<AdminStoreStackParamList>>();
   return (
     <ContainerImage
       // isOpacity={true}
@@ -150,16 +139,10 @@ const HomeScreen = () => {
                       ...TextFont.SMedium,
                       marginTop: HeightSize(16),
                     }}>
-                    {allOrder
-                      ? allOrder?.filter(
-                          item => item.deliver_status === 'pending',
-                        ).length
-                      : 0}
+                    0
                   </Text>
                   <Pressable
-                    onPress={() => {
-                      navigation.navigate('OrderStackAdminStoreParamsList');
-                    }}
+                    onPress={() => {}}
                     style={{
                       paddingVertical: HeightSize(10),
                       marginTop: HeightSize(16),

@@ -15,7 +15,7 @@ import {IconSvg} from '~/components/global/iconSvg';
 import {HeightSize, WidthSize, height, width} from '~/theme/size';
 import {RouteProp, useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
-import {StyleIdeaStackParamList} from '~/types';
+import {HomeStackParamList, StyleIdeaStackParamList} from '~/types';
 import {TextFont, TextStyle} from '~/theme/textStyle';
 import FullWidthImage from '~/components/global/fullWidthImage';
 import PrimaryHeart from '~/components/global/primaryHeart';
@@ -30,6 +30,7 @@ import {getStyleByStore} from '~/redux/actions/categoryAction';
 import {selectAllStyleByStore} from '~/redux/reducers/categorySlice';
 import CustomListView from '~/components/global/customListView';
 import {useFavorite} from '../../favorite/hooks/useFavorite';
+import {PRODUCTSTACK} from '~/constants/routeNames';
 
 type Props = {
   route: RouteProp<StyleIdeaStackParamList, 'StyleDetail'>;
@@ -39,6 +40,8 @@ const DetailStyleIdea = ({route}: Props) => {
     useNavigation<
       StackNavigationProp<StyleIdeaStackParamList, 'StyleDetail'>
     >();
+  const navigation =
+    useNavigation<StackNavigationProp<HomeStackParamList, 'OrderStack'>>();
   const dispatch = useDispatch<AppDispatch>();
   const onGoBack = () => {
     dispatch(SetDirectionBottomBar('up'));
@@ -123,7 +126,7 @@ const DetailStyleIdea = ({route}: Props) => {
               widthIcon={WidthSize(20)}
               heightIcon={WidthSize(20)}
               onPress={() => {
-                addFavorite(styleIdea.id, 'idea', '1');
+                addFavorite(styleIdea.id, 'idea', '5');
               }}
             />
           </View>
@@ -230,7 +233,19 @@ const DetailStyleIdea = ({route}: Props) => {
               }}>
               {styleIdea.rectangles.map((item, index) => {
                 return (
-                  <View
+                  <Pressable
+                    onPress={() => {
+                      navigation.navigate('Category', {
+                        screen: PRODUCTSTACK,
+                        params: {
+                          screen: 'ProductDetailScreen',
+                          params: {
+                            productId: item.variant.product.id.toString(),
+                            isShowBottomBarWhenBack: 'no',
+                          },
+                        },
+                      });
+                    }}
                     key={index}
                     style={{
                       width: '100%',
@@ -285,7 +300,7 @@ const DetailStyleIdea = ({route}: Props) => {
                       </Text>
                     </View>
                     <PrimaryHeart />
-                  </View>
+                  </Pressable>
                 );
               })}
             </View>

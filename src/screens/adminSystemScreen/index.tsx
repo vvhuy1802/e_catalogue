@@ -159,13 +159,13 @@ const AdminSystemStack = () => {
           title: 'Categories Screen',
         }}
       />
-      <Drawer.Screen
+      {/* <Drawer.Screen
         name={APPROVE_STORE_SCREEN_ADMIN_SYSTEM}
         component={ApproveStore}
         options={{
           title: 'Approve Store',
         }}
-      />
+      /> */}
       {/* <Drawer.Screen
         name={REVENUE_SCREEN_ADMIN_SYSTEM}
         component={Revenue}
