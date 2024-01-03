@@ -1,18 +1,37 @@
 import axios from 'axios';
 import {AppProvider} from '../app/appProvider';
 import {Methods} from './method';
+import {checkAccessTokens} from '~/utils';
+import {apiUrl} from './paths';
+import {APIResponse} from '~/types';
+import {LoginResponse} from '~/types/auth';
+import {store} from '~/app/store';
+import {SetIsAuthorized} from '~/redux/reducers/authSlice';
 
-export const request = async (url: string, method: string, params: any) => {
+export const request = async <T extends {}>(
+  url: string,
+  method: string,
+  params: any,
+  upFile?: boolean,
+): Promise<APIResponse<T>> => {
   let header: any = {
-    Accept: 'application/json',
+    Accept: '*/*',
     'Content-Type': 'application/json',
   };
+  if (upFile) {
+    header = {
+      Accept: '*/*',
+      'Content-Type': 'multipart/form-data',
+    };
+  }
 
-  const token = await AppProvider.getAuth();
-  if (token !== null) {
+  const token = await AppProvider.getTokenUser();
+  const accessToken = token?.access_token;
+  const refreshToken = token?.refresh_token;
+  if (accessToken !== null) {
     header = {
       ...header,
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${accessToken}`,
     };
   }
 
@@ -30,15 +49,52 @@ export const request = async (url: string, method: string, params: any) => {
     config.data = params ? params : undefined;
   }
 
-  return new Promise(resolve => {
-    console.log('Call API: ', config.url);
+  const Logout = async () => {
+    store.dispatch(SetIsAuthorized(''));
+    await AppProvider.setTokenUser('', '');
+  };
 
-    axios(config)
+  return new Promise(resolve => {
+    console.log(config.method.toUpperCase(), config.url);
+    axios<APIResponse<T>>(config)
       .then(res => {
-        resolve({data: res.data});
+        resolve({
+          status: res.status,
+          data: res.data as unknown as T,
+        });
       })
-      .catch(err => {
-        resolve({error: err});
+      .catch(async err => {
+        if (err.response.status === 401) {
+          const {isAccessTokenValid, isRefreshTokenValid} =
+            await checkAccessTokens();
+          if (isRefreshTokenValid && !isAccessTokenValid) {
+            const configRefreshToken = {
+              headers: header,
+              method: Methods.post,
+              url: apiUrl.refreshToken(),
+              params: null,
+              data: {
+                refreshToken: refreshToken,
+              },
+            };
+            console.log('Calling API: ', configRefreshToken.url);
+            axios(configRefreshToken).then(async res => {
+              if (res.status === 201) {
+                await AppProvider.setTokenUser(
+                  res.data.access_token,
+                  res.data.refresh_token,
+                );
+                resolve(await request<T>(url, method, params));
+              }
+            });
+          } else {
+            Logout();
+          }
+        } else
+          resolve({
+            status: err.response.status,
+            data: err.response.data,
+          });
         return;
       });
   });

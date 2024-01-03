@@ -1,4 +1,4 @@
-import {Animated, StyleProp, View, ViewStyle} from 'react-native';
+import {Animated, Pressable, StyleProp, View, ViewStyle} from 'react-native';
 import React, {useEffect, useRef} from 'react';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {isIOS} from '~/constants/global';
@@ -7,12 +7,14 @@ type ContainerViewProps = {
   children?: React.ReactNode;
   style?: StyleProp<ViewStyle>;
   isOpacity?: boolean;
+  onPress?: () => void;
 };
 
 const ContainerView = ({
   children,
   style,
   isOpacity = false,
+  onPress,
 }: ContainerViewProps) => {
   const insets = useSafeAreaInsets();
   const opacityRef = useRef(new Animated.Value(0));
@@ -39,7 +41,19 @@ const ContainerView = ({
       }),
     },
   ];
-  return <Animated.View style={styleContainer}>{children}</Animated.View>;
+  return onPress ? (
+    <Animated.View style={styleContainer}>
+      <Pressable
+        onPress={onPress}
+        style={{
+          flex: 1,
+        }}>
+        {children}
+      </Pressable>
+    </Animated.View>
+  ) : (
+    <Animated.View style={styleContainer}>{children}</Animated.View>
+  );
 };
 
 export default ContainerView;

@@ -6,9 +6,17 @@ import {Animated, SafeAreaView} from 'react-native';
 import {HeightSize, WidthSize, height, width} from '~/theme/size';
 import {useDispatch} from 'react-redux';
 import {AppDispatch} from '~/app/store';
-import {SetIsShowOnBoard, SetIsShowSplash} from '~/redux/reducers/authSlice';
+import {
+  SetIsAuthorized,
+  SetIsShowOnBoard,
+  SetIsShowSplash,
+  SetUserInforLogin,
+} from '~/redux/reducers/authSlice';
 import {TextFont, TextStyle} from '~/theme/textStyle';
 import {AppProvider} from '~/app/appProvider';
+import {checkAccessTokens, checkRole} from '~/utils';
+import {authService} from '~/services/service/auth.service';
+import {getUserById} from '~/redux/actions/authAction';
 
 const SplashScreen = () => {
   const AnimatedLottieView = Animated.createAnimatedComponent(LottieView);
@@ -49,17 +57,31 @@ const SplashScreen = () => {
     // fetch data
     const isShowOnBoard = await AppProvider.getIsShowOnBoard();
     dispatch(SetIsShowOnBoard(isShowOnBoard));
-    setIsFetchSuccess(true);
+  };
+  const fetchAuth = async () => {
+    const getAuth = await checkAccessTokens();
+    if (getAuth.isRefreshTokenValid) {
+      authService.me().then(res => {
+        dispatch(getUserById({id: res.data.id.toString()}));
+        dispatch(
+          SetUserInforLogin({
+            id: res.data.id,
+            username: res.data.username,
+            role: res.data.role,
+            email: res.data.email,
+          }),
+        );
+        dispatch(SetIsAuthorized(checkRole(res.data.role)));
+      });
+    }
   };
 
   useEffect(() => {
-    const timeout = setTimeout(async () => {
-      await handleFetData();
-    }, 100);
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, [isFetchSuccess]);
+    handleFetData();
+    fetchAuth().then(() => {
+      setIsFetchSuccess(true);
+    });
+  }, []);
 
   return (
     <ContainerView
@@ -79,7 +101,7 @@ const SplashScreen = () => {
         <Animated.View
           style={{
             flexDirection: 'row',
-            alignItems: 'center',
+            alignItems: 'flex-end',
             height: HeightSize(56),
             position: 'absolute',
             top: moveTopRef.current.interpolate({

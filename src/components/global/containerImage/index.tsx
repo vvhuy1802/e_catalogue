@@ -1,4 +1,4 @@
-import {Animated, StyleProp, View} from 'react-native';
+import {Animated, Pressable, StyleProp, View} from 'react-native';
 import React, {useEffect, useRef} from 'react';
 import FastImage, {ImageStyle, ResizeMode} from 'react-native-fast-image';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -10,6 +10,7 @@ type ContainerImageProps = {
   source: any;
   resizeMode: ResizeMode;
   isOpacity?: boolean;
+  onPress?: () => void;
 };
 
 const ContainerImage = ({
@@ -18,6 +19,7 @@ const ContainerImage = ({
   source,
   resizeMode,
   isOpacity = false,
+  onPress,
 }: ContainerImageProps) => {
   const insets = useSafeAreaInsets();
   const opacityRef = useRef(new Animated.Value(0));
@@ -25,7 +27,7 @@ const ContainerImage = ({
     Animated.timing(opacityRef.current, {
       toValue: 1,
       duration: 400,
-      useNativeDriver: false,
+      useNativeDriver: true,
     }).start();
   }, []);
   const styleContainer = [
@@ -33,9 +35,9 @@ const ContainerImage = ({
     style,
     isIOS && {
       paddingTop: insets.top,
-      paddingBottom: insets.bottom,
-      paddingLeft: insets.left,
-      paddingRight: insets.right,
+      // paddingBottom: insets.bottom,
+      // paddingLeft: insets.left,
+      // paddingRight: insets.right,
     },
   ];
   return (
@@ -51,9 +53,27 @@ const ContainerImage = ({
           }),
         },
       ]}>
-      <FastImage style={styleContainer} resizeMode={resizeMode} source={source}>
-        {children}
-      </FastImage>
+      {onPress ? (
+        <Pressable
+          onPress={onPress}
+          style={{
+            flex: 1,
+          }}>
+          <FastImage
+            style={styleContainer}
+            resizeMode={resizeMode}
+            source={source}>
+            {children}
+          </FastImage>
+        </Pressable>
+      ) : (
+        <FastImage
+          style={styleContainer}
+          resizeMode={resizeMode}
+          source={source}>
+          {children}
+        </FastImage>
+      )}
     </Animated.View>
   );
 };

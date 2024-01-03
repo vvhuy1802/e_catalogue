@@ -1,62 +1,101 @@
-import {FlatList, ImageBackground, StyleSheet, Text, View} from 'react-native';
+import {FlatList, ImageBackground, Pressable, Text, View} from 'react-native';
 import React from 'react';
 import {HeightSize, WidthSize} from '~/theme/size';
-import {images} from '~/assets';
 import BlurBackground from '~/components/global/blurBackground';
 import {TextFont, TextStyle} from '~/theme/textStyle';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  selectAllCategories,
+  selectLoadingGetAllCategories,
+} from '~/redux/reducers/productSlice';
+import {getUrl} from '~/utils';
+import navigation from '~/navigation';
+import {
+  SetDirectionBottomBar,
+  selectCurrentDropDown,
+  setCurrentTabRedux,
+} from '~/redux/reducers/globalSlice';
+import {ProductCategoryResponse} from '~/types/product';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {CategoryStackParamList, HomeStackParamList} from '~/types';
+import {AppDispatch} from '~/app/store';
+import {getProductsByCategory} from '~/redux/actions/productAction';
+import {CATEGORY, CATEGORYSCREEN} from '~/constants/routeNames';
+import {IconSvg} from '~/components/global/iconSvg';
 
 const CardCategorySlide = () => {
-  const data = [
-    {
-      id: 1,
-      img: images.home.CategoryMen,
-      title: `Men's`,
-    },
-    {
-      id: 2,
-      img: images.home.CategoryWomen,
+  const allCategories = useSelector(selectAllCategories);
+  const currentDropDown = useSelector(selectCurrentDropDown);
+  const loadingGetCategories = useSelector(selectLoadingGetAllCategories);
+  const dispatch = useDispatch<AppDispatch>();
+  const navigation = useNavigation<StackNavigationProp<HomeStackParamList>>();
 
-      title: `Women's`,
-    },
-    {
-      id: 3,
-      img: images.home.CategoryKids,
-
-      title: `Kids`,
-    },
-    {
-      id: 4,
-      img: images.home.CategoryUniSex,
-      title: `Unisex`,
-    },
-  ];
+  const handleNavigate = (category: ProductCategoryResponse) => {
+    dispatch(SetDirectionBottomBar('down'));
+    navigation.navigate('Category', {
+      screen: 'DetailCategoryScreen',
+      params: {
+        category: category,
+      },
+    });
+  };
   return (
     <View
       style={{
-        marginTop: HeightSize(50),
+        marginTop: HeightSize(30),
       }}>
       <View
         style={{
           flexDirection: 'row',
           alignItems: 'center',
           justifyContent: 'space-between',
-          paddingHorizontal: WidthSize(30),
+          paddingLeft: WidthSize(30),
         }}>
         <Text
           style={{
-            ...TextFont.GBold,
-            ...TextStyle.XL,
             color: '#3B3021',
+            ...TextStyle.XXXL,
+            ...TextFont.GRegular,
           }}>
           Category
         </Text>
+        <Pressable
+          onPress={() => {
+            navigation.navigate('Category', {
+              screen: 'CategoryScreen',
+            });
+            dispatch(setCurrentTabRedux('Category'));
+          }}
+          style={{
+            width: WidthSize(80),
+            height: HeightSize(40),
+            backgroundColor: '#EFEFE8',
+            borderTopLeftRadius: 36,
+            borderBottomLeftRadius: 36,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <IconSvg
+            icon="IconArrowRightBlack"
+            width={WidthSize(32)}
+            height={WidthSize(32)}
+          />
+        </Pressable>
       </View>
       <FlatList
         style={{
           marginTop: HeightSize(20),
           paddingRight: HeightSize(20),
+          height: WidthSize(200),
         }}
-        data={data}
+        data={
+          loadingGetCategories === 'fulfilled'
+            ? allCategories?.filter(
+                item => item.name === currentDropDown.title,
+              )[0].children
+            : []
+        }
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{
@@ -64,39 +103,45 @@ const CardCategorySlide = () => {
           gap: WidthSize(20),
         }}
         renderItem={({item}) => (
-          <ImageBackground
-            source={item.img}
-            imageStyle={{borderRadius: 20}}
-            style={{
-              width: WidthSize(150),
-              height: WidthSize(200),
-              justifyContent: 'flex-end',
+          <Pressable
+            onPress={() => {
+              handleNavigate(item);
             }}>
-            <View
+            <ImageBackground
+              source={getUrl(item.image)}
+              imageStyle={{borderRadius: 20}}
               style={{
-                height: HeightSize(40),
                 width: WidthSize(150),
-                justifyContent: 'center',
+                height: WidthSize(200),
+                justifyContent: 'flex-end',
               }}>
-              <BlurBackground
-                blurType="light"
-                blurAmount={32}
+              <View
                 style={{
-                  borderBottomLeftRadius: 20,
-                  borderBottomRightRadius: 20,
-                }}
-              />
-              <Text
-                style={{
-                  color: '#3B3021',
-                  marginLeft: WidthSize(10),
-                  ...TextFont.GMedium,
-                  ...TextStyle.LG,
+                  height: HeightSize(44),
+                  width: WidthSize(150),
+                  justifyContent: 'center',
+                  backgroundColor: '#D8D2C414',
                 }}>
-                {item.title}
-              </Text>
-            </View>
-          </ImageBackground>
+                <BlurBackground
+                  // blurType="light"
+                  blurAmount={15}
+                  style={{
+                    borderBottomLeftRadius: 20,
+                    borderBottomRightRadius: 20,
+                  }}
+                />
+                <Text
+                  style={{
+                    color: '#3B3021',
+                    marginHorizontal: WidthSize(16),
+                    ...TextFont.SMedium,
+                    ...TextStyle.LG,
+                  }}>
+                  {item.name}
+                </Text>
+              </View>
+            </ImageBackground>
+          </Pressable>
         )}
       />
     </View>

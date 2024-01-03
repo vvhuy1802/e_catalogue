@@ -4,10 +4,16 @@ import {HeightSize, WidthSize} from '~/theme/size';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {HomeStackParamList} from '~/types';
 import {useNavigation} from '@react-navigation/native';
-import {useSelector} from 'react-redux';
-import {selectDirectionBottomBar} from '~/redux/reducers/globalSlice';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  selectCurrentTab,
+  selectDirectionBottomBar,
+  setCurrentTabRedux,
+} from '~/redux/reducers/globalSlice';
 import {IconSvg, IconSvgType} from '~/components/global/iconSvg';
 import {BOTTOM_TAB_HEIGHT} from '~/constants/global';
+import {PROFILE_STACK} from '~/constants/routeNames';
+import {AppDispatch} from '~/app/store';
 
 type TabProps = {
   name: string;
@@ -18,6 +24,8 @@ type TabProps = {
 
 const BottomBar = () => {
   const naviation = useNavigation<StackNavigationProp<HomeStackParamList>>();
+  const dispatch = useDispatch<AppDispatch>();
+  const currentTabRedux = useSelector(selectCurrentTab);
   const [currentTab, setCurrentTab] = useState('Home');
   const direction = useSelector(selectDirectionBottomBar);
   const moveYRef = useRef(new Animated.Value(0));
@@ -36,7 +44,7 @@ const BottomBar = () => {
       icon: 'IconCategory',
       iconFocused: 'IconCategoryFocused',
       onPress: () => {
-        naviation.navigate('Category');
+        naviation.navigate('Category', {screen: 'CategoryScreen'});
         setCurrentTab('Category');
       },
     },
@@ -45,8 +53,10 @@ const BottomBar = () => {
       icon: 'IconRoomIdea',
       iconFocused: 'IconRoomIdeaFocused',
       onPress: () => {
-        naviation.navigate('RoomIdea');
-        setCurrentTab('RoomIdea');
+        naviation.navigate('StyleIdeaStack', {
+          screen: 'StyleIdea',
+        });
+        setCurrentTab('Room Idea');
       },
     },
     {
@@ -63,11 +73,18 @@ const BottomBar = () => {
       icon: 'IconProfile',
       iconFocused: 'IconProfileFocused',
       onPress: () => {
-        naviation.navigate('Profile');
+        naviation.navigate(PROFILE_STACK);
         setCurrentTab('Profile');
       },
     },
   ];
+
+  useEffect(() => {
+    if (currentTabRedux === 'Category') {
+      setCurrentTab('Category');
+      dispatch(setCurrentTabRedux('Home'));
+    }
+  }, [currentTabRedux]);
 
   useEffect(() => {
     Animated.timing(moveYRef.current, {

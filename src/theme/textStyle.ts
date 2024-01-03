@@ -5,6 +5,14 @@ export const TextStyle = {
     fontSize: HeightSize(30),
     lineHeight: HeightSize(36),
   },
+  SuperXS: {
+    fontSize: HeightSize(8),
+    lineHeight: HeightSize(12),
+  },
+  XXS: {
+    fontSize: HeightSize(10),
+    lineHeight: HeightSize(14),
+  },
   XS: {
     fontSize: HeightSize(12),
     lineHeight: HeightSize(16),
@@ -29,9 +37,17 @@ export const TextStyle = {
     fontSize: HeightSize(24),
     lineHeight: HeightSize(32),
   },
+  XXXL: {
+    fontSize: HeightSize(28),
+    lineHeight: HeightSize(36),
+  },
   text3XL: {
     fontSize: HeightSize(30),
     lineHeight: HeightSize(36),
+  },
+  text3_5XL: {
+    fontSize: HeightSize(32),
+    lineHeight: HeightSize(38),
   },
   text4XL: {
     fontSize: HeightSize(36),
@@ -53,6 +69,9 @@ export const TextFont = {
   },
   GMedium: {
     fontFamily: 'Glorify-Medium',
+  },
+  GRegular: {
+    fontFamily: 'Glorify-Regular',
   },
   SBold: {
     fontFamily: 'Sebino-Bold',

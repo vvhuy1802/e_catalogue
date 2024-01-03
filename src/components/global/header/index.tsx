@@ -9,7 +9,7 @@ const Header = () => {
     <View
       style={{
         flexDirection: 'row',
-        alignItems: 'center',
+        alignItems: 'flex-end',
         height: HeightSize(56),
       }}>
       <Image
